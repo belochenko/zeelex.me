@@ -12,21 +12,20 @@ export default function Home() {
 
   const socialLinks = [
     { icon: Github, label: "GitHub", url: "https://github.com", color: "hover:text-white" },
-    { icon: Twitter, label: "Twitter", url: "https://twitter.com", color: "hover:text-blue-400" },
     { icon: Linkedin, label: "LinkedIn", url: "https://linkedin.com/in/example", color: "hover:text-blue-500" },
-    { icon: Mail, label: "Email", url: "mailto:example@email.com", color: "hover:text-amber-400" },
+    { icon: Mail, label: "Email", url: "mailto:hi@zeelex.me", color: "hover:text-amber-400" },
   ]
 
   const projects = [
     {
-      title: "Mobile App",
-      description: "A cross-platform mobile application built with Flutter and Firebase.",
-      tags: ["Flutter", "Dart", "Firebase"],
+      title: "To be added",
+      description: "To be added",
+      tags: ["", "", ""],
     },
     {
-      title: "Web Dashboard",
-      description: "A responsive admin dashboard built with Next.js and TailwindCSS.",
-      tags: ["Next.js", "React", "TailwindCSS"],
+      title: "To be added",
+      description: "To be added",
+      tags: ["", "", ""],
     },
   ]
 
@@ -63,7 +62,7 @@ export default function Home() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold font-mono leading-tight">Alexey Belochenko</h1>
-                <p className="text-zinc-400 font-mono text-sm">Mobile Apps and Frontend Engineer</p>
+                <p className="text-zinc-400 font-mono text-sm">Software & Systems Engineer (with Mathematical Modeling focus)</p>
               </div>
             </div>
           </section>
@@ -76,7 +75,7 @@ export default function Home() {
               <span className="text-emerald-400 mr-2">{">"}</span> About Me
             </h2>
             <p className="text-zinc-300 text-sm leading-relaxed">
-              I'm a passionate Mobile App and Front End Engineer with expertise in building cross-platform mobile applications and modern web interfaces. I specialize in Flutter, React, TypeScript, and Next.js.
+              To be added
             </p>
             <a 
               href="/resume.pdf" 
@@ -118,7 +117,7 @@ export default function Home() {
           <div className="mt-auto pt-8">
             <footer className="text-zinc-500 text-xs">
               <p>© {new Date().getFullYear()} Alexey Belochenko.</p>
-              <p className="font-mono mt-2">{"// Built with Next.js"}</p>
+              <p className="font-mono mt-2">{"// Built with simplicity in mind"}</p>
             </footer>
           </div>
         </aside>

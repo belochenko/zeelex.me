@@ -14,10 +14,12 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Febry Ardiansyah | Mobile App and Frontend Engineer",
+  title: "Alexey Belochenko | Systems and Engineering",
   description:
-    "Personal website of Febry Ardiansyah, a Mobile App and Front End Engineer specializing in Flutter, Firebase, and modern web technologies.",
-    generator: 'v0.app'
+    "Personal website of Alexey Belochenko, about Systems and Engineering",
+  icons: {
+    icon: "/icon.png",
+  },
 }
 
 export default function RootLayout({
