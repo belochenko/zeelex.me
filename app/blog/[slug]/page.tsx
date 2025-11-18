@@ -6,22 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import MathJaxLoader from '@/components/blog/mathjax-loader'
 import { notFound } from 'next/navigation'
-
-interface BlogPostMetadata {
-  title: string
-  date: string
-  tags: string[]
-  tldr: string
-}
-
-const blogPostsMetadata: Record<string, BlogPostMetadata> = {
-  'project-1': {
-    title: 'Mathematical Modeling and Optimization',
-    date: '2025-01-15',
-    tags: ['Mathematics', 'Optimization', 'Algorithms'],
-    tldr: 'Exploring advanced techniques for solving non-linear optimization problems using gradient descent and its variants.',
-  },
-}
+import { getBlogPost } from '@/lib/blog'
 
 function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString('en-US', {
@@ -33,19 +18,14 @@ function formatDate(dateString: string): string {
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const metadata = blogPostsMetadata[slug]
-
-  if (!metadata) {
+  
+  const post = await getBlogPost(slug)
+  
+  if (!post) {
     notFound()
   }
 
-  let MDXContent
-  try {
-    MDXContent = (await import(`@/content/blog/${slug}.mdx`)).default
-  } catch (error) {
-    console.error(`[v0] Failed to load MDX for slug: ${slug}`, error)
-    notFound()
-  }
+  const { metadata, content } = post
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
@@ -87,10 +67,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
         <Separator className="bg-zinc-800 mb-8" />
 
-        {/* Main Content - MDX */}
-        <section className="space-y-6 font-mono text-zinc-300">
-          <MDXContent />
-        </section>
+        {/* Main Content */}
+        <section className="space-y-6 font-mono text-zinc-300 prose prose-invert prose-sm md:prose-base max-w-none" dangerouslySetInnerHTML={{ __html: content }} />
 
         <Separator className="bg-zinc-800 my-12" />
 
