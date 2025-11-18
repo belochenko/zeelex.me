@@ -17,20 +17,40 @@ export default function Home() {
     { icon: Mail, label: "Email", url: "mailto:hi@zeelex.me", color: "hover:text-amber-400" },
   ]
 
-  const projects = [
+  const artifacts = [
+    {
+      title: "Home 3D Printing",
+      description: "Exploring 3D printing at home",
+      href: "https://3d.zeelex.me",
+      image: "/icon.jpg",
+      type: "external",
+    },
+  ]
+
+  const articles = [
     {
       title: "Recruiting is broken and not working. How can we fix it?",
-      description: "My own analytical view on how IT recruiting works and how to improve it.",
+      summary: "An analytical look at modern IT hiring practices and how to rebuild them with accountability.",
       tags: ["Recruiting", "IT", "Processes", "Market"],
       postSlug: "hiring-is-broken",
+      published: "2024-08-25",
       hasRead: true,
     },
     {
-      title: "To be added",
-      description: "To be added",
-      tags: ["", "", ""],
-      externalUrl: "#",
-      hasRead: false,
+      title: "Social platforms must die",
+      summary: "Why centralised social networks no longer serve users and how to move toward open ecosystems.",
+      tags: ["Networks", "Decentralization"],
+      postSlug: "social-platform-must-die",
+      published: "2024-10-01",
+      hasRead: true,
+    },
+    {
+      title: "New old-fashion internet",
+      summary: "Reimagining the personal web with small tools, convivial software, and intentional communities.",
+      tags: ["Internet", "Tools", "Communities"],
+      postSlug: "new-old-fashion-internet",
+      published: "2024-11-12",
+      hasRead: true,
     },
   ]
 
@@ -77,19 +97,51 @@ export default function Home() {
           {/* About Section */}
           <section className="space-y-4 mb-8">
             <h2 className="text-lg font-bold font-mono flex items-center">
-              <span className="text-emerald-400 mr-2">{">"}</span> About Me
+              <span className="text-emerald-400 mr-2">{">"}</span> What I Do
             </h2>
             <p className="text-zinc-300 text-sm leading-relaxed">
-              To be added
+              I make data pipelines go brrrrr 🏎️... but with style and substance. Think of me as someone who doesn't just fix things – I dissect them like a curious kid with a new toy, throw math at them until they reveal their secrets, experiment wildly, and then make them chef's kiss perfect. Fast code is cool, but elegant, reliable, fast code that I built by breaking it 47 times first? Now we're talking. Need to ship something unreasonable? Hit the button and let's talk.
             </p>
-            <a 
-              href="/resume.pdf" 
-              download 
-              className="inline-flex items-center gap-2 mt-4 px-3 py-2 bg-emerald-400/10 border border-emerald-400/30 rounded text-emerald-400 hover:bg-emerald-400/20 transition-colors text-sm font-mono"
-            >
-              <Download size={16} />
-              Download Resume
-            </a>
+            <div className="flex items-center gap-3 text-xs font-mono">
+              <a
+                href="mailto:hi@zeelex.me?subject=Let's%20build%20something"
+                className="inline-flex items-center justify-center gap-2 px-2.5 py-1.5 bg-emerald-400/10 border border-emerald-400/30 rounded text-emerald-400 hover:bg-emerald-400/20 transition-colors w-full max-w-[180px]"
+              >
+                <Mail size={14} />
+                Write Me
+              </a>
+              <div className="text-center text-[10px] uppercase tracking-[0.4em] text-zinc-500">
+                or
+              </div>
+              <a 
+                href="/resume.pdf" 
+                download 
+                className="inline-flex items-center justify-center gap-2 px-2.5 py-1.5 bg-emerald-400/10 border border-emerald-400/30 rounded text-emerald-400 hover:bg-emerald-400/20 transition-colors w-full max-w-[180px]"
+              >
+                <Download size={14} />
+                Download Resume
+              </a>
+            </div>
+          </section>
+
+          <Separator className="bg-zinc-800 mb-8" />
+
+          {/* Skills Section */}
+          <section className="space-y-4 mb-8">
+            <h2 className="text-lg font-bold font-mono flex items-center">
+              <span className="text-emerald-400 mr-2">{">"}</span> Superpowers
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill) => (
+                <Badge
+                  key={skill}
+                  variant="outline"
+                  className="bg-zinc-900 text-emerald-400 border-emerald-400/30 text-xs md:text-sm"
+                >
+                  {skill}
+                </Badge>
+              ))}
+            </div>
           </section>
 
           <Separator className="bg-zinc-800 mb-8" />
@@ -130,86 +182,113 @@ export default function Home() {
         {/* Right Content Area */}
         <section className="w-full lg:fixed lg:left-1/3 lg:right-0 lg:top-0 lg:h-screen lg:overflow-y-auto bg-zinc-950 p-6 md:p-8 pt-6 md:pt-12">
           <div className="max-w-2xl">
-            {/* Skills Section */}
-            <div className="space-y-4 mb-12 animate-fade-in-up stagger-1">
-              <h2 className="text-xl font-bold font-mono flex items-center">
-                <span className="text-emerald-400 mr-2">{">"}</span> Skills
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                <Badge variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30">
-                  Flutter
-                </Badge>
-                <Badge variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30">
-                  Dart
-                </Badge>
-                <Badge variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30">
-                  Firebase
-                </Badge>
-                <Badge variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30">
-                  React
-                </Badge>
-                <Badge variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30">
-                  Next.js
-                </Badge>
-                <Badge variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30">
-                  TypeScript
-                </Badge>
-                <Badge variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30">
-                  JavaScript
-                </Badge>
-                <Badge variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30">
-                  TailwindCSS
-                </Badge>
-                <Badge variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30">
-                  REST API
-                </Badge>
-                <Badge variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30">
-                  Git
-                </Badge>
-              </div>
-            </div>
-
-            <Separator className="bg-zinc-800 mb-12" />
-
-            {/* Projects Section */}
+            {/* Projects & Artifacts */}
             <div className="space-y-4 mb-12">
-              <h2 className="text-xl font-bold font-mono flex items-center animate-fade-in-up stagger-2">
-                <span className="text-emerald-400 mr-2">{">"}</span> Projects
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
-                {projects.map((project, index) => (
-                  <Card key={index} className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors animate-fade-in-up" style={{ animationDelay: `${0.3 + (index + 1) * 0.1}s` }}>
-                    <CardContent className="p-4 space-y-3">
-                      <h3 className="font-bold text-zinc-100">{project.title}</h3>
-                      <p className="text-zinc-400 text-sm">
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2 pt-2">
-                        {project.tags.map((tag, tagIndex) => (
-                          <Badge key={`${tag || 'tag'}-${tagIndex}`} variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30 text-xs">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                      <div className="flex gap-2 mt-4">
-                        {project.hasRead ? (
-                          <Link href={`/posts/${project.postSlug}`} className="w-full">
-                            <Button variant="outline" size="sm" className="w-full gap-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 font-mono">
-                              Read
-                            </Button>
-                          </Link>
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold font-mono flex items-center animate-fade-in-up stagger-2">
+                  <span className="text-emerald-400 mr-2">{">"}</span> Projects & Artifacts
+                </h2>
+                <span className="text-sm text-zinc-500 font-mono flex items-center gap-1">
+                  <span className="text-emerald-400"></span> Permanent Section
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {artifacts.map((artifact, index) => (
+                  <Card key={index} className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors animate-fade-in-up overflow-hidden" style={{ animationDelay: `${0.3 + (index + 1) * 0.1}s` }}>
+                    <CardContent className="p-0">
+                      <div className="relative h-40 w-full">
+                        {artifact.image ? (
+                          <div
+                            className="h-full w-full bg-cover bg-center"
+                            style={{ backgroundImage: `url(${artifact.image})` }}
+                            role="img"
+                            aria-label={artifact.title}
+                          />
                         ) : (
-                          <a href={project.externalUrl} target="_blank" rel="noopener noreferrer" className="w-full">
-                            <Button variant="outline" size="sm" className="w-full gap-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 font-mono">
-                              <ExternalLink size={14} />
-                              View Project
-                            </Button>
-                          </a>
+                          <div className="h-full w-full bg-gradient-to-br from-zinc-800 via-zinc-900 to-zinc-800 flex items-center justify-center text-zinc-600 text-xs font-mono">
+                            Preview Image
+                          </div>
                         )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 hover:opacity-100 transition-opacity flex flex-col justify-end p-4 space-y-2">
+                          <div className="text-sm text-emerald-400 font-mono flex items-center gap-2">
+                            <span>📌</span>
+                            <span>Permanent</span>
+                          </div>
+                          <h3 className="text-lg font-bold text-zinc-50">{artifact.title}</h3>
+                          <p className="text-xs text-zinc-300 line-clamp-2">{artifact.description}</p>
+                          {artifact.type === "internal" ? (
+                            <Link href={artifact.href}>
+                              <Button variant="outline" size="sm" className="w-full gap-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 font-mono text-xs">
+                                <ExternalLink size={12} />
+                                Visit {artifact.href}
+                              </Button>
+                            </Link>
+                          ) : (
+                            <a href={artifact.href} target="_blank" rel="noopener noreferrer">
+                              <Button variant="outline" size="sm" className="w-full gap-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 font-mono text-xs">
+                                <ExternalLink size={12} />
+                                {artifact.href.replace(/https?:\/\//, '')}
+                              </Button>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                      <div className="p-4 space-y-3">
+                        <p className="text-zinc-400 text-xs font-mono">{artifact.description}</p>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+            </div>
+
+            {/* Articles & Essays */}
+            <div className="space-y-4 mb-12">
+              <h2 className="text-xl font-bold font-mono flex items-center animate-fade-in-up stagger-2">
+                <span className="text-emerald-400 mr-2">{">"}</span> Articles & Essays
+              </h2>
+              <div className="grid grid-cols-1 gap-4">
+                {articles.map((article, index) => (
+                    <Card
+                      key={`article-${article.postSlug}-${index}`}
+                      className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors animate-fade-in-up"
+                      style={{ animationDelay: `${0.4 + (index + 1) * 0.1}s` }}
+                    >
+                      <CardContent className="p-4 space-y-3">
+                        <div className="flex items-center justify-between text-xs text-zinc-500 font-mono">
+                          <span>Essay #{index + 1}</span>
+                          <time>{article.published}</time>
+                        </div>
+                        <h3 className="font-bold text-zinc-100 text-lg">{article.title}</h3>
+                        <p className="text-zinc-400 text-sm line-clamp-3">
+                          {article.summary}
+                        </p>
+                        {article.tags && (
+                          <div className="flex flex-wrap gap-2 pt-2">
+                            {article.tags.map((tag, tagIndex) => (
+                              <Badge
+                                key={`article-tag-${tag || 'tag'}-${tagIndex}`}
+                                variant="outline"
+                                className="bg-zinc-900 text-emerald-400 border-emerald-400/30 text-xs"
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+                        <Link href={`/posts/${article.postSlug}`}>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full gap-1 mt-2 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 font-mono"
+                          >
+                            <ExternalLink size={14} />
+                            Read Article
+                          </Button>
+                        </Link>
+                      </CardContent>
+                    </Card>
+                  ))}
               </div>
             </div>
           </div>
@@ -218,3 +297,16 @@ export default function Home() {
     </main>
   )
 }
+  const skills = [
+    "Data Engineering",
+    "Pipeline Architecture",
+    "Cloud Infrastructure",
+    "Performance Optimization",
+    "Monitoring & Observability",
+    "Mathematical Modeling",
+    "DevOps & MLOps",
+    "Engineering",
+    "Systems Design",
+    "Product Strategy",
+    "3D Printing",
+  ]
