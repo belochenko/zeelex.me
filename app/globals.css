@@ -81,6 +81,14 @@
   .post-content hr {
     @apply border-zinc-800 my-8;
   }
+
+  .post-content .math-inline {
+    @apply inline-block align-middle text-base;
+  }
+
+  .post-content .math-block {
+    @apply block my-6 text-center overflow-x-auto;
+  }
 }
 
 .post-content h2,

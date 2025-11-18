@@ -5,6 +5,7 @@ import { marked } from 'marked'
 import type { Tokens } from 'marked'
 
 marked.use({ mangle: false, gfm: true })
+marked.setOptions({ langPrefix: 'hljs language-' })
 
 export interface PostMetadata {
   title: string
@@ -27,9 +28,51 @@ export interface Post {
 
 const postsDir = path.join(process.cwd(), 'content', 'posts')
 const INLINE_MATH_REGEX = /\$(?!\$)([^$]+?)\$(?!\$)/g
+const BLOCK_MATH_REGEX = /\$\$([\s\S]+?)\$\$/g
 
-function normalizeInlineMath(markdown: string): string {
-  return markdown.replace(INLINE_MATH_REGEX, (_, expression) => `\\(${expression.trim()}\\)`)
+interface MathReplacement {
+  placeholder: string
+  html: string
+}
+
+function createPlaceholder(type: 'block' | 'inline', index: number) {
+  return `[[MATH_${type.toUpperCase()}_${index}]]`
+}
+
+function extractMath(markdown: string) {
+  const replacements: MathReplacement[] = []
+  let index = 0
+
+  const withBlockPlaceholders = markdown.replace(BLOCK_MATH_REGEX, (_, expression) => {
+    const placeholder = createPlaceholder('block', index)
+    replacements.push({
+      placeholder,
+      html: `<span class="math-block">\\[${expression.trim()}\\]</span>`,
+    })
+    index += 1
+    return placeholder
+  })
+
+  const withInlinePlaceholders = withBlockPlaceholders.replace(INLINE_MATH_REGEX, (_, expression) => {
+    const placeholder = createPlaceholder('inline', index)
+    replacements.push({
+      placeholder,
+      html: `<span class="math-inline">\\(${expression.trim()}\\)</span>`,
+    })
+    index += 1
+    return placeholder
+  })
+
+  return {
+    content: withInlinePlaceholders,
+    replacements,
+  }
+}
+
+function restoreMath(html: string, replacements: MathReplacement[]) {
+  return replacements.reduce((acc, replacement) => {
+    return acc.split(replacement.placeholder).join(replacement.html)
+  }, html)
 }
 
 function slugify(value: string | undefined | null): string {
@@ -63,7 +106,7 @@ export async function getPost(slug: string): Promise<Post | null> {
     const fileContent = await fs.readFile(filePath, 'utf-8')
 
     const { data, content } = matter(fileContent)
-    const normalizedContent = normalizeInlineMath(content)
+    const { content: normalizedContent, replacements } = extractMath(content)
     const headings: PostHeading[] = []
     const slugger = createSlugger()
 
@@ -84,9 +127,10 @@ export async function getPost(slug: string): Promise<Post | null> {
       return `<h${token.depth} id="${id}">${innerHtml}</h${token.depth}>`
     }
 
-    const htmlContent = marked.parse(normalizedContent, {
+    const rawHtmlContent = marked.parse(normalizedContent, {
       renderer,
     }) as string
+    const htmlContent = restoreMath(rawHtmlContent, replacements)
 
     return {
       metadata: data as PostMetadata,

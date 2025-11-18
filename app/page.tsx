@@ -19,10 +19,10 @@ export default function Home() {
 
   const projects = [
     {
-      title: "To be added",
-      description: "To be added",
-      tags: ["", "", ""],
-      postSlug: "project-1",
+      title: "Recruiting is broken and not working. How can we fix it?",
+      description: "My own analytical view on how IT recruiting works and how to improve it.",
+      tags: ["Recruiting", "IT", "Processes", "Market"],
+      postSlug: "hiring-is-broken",
       hasRead: true,
     },
     {
@@ -185,8 +185,8 @@ export default function Home() {
                         {project.description}
                       </p>
                       <div className="flex flex-wrap gap-2 pt-2">
-                        {project.tags.map((tag) => (
-                          <Badge key={tag} variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30 text-xs">
+                        {project.tags.map((tag, tagIndex) => (
+                          <Badge key={`${tag || 'tag'}-${tagIndex}`} variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30 text-xs">
                             {tag}
                           </Badge>
                         ))}
