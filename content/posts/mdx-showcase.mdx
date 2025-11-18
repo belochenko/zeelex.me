@@ -1,0 +1,66 @@
+---
+title: MDX Showcase Playground
+date: 2025-02-10
+tags: ['MDX', 'Components', 'Demo']
+tldr: A living example of mixing Markdown, JSX, custom components, and multimedia inside a single MDX document.
+---
+
+export const Highlight = ({ children, color }) => (
+  <span
+    style={{
+      backgroundColor: color,
+      borderRadius: '2px',
+      color: '#fff',
+      padding: '0.2rem 0.35rem',
+      fontWeight: 600,
+    }}>
+    {children}
+  </span>
+);
+
+## Why MDX?
+
+MDX lets me mix prose with custom UI. I can write **Markdown** alongside my _JSX_ without leaving this file.
+
+<Highlight color="#25c2a0">Docusaurus green</Highlight> and <Highlight color="#1877F2">Facebook blue</Highlight> are my favorite colors.
+
+## Images, everywhere
+
+![A calm sci-fi landscape with teal lighting](https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80)
+
+And a local asset:
+
+<Image src="/icon.jpg" alt="Placeholder" caption="Pulled right from /public" />
+
+## Video & embeds
+
+<Video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" poster="/placeholder.jpg" />
+
+<YouTube id="dQw4w9WgXcQ" title="MDX Demo" />
+
+## Callouts & badges
+
+- Inline badges? <Badge variant="outline">Yes</Badge>
+- Tables and lists keep working as expected.
+- Embedded code samples below:
+
+```tsx title="experiments.ts" hl_lines="1 5"
+type Experiment = {
+  name: string
+  status: 'idea' | 'building' | 'shipped'
+}
+
+const experiments: Experiment[] = [
+  { name: 'Agent Lab', status: 'building' },
+  { name: 'Quant Canvas', status: 'idea' },
+]
+```
+
+```python title="greet.py"
+def greet(name: str) -> None:
+    print(f"Hello, {name}!")
+
+greet("world")
+```
+
+That's a wrap! Feel free to remix this file when adding future articles.

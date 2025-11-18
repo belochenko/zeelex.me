@@ -44,6 +44,14 @@ export default function Home() {
       published: "2024-10-01",
       hasRead: true,
     },
+    {
+      title: "MDX Showcase Playground",
+      summary: "A self-contained article that demonstrates mixing Markdown, JSX, images, video, and custom components.",
+      tags: ["MDX", "Components", "Demo"],
+      postSlug: "mdx-showcase",
+      published: "2025-02-10",
+      hasRead: true,
+    },
     // {
     //   title: "New old-fashion internet",
     //   summary: "Reimagining the personal web with small tools, convivial software, and intentional communities.",

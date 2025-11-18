@@ -1,17 +1,15 @@
 import fs from 'fs/promises'
 import path from 'path'
 import matter from 'gray-matter'
-import { marked } from 'marked'
-import type { Tokens } from 'marked'
-
-marked.use({ mangle: false, gfm: true })
-marked.setOptions({ langPrefix: 'hljs language-' })
+import { compile } from '@mdx-js/mdx'
+import { visit } from 'unist-util-visit'
 
 export interface PostMetadata {
   title: string
   date: string
-  tags: string[]
-  tldr: string
+  tags?: string[]
+  tldr?: string
+  summary?: string
 }
 
 export interface PostHeading {
@@ -22,58 +20,11 @@ export interface PostHeading {
 
 export interface Post {
   metadata: PostMetadata
-  content: string
+  code: string
   headings: PostHeading[]
 }
 
 const postsDir = path.join(process.cwd(), 'content', 'posts')
-const INLINE_MATH_REGEX = /\$(?!\$)([^$]+?)\$(?!\$)/g
-const BLOCK_MATH_REGEX = /\$\$([\s\S]+?)\$\$/g
-
-interface MathReplacement {
-  placeholder: string
-  html: string
-}
-
-function createPlaceholder(type: 'block' | 'inline', index: number) {
-  return `[[MATH_${type.toUpperCase()}_${index}]]`
-}
-
-function extractMath(markdown: string) {
-  const replacements: MathReplacement[] = []
-  let index = 0
-
-  const withBlockPlaceholders = markdown.replace(BLOCK_MATH_REGEX, (_, expression) => {
-    const placeholder = createPlaceholder('block', index)
-    replacements.push({
-      placeholder,
-      html: `<span class="math-block">\\[${expression.trim()}\\]</span>`,
-    })
-    index += 1
-    return placeholder
-  })
-
-  const withInlinePlaceholders = withBlockPlaceholders.replace(INLINE_MATH_REGEX, (_, expression) => {
-    const placeholder = createPlaceholder('inline', index)
-    replacements.push({
-      placeholder,
-      html: `<span class="math-inline">\\(${expression.trim()}\\)</span>`,
-    })
-    index += 1
-    return placeholder
-  })
-
-  return {
-    content: withInlinePlaceholders,
-    replacements,
-  }
-}
-
-function restoreMath(html: string, replacements: MathReplacement[]) {
-  return replacements.reduce((acc, replacement) => {
-    return acc.split(replacement.placeholder).join(replacement.html)
-  }, html)
-}
 
 function slugify(value: string | undefined | null): string {
   const normalized = String(value ?? '')
@@ -100,41 +51,67 @@ function createSlugger() {
   }
 }
 
+function collectText(node: any): string {
+  if (!node) return ''
+
+  if (typeof node.value === 'string') {
+    return node.value
+  }
+
+  if (Array.isArray(node.children)) {
+    return node.children.map(collectText).join('')
+  }
+
+  return ''
+}
+
+async function compileMdx(content: string) {
+  const headings: PostHeading[] = []
+  const slugger = createSlugger()
+
+  const headingPlugin = () => (tree: any) => {
+    visit(tree, 'heading', (node: any) => {
+      if (node.depth > 3) return
+      const text = collectText(node)
+      const id = slugger.slug(text || 'section')
+      headings.push({
+        id,
+        level: node.depth,
+        text,
+      })
+
+      node.data = node.data || {}
+      node.data.hProperties = node.data.hProperties || {}
+      node.data.id = id
+      node.data.hProperties.id = id
+    })
+  }
+
+  const compiled = await compile(content, {
+    outputFormat: 'function-body',
+    development: false,
+    mdxOptions: {
+      remarkPlugins: [headingPlugin],
+    },
+  })
+
+  return {
+    code: String(compiled.value),
+    headings,
+  }
+}
+
 export async function getPost(slug: string): Promise<Post | null> {
   try {
     const filePath = path.join(postsDir, `${slug}.mdx`)
     const fileContent = await fs.readFile(filePath, 'utf-8')
 
     const { data, content } = matter(fileContent)
-    const { content: normalizedContent, replacements } = extractMath(content)
-    const headings: PostHeading[] = []
-    const slugger = createSlugger()
-
-    const renderer = new marked.Renderer()
-    renderer.heading = function (this: any, token: Tokens.Heading) {
-      const plainText = token.text ?? ''
-      const id = slugger.slug(plainText)
-
-      if (token.depth <= 3) {
-        headings.push({
-          id,
-          level: token.depth,
-          text: plainText,
-        })
-      }
-
-      const innerHtml = this.parser.parseInline(token.tokens ?? [])
-      return `<h${token.depth} id="${id}">${innerHtml}</h${token.depth}>`
-    }
-
-    const rawHtmlContent = marked.parse(normalizedContent, {
-      renderer,
-    }) as string
-    const htmlContent = restoreMath(rawHtmlContent, replacements)
+    const { code, headings } = await compileMdx(content)
 
     return {
       metadata: data as PostMetadata,
-      content: htmlContent,
+      code,
       headings,
     }
   } catch (error) {
@@ -159,3 +136,4 @@ export async function getAllPosts(): Promise<Post[]> {
     return []
   }
 }
+
