@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { useState } from 'react'
+import Link from 'next/link'
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -21,11 +22,15 @@ export default function Home() {
       title: "To be added",
       description: "To be added",
       tags: ["", "", ""],
+      blogSlug: "project-1",
+      hasRead: true,
     },
     {
       title: "To be added",
       description: "To be added",
       tags: ["", "", ""],
+      externalUrl: "#",
+      hasRead: false,
     },
   ]
 
@@ -186,10 +191,22 @@ export default function Home() {
                           </Badge>
                         ))}
                       </div>
-                      <Button variant="outline" size="sm" className="gap-1 mt-2">
-                        <ExternalLink size={14} />
-                        View Project
-                      </Button>
+                      <div className="flex gap-2 mt-4">
+                        {project.hasRead ? (
+                          <Link href={`/blog/${project.blogSlug}`} className="w-full">
+                            <Button variant="outline" size="sm" className="w-full gap-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 font-mono">
+                              Read
+                            </Button>
+                          </Link>
+                        ) : (
+                          <a href={project.externalUrl} target="_blank" rel="noopener noreferrer" className="w-full">
+                            <Button variant="outline" size="sm" className="w-full gap-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 font-mono">
+                              <ExternalLink size={14} />
+                              View Project
+                            </Button>
+                          </a>
+                        )}
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
