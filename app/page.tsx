@@ -12,8 +12,8 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const socialLinks = [
-    { icon: Github, label: "GitHub", url: "https://github.com", color: "hover:text-white" },
-    { icon: Linkedin, label: "LinkedIn", url: "https://linkedin.com/in/example", color: "hover:text-blue-500" },
+    { icon: Github, label: "GitHub", url: "https://github.com/belochenko", color: "hover:text-white" },
+    { icon: Linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/zeelexes/", color: "hover:text-blue-500" },
     { icon: Mail, label: "Email", url: "mailto:hi@zeelex.me", color: "hover:text-amber-400" },
   ]
 
@@ -44,14 +44,14 @@ export default function Home() {
       published: "2024-10-01",
       hasRead: true,
     },
-    {
-      title: "New old-fashion internet",
-      summary: "Reimagining the personal web with small tools, convivial software, and intentional communities.",
-      tags: ["Internet", "Tools", "Communities"],
-      postSlug: "new-old-fashion-internet",
-      published: "2024-11-12",
-      hasRead: true,
-    },
+    // {
+    //   title: "New old-fashion internet",
+    //   summary: "Reimagining the personal web with small tools, convivial software, and intentional communities.",
+    //   tags: ["Internet", "Tools", "Communities"],
+    //   postSlug: "new-old-fashion-internet",
+    //   published: "2024-11-12",
+    //   hasRead: true,
+    // },
   ]
 
   return (
@@ -77,8 +77,8 @@ export default function Home() {
       `}</style>
       
       <div className="flex flex-col lg:flex-row">
-        {/* Left Sidebar - Hidden on mobile, visible on tablet+ */}
-        <aside className="lg:fixed lg:left-0 lg:top-0 lg:h-screen lg:w-1/3 lg:max-w-md bg-zinc-950 border-b lg:border-b-0 lg:border-r border-zinc-800 p-8 flex flex-col overflow-y-auto animate-fade-in-up">
+        {/* Left Column */}
+        <aside className="lg:w-1/3 xl:w-[30%] bg-zinc-950 border-b lg:border-b-0 lg:border-r border-zinc-800 p-8 flex flex-col animate-fade-in-up">
           {/* Header Section */}
           <section className="space-y-4 mb-8">
             <div className="flex items-center gap-4">
@@ -87,7 +87,7 @@ export default function Home() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold font-mono leading-tight">Alexey Belochenko</h1>
-                <p className="text-zinc-400 font-mono text-sm">Software & Systems Engineer (with Mathematical Modeling focus)</p>
+                <p className="text-zinc-400 font-mono text-sm">Software & Data Engineer · Mathematical Modeling Focus</p>
               </div>
             </div>
           </section>
@@ -113,14 +113,16 @@ export default function Home() {
               <div className="text-center text-[10px] uppercase tracking-[0.4em] text-zinc-500">
                 or
               </div>
-              <a 
-                href="/resume.pdf" 
-                download 
-                className="inline-flex items-center justify-center gap-2 px-2.5 py-1.5 bg-emerald-400/10 border border-emerald-400/30 rounded text-emerald-400 hover:bg-emerald-400/20 transition-colors w-full max-w-[180px]"
+              <button
+                type="button"
+                title="Not now, it is not ready"
+                aria-disabled="true"
+                disabled
+                className="inline-flex items-center justify-center gap-2 px-2.5 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-zinc-500 cursor-not-allowed w-full max-w-[180px]"
               >
                 <Download size={14} />
-                Download Resume
-              </a>
+                Get My Resume
+              </button>
             </div>
           </section>
 
@@ -171,7 +173,7 @@ export default function Home() {
             </div>
           </section>
 
-          <div className="mt-auto pt-8">
+          <div className="mt-auto pt-8 hidden lg:block">
             <footer className="text-zinc-500 text-xs">
               <p>© {new Date().getFullYear()} Alexey Belochenko.</p>
               <p className="font-mono mt-2">{"// Built with simplicity in mind"}</p>
@@ -180,8 +182,8 @@ export default function Home() {
         </aside>
 
         {/* Right Content Area */}
-        <section className="w-full lg:fixed lg:left-1/3 lg:right-0 lg:top-0 lg:h-screen lg:overflow-y-auto bg-zinc-950 p-6 md:p-8 pt-6 md:pt-12">
-          <div className="max-w-2xl">
+        <section className="w-full lg:w-7/12 xl:w-[55%] bg-zinc-950 p-6 md:p-8 pt-6 md:pt-12">
+          <div className="max-w-4xl mx-auto">
             {/* Projects & Artifacts */}
             <div className="space-y-4 mb-12">
               <div className="flex items-center justify-between">
