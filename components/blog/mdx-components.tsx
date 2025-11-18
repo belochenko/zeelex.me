@@ -49,6 +49,43 @@ const YouTube = ({ id, title }: YouTubeProps) => (
   </div>
 )
 
+type CodeBlockProps = {
+  children: React.ReactNode
+  className?: string
+  metastring?: string
+}
+
+function parseMeta(meta?: string) {
+  if (!meta) {
+    return {}
+  }
+
+  const titleMatch = meta.match(/title="([^"]+)"/)
+  const langMatch = meta.match(/\blang=(\w+)/)
+
+  return {
+    title: titleMatch?.[1],
+    lang: langMatch?.[1],
+  }
+}
+
+const CodeBlock = ({ children, className, metastring }: CodeBlockProps) => {
+  const meta = parseMeta(metastring)
+  const language = className?.replace('language-', '') || meta.lang || 'text'
+
+  return (
+    <div className="mb-6 overflow-hidden rounded-lg border border-zinc-800">
+      <div className="flex items-center justify-between border-b border-zinc-800 bg-zinc-900/80 px-4 py-2 text-xs font-mono uppercase tracking-wider text-zinc-500">
+        <span>{meta.title ?? 'Code Snippet'}</span>
+        <span className="text-emerald-400">{language}</span>
+      </div>
+      <pre className="bg-zinc-950/80 px-4 py-4 text-sm font-mono overflow-auto">
+        <code className={`hljs language-${language}`}>{children}</code>
+      </pre>
+    </div>
+  )
+}
+
 const Paragraph = ({ children }: BaseProps) => {
   const childArray = React.Children.toArray(children)
   if (childArray.length === 1) {
@@ -75,18 +112,20 @@ export const mdxComponents = {
   code: ({ children, className }: { children: React.ReactNode; className?: string }) => {
     if (className?.includes('language-')) {
       return (
-        <code className="bg-zinc-900 border border-zinc-800 rounded px-2 py-1 text-emerald-400 text-sm font-mono">
+        <code className="hljs inline bg-transparent text-emerald-400 text-sm font-mono">
           {children}
         </code>
       )
     }
     return <code className="bg-zinc-900 px-2 py-1 rounded text-emerald-400 font-mono">{children}</code>
   },
-  pre: ({ children }: BaseProps) => (
-    <pre className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 overflow-x-auto mb-4 font-mono text-sm">
-      {children}
-    </pre>
-  ),
+  pre: ({ children }: BaseProps) => {
+    if (React.isValidElement(children) && children.props) {
+      return <CodeBlock {...children.props}>{children.props.children}</CodeBlock>
+    }
+    return <pre className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 overflow-x-auto mb-4 font-mono text-sm">{children}</pre>
+  },
+  CodeBlock,
   ul: ({ children }: BaseProps) => (
     <ul className="list-disc list-inside space-y-2 text-zinc-300 font-mono mb-4">{children}</ul>
   ),
