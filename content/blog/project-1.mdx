@@ -1,0 +1,53 @@
+## Introduction
+
+Optimization lies at the heart of modern machine learning and scientific computing. Whether we're training neural networks or solving complex engineering problems, understanding the mathematical foundations is crucial for building efficient and robust systems.
+
+## Gradient Descent Fundamentals
+
+At its core, gradient descent is an iterative optimization algorithm that finds the minimum of a function by following the negative gradient. The update rule for each iteration is:
+
+$$\theta_{t+1} = \theta_t - \alpha \nabla f(\theta_t)$$
+
+where $\theta_t$ is our parameter at iteration $t$, $\alpha$ is the learning rate, and $\nabla f(\theta_t)$ is the gradient.
+
+## Implementation Example
+
+Here's a practical implementation in TypeScript:
+
+\`\`\`typescript
+function gradientDescent(
+  initialParams: number[],
+  learningRate: number,
+  iterations: number,
+  gradientFn: (params: number[]) => number[]
+): number[] {
+  let params = [...initialParams];
+  
+  for (let i = 0; i < iterations; i++) {
+    const gradient = gradientFn(params);
+    params = params.map((p, idx) => 
+      p - learningRate * gradient[idx]
+    );
+  }
+  
+  return params;
+}
+\`\`\`
+
+## Convergence Analysis
+
+The convergence rate of gradient descent depends on the condition number of the Hessian matrix. For strongly convex functions, we have:
+
+$$f(\theta_t) - f^* \leq c \cdot (1-\mu/L)^t$$
+
+where $\mu$ is the strong convexity parameter and $L$ is the Lipschitz constant of the gradient.
+
+## Key Takeaways
+
+- Gradient descent is simple yet powerful for convex optimization problems
+- Learning rate selection is crucial for both convergence and efficiency
+- Adaptive methods (Adam, RMSprop) improve convergence on non-convex landscapes
+- Understanding mathematical foundations enables better algorithm selection
+\`\`\`
+
+```typescriptreact file="" isHidden
