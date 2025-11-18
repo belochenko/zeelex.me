@@ -31,11 +31,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css"
+        />
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
         <script
           id="MathJax-script"
           async
           src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+        ></script>
+        <script
+          id="highlight-js"
+          defer
+          src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"
         ></script>
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans`}>{children}</body>

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import MathJaxLoader from '@/components/blog/mathjax-loader'
+import CodeHighlighter from '@/components/blog/code-highlighter'
 import { notFound } from 'next/navigation'
 import { getPost } from '@/lib/posts'
 
@@ -31,6 +32,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
       <MathJaxLoader />
+      <CodeHighlighter />
       <article className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
         {/* Navigation */}
         <Link href="/" className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 mb-8 text-sm font-mono">

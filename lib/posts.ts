@@ -4,7 +4,7 @@ import matter from 'gray-matter'
 import { marked } from 'marked'
 import type { Tokens } from 'marked'
 
-marked.use({ mangle: false, headerIds: true })
+marked.use({ mangle: false, gfm: true })
 
 export interface PostMetadata {
   title: string
@@ -26,6 +26,36 @@ export interface Post {
 }
 
 const postsDir = path.join(process.cwd(), 'content', 'posts')
+const INLINE_MATH_REGEX = /\$(?!\$)([^$]+?)\$(?!\$)/g
+
+function normalizeInlineMath(markdown: string): string {
+  return markdown.replace(INLINE_MATH_REGEX, (_, expression) => `\\(${expression.trim()}\\)`)
+}
+
+function slugify(value: string | undefined | null): string {
+  const normalized = String(value ?? '')
+    .toLowerCase()
+    .trim()
+
+  if (!normalized) {
+    return 'section'
+  }
+
+  return normalized.replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-') || 'section'
+}
+
+function createSlugger() {
+  const occurrences = new Map<string, number>()
+
+  return {
+    slug(value: string) {
+      const base = slugify(value)
+      const count = occurrences.get(base) ?? 0
+      occurrences.set(base, count + 1)
+      return count > 0 ? `${base}-${count}` : base
+    },
+  }
+}
 
 export async function getPost(slug: string): Promise<Post | null> {
   try {
@@ -33,22 +63,29 @@ export async function getPost(slug: string): Promise<Post | null> {
     const fileContent = await fs.readFile(filePath, 'utf-8')
 
     const { data, content } = matter(fileContent)
+    const normalizedContent = normalizeInlineMath(content)
+    const headings: PostHeading[] = []
+    const slugger = createSlugger()
 
-    const tokens = marked.lexer(content)
-    const headingsSlugger = new marked.Slugger()
-    const headings = tokens
-      .filter((token): token is Tokens.Heading => token.type === 'heading' && token.depth <= 3)
-      .map((token) => ({
-        id: headingsSlugger.slug(token.text),
-        level: token.depth,
-        text: token.text,
-      }))
+    const renderer = new marked.Renderer()
+    renderer.heading = function (this: any, token: Tokens.Heading) {
+      const plainText = token.text ?? ''
+      const id = slugger.slug(plainText)
 
-    const slugger = new marked.Slugger()
-    const htmlContent = marked.parse(content, {
-      headerIds: true,
-      mangle: false,
-      slugger,
+      if (token.depth <= 3) {
+        headings.push({
+          id,
+          level: token.depth,
+          text: plainText,
+        })
+      }
+
+      const innerHtml = this.parser.parseInline(token.tokens ?? [])
+      return `<h${token.depth} id="${id}">${innerHtml}</h${token.depth}>`
+    }
+
+    const htmlContent = marked.parse(normalizedContent, {
+      renderer,
     }) as string
 
     return {
@@ -78,4 +115,3 @@ export async function getAllPosts(): Promise<Post[]> {
     return []
   }
 }
-
