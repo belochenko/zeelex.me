@@ -22,7 +22,7 @@ export default function Home() {
       title: "To be added",
       description: "To be added",
       tags: ["", "", ""],
-      blogSlug: "project-1",
+      postSlug: "project-1",
       hasRead: true,
     },
     {
@@ -193,7 +193,7 @@ export default function Home() {
                       </div>
                       <div className="flex gap-2 mt-4">
                         {project.hasRead ? (
-                          <Link href={`/blog/${project.blogSlug}`} className="w-full">
+                          <Link href={`/posts/${project.postSlug}`} className="w-full">
                             <Button variant="outline" size="sm" className="w-full gap-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 font-mono">
                               Read
                             </Button>

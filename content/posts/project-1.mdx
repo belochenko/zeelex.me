@@ -21,7 +21,7 @@ where $\theta_t$ is our parameter at iteration $t$, $\alpha$ is the learning rat
 
 Here's a practical implementation in TypeScript:
 
-\`\`\`typescript
+```typescript
 function gradientDescent(
   initialParams: number[],
   learningRate: number,
@@ -39,7 +39,7 @@ function gradientDescent(
   
   return params;
 }
-\`\`\`
+```
 
 ## Convergence Analysis
 
@@ -55,4 +55,3 @@ where $\mu$ is the strong convexity parameter and $L$ is the Lipschitz constant 
 - Learning rate selection is crucial for both convergence and efficiency
 - Adaptive methods (Adam, RMSprop) improve convergence on non-convex landscapes
 - Understanding mathematical foundations enables better algorithm selection
-\`\`\`
