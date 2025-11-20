@@ -16,6 +16,12 @@ type YouTubeProps = {
   title?: string
 }
 
+type MathProps = {
+  latex: string
+}
+
+type HeadingProps = React.HTMLAttributes<HTMLHeadingElement>
+
 const MdxImage = ({ caption, ...props }: ImageProps) => (
   <figure className="my-6">
     <img
@@ -101,12 +107,32 @@ const Paragraph = ({ children }: BaseProps) => {
   return <p className="leading-relaxed text-zinc-300 font-mono mb-4">{children}</p>
 }
 
+const MathInline = ({ latex }: MathProps) => (
+  // Use the default MathJax/KaTeX inline delimiter: \(...\)
+  <span className="math-inline" suppressHydrationWarning>{`\\(${latex}\\)`}</span>
+)
+
+const MathBlock = ({ latex }: MathProps) => (
+  // FIX: The prop 'latex' already contains the KaTeX block delimiters, so just render it directly.
+  <span className="math-block block" suppressHydrationWarning>{latex}</span>
+)
+
 export const mdxComponents = {
-  h2: ({ children }: BaseProps) => (
-    <h2 className="text-2xl font-bold text-zinc-100 mt-8 mb-4 font-mono">{children}</h2>
+  h2: ({ children, className, ...props }: HeadingProps) => (
+    <h2
+      {...props}
+      className={`text-2xl font-bold text-zinc-100 mt-8 mb-4 font-mono ${className ?? ''}`}
+    >
+      {children}
+    </h2>
   ),
-  h3: ({ children }: BaseProps) => (
-    <h3 className="text-xl font-bold text-zinc-100 mt-6 mb-3 font-mono">{children}</h3>
+  h3: ({ children, className, ...props }: HeadingProps) => (
+    <h3
+      {...props}
+      className={`text-xl font-bold text-zinc-100 mt-6 mb-3 font-mono ${className ?? ''}`}
+    >
+      {children}
+    </h3>
   ),
   p: Paragraph,
   code: ({ children, className }: { children: React.ReactNode; className?: string }) => {
@@ -145,4 +171,6 @@ export const mdxComponents = {
   Image: MdxImage,
   Video,
   YouTube,
+  MathInline,
+  MathBlock,
 }

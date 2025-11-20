@@ -25,18 +25,25 @@ async function getMDXComponent(code: string) {
   return Content
 }
 
-export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+type PageProps = {
+  params: { slug: string }
+  searchParams?: { lang?: string }
+}
+
+export default async function PostPage({ params, searchParams }: PageProps) {
+  const { slug } = params
+  const { lang } = searchParams || {}
   
-  const post = await getPost(slug)
+  const post = await getPost(slug, lang)
   
   if (!post) {
     notFound()
   }
 
-  const { metadata, code, headings } = post
+  const { metadata, code, headings, translations } = post
   const hasHeadings = headings.length > 0
   const MDXContent = await getMDXComponent(code)
+  const translationLinks = translations.filter((lng) => lng !== metadata.lang)
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
@@ -84,6 +91,26 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                 <time className="text-zinc-400 text-sm font-mono">
                   {formatDate(metadata.date)}
                 </time>
+                <div className="flex items-center gap-3 text-xs font-mono text-zinc-500">
+                  <span className="uppercase tracking-widest">Lang: {metadata.lang || 'en'}</span>
+                  {translationLinks.length > 0 && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-zinc-600">/</span>
+                      <span>Translate:</span>
+                      <div className="flex items-center gap-1">
+                        {translationLinks.map((lng) => (
+                          <Link
+                            key={lng}
+                            href={`/posts/${post.slug}?lang=${lng}`}
+                            className="text-emerald-400 hover:text-emerald-300"
+                          >
+                            {lng.toUpperCase()}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
                 
                 {/* Tags */}
                 {metadata.tags && (

@@ -37,30 +37,18 @@ export default function Home() {
       hasRead: true,
     },
     {
-      title: "Social platforms must die",
-      summary: "Why centralised social networks no longer serve users and how to move toward open ecosystems.",
-      tags: ["Networks", "Decentralization"],
-      postSlug: "social-platform-must-die",
-      published: "2024-10-01",
+      title: "Static Systems Are a Myth: Even Your Cache Lives Its Own Life",
+      summary: "To be added",
+      tags: ["System design", "Stability Analysis", "Dynamic Systems", "Scaling by Design"],
+      postSlug: "stat-systems",
+      published: "2025-06-14",
       hasRead: true,
     },
-    {
-      title: "MDX Showcase Playground",
-      summary: "A self-contained article that demonstrates mixing Markdown, JSX, images, video, and custom components.",
-      tags: ["MDX", "Components", "Demo"],
-      postSlug: "mdx-showcase",
-      published: "2025-02-10",
-      hasRead: true,
-    },
-    // {
-    //   title: "New old-fashion internet",
-    //   summary: "Reimagining the personal web with small tools, convivial software, and intentional communities.",
-    //   tags: ["Internet", "Tools", "Communities"],
-    //   postSlug: "new-old-fashion-internet",
-    //   published: "2024-11-12",
-    //   hasRead: true,
-    // },
   ]
+
+  const sortedArticles = [...articles].sort(
+    (a, b) => new Date(b.published).getTime() - new Date(a.published).getTime()
+  )
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
@@ -258,7 +246,7 @@ export default function Home() {
                 <span className="text-emerald-400 mr-2">{">"}</span> Articles & Essays
               </h2>
               <div className="grid grid-cols-1 gap-4">
-                {articles.map((article, index) => (
+                {sortedArticles.map((article, index) => (
                     <Card
                       key={`article-${article.postSlug}-${index}`}
                       className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors animate-fade-in-up"
