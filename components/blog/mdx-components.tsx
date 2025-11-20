@@ -1,12 +1,13 @@
 import React from "react"
+import type { MDXComponents } from "mdx/types"
 import { Badge } from "@/components/ui/badge"
-
-type BaseProps = {
-  children: React.ReactNode
-}
 
 type ImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
   caption?: React.ReactNode
+}
+
+type BaseProps = {
+  children?: React.ReactNode
 }
 
 type VideoProps = React.VideoHTMLAttributes<HTMLVideoElement>
@@ -92,7 +93,7 @@ const CodeBlock = ({ children, className, metastring }: CodeBlockProps) => {
   )
 }
 
-const Paragraph = ({ children }: BaseProps) => {
+const Paragraph = ({ children, className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => {
   const childArray = React.Children.toArray(children)
   if (childArray.length === 1) {
     const child = childArray[0]
@@ -104,7 +105,14 @@ const Paragraph = ({ children }: BaseProps) => {
     }
   }
 
-  return <p className="leading-relaxed text-zinc-300 font-mono mb-4">{children}</p>
+  return (
+    <p
+      {...props}
+      className={`leading-relaxed text-zinc-300 font-mono mb-4 ${className ?? ''}`}
+    >
+      {children}
+    </p>
+  )
 }
 
 const MathInline = ({ latex }: MathProps) => (
@@ -113,12 +121,12 @@ const MathInline = ({ latex }: MathProps) => (
 )
 
 const MathBlock = ({ latex }: MathProps) => (
-  // FIX: The prop 'latex' already contains the KaTeX block delimiters, so just render it directly.
-  <span className="math-block block" suppressHydrationWarning>{latex}</span>
+  // Use display math delimiters so MathJax picks up the expression
+  <span className="math-block block" suppressHydrationWarning>{`\\[${latex}\\]`}</span>
 )
 
-export const mdxComponents = {
-  h2: ({ children, className, ...props }: HeadingProps) => (
+export const mdxComponents: MDXComponents = {
+  h2: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h2
       {...props}
       className={`text-2xl font-bold text-zinc-100 mt-8 mb-4 font-mono ${className ?? ''}`}
@@ -126,7 +134,7 @@ export const mdxComponents = {
       {children}
     </h2>
   ),
-  h3: ({ children, className, ...props }: HeadingProps) => (
+  h3: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h3
       {...props}
       className={`text-xl font-bold text-zinc-100 mt-6 mb-3 font-mono ${className ?? ''}`}
@@ -145,21 +153,40 @@ export const mdxComponents = {
     }
     return <code className="bg-zinc-900 px-2 py-1 rounded text-emerald-400 font-mono">{children}</code>
   },
-  pre: ({ children }: BaseProps) => {
+  pre: ({ children, className, ...props }: React.HTMLAttributes<HTMLPreElement>) => {
     if (React.isValidElement(children) && children.props) {
       return <CodeBlock {...children.props}>{children.props.children}</CodeBlock>
     }
-    return <pre className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 overflow-x-auto mb-4 font-mono text-sm">{children}</pre>
+    return (
+      <pre
+        {...props}
+        className={`bg-zinc-900 border border-zinc-800 rounded-lg p-4 overflow-x-auto mb-4 font-mono text-sm ${className ?? ''}`}
+      >
+        {children}
+      </pre>
+    )
   },
   CodeBlock,
-  ul: ({ children }: BaseProps) => (
-    <ul className="list-disc list-inside space-y-2 text-zinc-300 font-mono mb-4">{children}</ul>
+  ul: ({ children, className, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
+    <ul
+      {...props}
+      className={`list-disc list-inside space-y-2 text-zinc-300 font-mono mb-4 ${className ?? ''}`}
+    >
+      {children}
+    </ul>
   ),
-  ol: ({ children }: BaseProps) => (
-    <ol className="list-decimal list-inside space-y-2 text-zinc-300 font-mono mb-4">{children}</ol>
+  ol: ({ children, className, ...props }: React.HTMLAttributes<HTMLOListElement>) => (
+    <ol
+      {...props}
+      className={`list-decimal list-inside space-y-2 text-zinc-300 font-mono mb-4 ${className ?? ''}`}
+    >
+      {children}
+    </ol>
   ),
-  li: ({ children }: BaseProps) => (
-    <li className="font-mono">{children}</li>
+  li: ({ children, className, ...props }: React.LiHTMLAttributes<HTMLLIElement>) => (
+    <li {...props} className={`font-mono ${className ?? ''}`}>
+      {children}
+    </li>
   ),
   blockquote: ({ children }: BaseProps) => (
     <blockquote className="border-l-4 border-emerald-400 pl-4 py-2 text-zinc-400 italic font-mono my-4">

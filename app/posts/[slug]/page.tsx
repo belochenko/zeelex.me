@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import MathJaxLoader from '@/components/blog/mathjax-loader'
 import CodeHighlighter from '@/components/blog/code-highlighter'
+import MathJaxWrapper from '@/components/blog/math-jax-wrapper'
 import { notFound } from 'next/navigation'
 import { getPost } from '@/lib/posts'
 import { mdxComponents } from '@/components/blog/mdx-components'
@@ -139,7 +140,9 @@ export default async function PostPage({ params, searchParams }: PageProps) {
 
             {/* Main Content */}
             <section className="space-y-6 font-mono text-zinc-300 post-content">
-              <MDXContent components={mdxComponents} />
+              <MathJaxWrapper>
+                <MDXContent components={mdxComponents} />
+              </MathJaxWrapper>
             </section>
 
             <Separator className="bg-zinc-800 my-12" />
