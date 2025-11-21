@@ -57,10 +57,10 @@ export default async function PostPage({ params, searchParams }: PageProps) {
           Back to Home
         </Link>
 
-        <div className="flex flex-col gap-10 lg:flex-row">
+        <div className="flex flex-col gap-8 lg:flex-row-reverse lg:items-start">
           {hasHeadings && (
-            <aside className="hidden lg:block lg:w-72">
-              <div className="sticky top-24 border-l border-zinc-800 pl-4">
+            <aside className="hidden lg:block lg:w-56 xl:w-64">
+              <div className="sticky top-24 border-l border-zinc-800 pl-4 lg:ml-6 xl:ml-10">
                 <p className="text-xs uppercase tracking-wider text-zinc-500 font-mono">
                   Contents
                 </p>
@@ -83,7 +83,7 @@ export default async function PostPage({ params, searchParams }: PageProps) {
             </aside>
           )}
 
-          <div className="flex-1">
+          <div className="flex-1 max-w-3xl lg:max-w-4xl mx-auto w-full">
             {/* Header */}
             <header className="space-y-4 mb-8">
               <h1 className="text-3xl md:text-4xl font-bold leading-tight text-zinc-100 font-mono">{metadata.title}</h1>

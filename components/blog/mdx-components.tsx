@@ -200,4 +200,18 @@ export const mdxComponents: MDXComponents = {
   YouTube,
   MathInline,
   MathBlock,
+  a: ({ href, children, className, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
+    const isExternal = href?.startsWith('http')
+    return (
+      <a
+        href={href}
+        className={`text-emerald-400 underline decoration-emerald-400/60 underline-offset-4 hover:text-emerald-300 hover:decoration-emerald-300 transition-colors ${className ?? ''}`}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noreferrer' : undefined}
+        {...props}
+      >
+        {children}
+      </a>
+    )
+  },
 }

@@ -35,6 +35,7 @@ export default function Home() {
       postSlug: "hiring-is-broken",
       published: "2024-08-25",
       hasRead: true,
+      languages: ["EN"],
     },
     {
       title: "Static Systems Are a Myth: Even Your Cache Lives Its Own Life",
@@ -43,6 +44,7 @@ export default function Home() {
       postSlug: "stat-systems",
       published: "2025-06-14",
       hasRead: true,
+      languages: ["EN", "RU"],
     },
   ]
 
@@ -254,7 +256,7 @@ export default function Home() {
                     >
                       <CardContent className="p-4 space-y-3">
                         <div className="flex items-center justify-between text-xs text-zinc-500 font-mono">
-                          <span>Essay #{index + 1}</span>
+                          <span>Langs: {article.languages?.join(" / ") || "EN"}</span>
                           <time>{article.published}</time>
                         </div>
                         <h3 className="font-bold text-zinc-100 text-lg">{article.title}</h3>
