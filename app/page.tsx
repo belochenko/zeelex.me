@@ -1,15 +1,14 @@
-'use client'
-
-import { Github, Twitter, Linkedin, Mail, ExternalLink, Menu, X, Download } from 'lucide-react'
+import { Github, Linkedin, Mail, ExternalLink, Download } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { useState } from 'react'
 import Link from 'next/link'
 
+function Divider({ className = '' }: { className?: string }) {
+  return <div aria-hidden className={`h-px w-full bg-zinc-800 ${className}`} />
+}
+
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false)
 
   const socialLinks = [
     { icon: Github, label: "GitHub", url: "https://github.com/belochenko", color: "hover:text-white" },
@@ -23,6 +22,13 @@ export default function Home() {
       description: "Exploring 3D printing at home",
       href: "https://3d.zeelex.me",
       image: "/icon.jpg",
+      type: "external",
+    },
+    {
+      title: "[Archive] Elliscope",
+      description: "Autonomous hybrid airship systems or HAPS",
+      href: "https://elliscope.zeelex.me",
+      image: "/preview_elliscope.png",
       type: "external",
     },
   ]
@@ -39,7 +45,7 @@ export default function Home() {
     },
     {
       title: "Static Systems Are a Myth: Even Your Cache Lives Its Own Life",
-      summary: "To be added",
+      summary: "Digital systems constantly change, and modeling helps predict when they’ll become unstable.",
       tags: ["System design", "Stability Analysis", "Dynamic Systems", "Scaling by Design"],
       postSlug: "stat-systems",
       published: "2025-06-14",
@@ -90,7 +96,7 @@ export default function Home() {
             </div>
           </section>
 
-          <Separator className="bg-zinc-800 mb-8" />
+          <Divider className="mb-8" />
 
           {/* About Section */}
           <section className="space-y-4 mb-8">
@@ -124,7 +130,7 @@ export default function Home() {
             </div>
           </section>
 
-          <Separator className="bg-zinc-800 mb-8" />
+          <Divider className="mb-8" />
 
           {/* Skills Section */}
           <section className="space-y-4 mb-8">
@@ -144,7 +150,7 @@ export default function Home() {
             </div>
           </section>
 
-          <Separator className="bg-zinc-800 mb-8" />
+          <Divider className="mb-8" />
 
           {/* Connect Section */}
           <section className="space-y-4">

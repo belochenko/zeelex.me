@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "next build",
     "dev": "next dev",
     "lint": "eslint .",

@@ -1,0 +1,46 @@
+{
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  "id": "did:web:zeelex.me",
+  "verificationMethod": [
+    {
+      "id": "did:web:elliscope.zeelex.me#key-1",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:elliscope.zeelex.me",
+      "publicKeyJwk": {
+        "alg": "ES256",
+        "crv": "P-256",
+        "ext": true,
+        "key_ops": ["verify"],
+        "kty": "EC",
+        "x": "GiNa-tSIR4mnwX9z34g6wXrYu9qfcN5-EIqryXAYqLg",
+        "y": "2n5sx08fgrxjjdRtB9SsmV3WdWicjsJbbfm13Hr58SE",
+        "kid": "FhLHjqN6aUqhq5gx14HVg6FK9/7PuESgRO5igeMnMmI=",
+        "use": "sig"
+      }
+    }
+  ],
+  "authentication": ["did:web:zeelex.me#owner"],
+  "assertionMethod": ["did:web:zeelex.me#owner"],
+  "service": [
+    {
+      "id": "did:web:zeelex.me#website",
+      "type": "LinkedDomains",
+      "serviceEndpoint": "https://zeelex.me"
+    },
+    {
+      "id": "did:web:zeelex.me#3d",
+      "type": "LinkedDomains",
+      "serviceEndpoint": "https://3d.zeelex.me"
+    },
+    {
+      "id": "did:web:zeelex.me#elliscope",
+      "type": "LinkedDomains",
+      "serviceEndpoint": "https://elliscope.zeelex.me"
+    },  
+    {
+      "id": "did:web:zeelex.me#contact",
+      "type": "Contact",
+      "serviceEndpoint": "mailto:hi@zeelex.me"
+    }
+  ]
+}

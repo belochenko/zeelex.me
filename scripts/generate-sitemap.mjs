@@ -5,6 +5,7 @@ import matter from 'gray-matter'
 const SITE_URL = (process.env.SITE_URL || 'https://zeelex.me').replace(/\/$/, '')
 const POSTS_DIR = path.join(process.cwd(), 'content', 'posts')
 const OUTPUT_PATH = path.join(process.cwd(), 'public', 'sitemap.xml')
+const HOME_PAGE = path.join(process.cwd(), 'app', 'page.tsx')
 
 const STATIC_PATHS = ['/']
 const EXCLUDED_SLUGS = new Set(['mdx-showcase'])
@@ -66,6 +67,24 @@ async function readPostEntries() {
   return entries
 }
 
+async function readArtifactLinks() {
+  try {
+    const source = await fs.promises.readFile(HOME_PAGE, 'utf8')
+    const matches = source.match(/href:\s*["'`](https?:\/\/[^"'`]+)["'`]/g) || []
+    const links = matches
+      .map((match) => {
+        const urlMatch = match.match(/href:\s*["'`](https?:\/\/[^"'`]+)["'`]/)
+        return urlMatch ? urlMatch[1].replace(/\/$/, '') : null
+      })
+      .filter((href) => href && /^https?:\/\/([a-z0-9-]+)\.zeelex\.me/i.test(href))
+
+    return Array.from(new Set(links))
+  } catch (error) {
+    console.warn(`[sitemap] could not read artifact links: ${error.message}`)
+    return []
+  }
+}
+
 function buildUrlEntry(loc, lastmod) {
   const parts = [`  <url>`, `    <loc>${loc}</loc>`]
   if (lastmod) {
@@ -80,6 +99,11 @@ async function generate() {
 
   for (const route of STATIC_PATHS) {
     urls.push(buildUrlEntry(`${SITE_URL}${route}`, null))
+  }
+
+  const artifactLinks = await readArtifactLinks()
+  for (const link of artifactLinks) {
+    urls.push(buildUrlEntry(link, null))
   }
 
   const posts = await readPostEntries()
