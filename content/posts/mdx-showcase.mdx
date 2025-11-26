@@ -9,13 +9,17 @@ translationOf: mdx-showcase
 
 export const Highlight = ({ children, color }) => (
   <span
-    style={{
-      backgroundColor: color,
-      borderRadius: '2px',
-      color: '#fff',
-      padding: '0.2rem 0.35rem',
-      fontWeight: 600,
-    }}>
+    className="inline-flex items-center rounded border border-emerald-400/60 bg-emerald-400/30 px-2 py-1 text-emerald-50 font-semibold"
+    style={
+      color
+        ? {
+            backgroundColor: color,
+            borderColor: color,
+            color: '#fff',
+          }
+        : undefined
+    }
+  >
     {children}
   </span>
 );
