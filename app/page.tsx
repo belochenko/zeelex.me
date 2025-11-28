@@ -52,6 +52,15 @@ export default function Home() {
       hasRead: true,
       languages: ["EN", "RU"],
     },
+    {
+      title: "My Path in Mentorship: From Those Who Guided Me to Those I Guide",
+      summary: "A brief reflection on how the mentors who shaped my journey taught me what real guidance is — human, honest, and grounded in lived experience.",
+      tags: ["Mentorship", "Personal Growth", "Career Path", "Learning Journey", "Mentors Matter", "Self-reflection", "Professional Development"],
+      postSlug: "mentorship",
+      published: "2025-12-12",
+      hasRead: true,
+      languages: ["EN", "RU"],
+    },
   ]
 
   const sortedArticles = [...articles].sort(
