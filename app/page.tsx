@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, ExternalLink, Download } from 'lucide-react'
+import { Github, Linkedin, Mail, ExternalLink } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -67,11 +67,19 @@ export default function Home() {
     (a, b) => new Date(b.published).getTime() - new Date(a.published).getTime()
   )
 
+  const superpowerTeaser = [
+    { label: "Systems Thinking", accent: "bg-emerald-400/10 text-emerald-300 border-emerald-400/30" },
+    { label: "Math & Science", accent: "bg-fuchsia-400/10 text-fuchsia-200 border-fuchsia-400/30" },
+    { label: "Software Engineering", accent: "bg-cyan-400/10 text-cyan-200 border-cyan-400/30" },
+    { label: "Infrastructure & Reliability", accent: "bg-amber-400/10 text-amber-200 border-amber-400/30" },
+
+  ]
+
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
       <div className="flex flex-col lg:flex-row">
         {/* Left Column */}
-        <aside className="lg:w-1/3 xl:w-[30%] bg-zinc-950 border-b lg:border-b-0 lg:border-r border-zinc-800 p-8 flex flex-col animate-fade-in-up">
+        <aside className="lg:w-1/3 xl:w-[30%] bg-zinc-950 border-b lg:border-b-0 lg:border-r border-zinc-800 p-8 flex flex-col animate-fade-in-up lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto">
           {/* Header Section */}
           <section className="space-y-4 mb-8">
             <div className="flex items-center gap-4">
@@ -80,73 +88,66 @@ export default function Home() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold font-mono leading-tight">Alexey Belochenko</h1>
-                <p className="text-zinc-400 font-mono text-sm">Software & Data Engineer · Mathematical Modeling Focus</p>
+                <p className="text-zinc-400 font-mono text-sm">Software & Data Engineer · Mathematical Modeling & System Dynamics Focus</p>
               </div>
             </div>
           </section>
+          <section className="mb-4">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-100 text-xs font-mono">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden />
+              <span>Open for projects & fractional roles</span>
+            </div>
+          </section>
 
-          <Divider className="mb-8" />
+          <Divider className="mb-6" />
 
           {/* About Section */}
-          <section className="space-y-4 mb-8">
+          <section className="space-y-4 mb-6">
             <h2 className="text-lg font-bold font-mono flex items-center">
               <span className="text-emerald-400 mr-2">{">"}</span> What I Do
             </h2>
             <p className="text-zinc-300 text-sm leading-relaxed">
-              I make data pipelines go brrrrr 🏎️... but with style and substance. Think of me as someone who doesn't just fix things – I dissect them like a curious kid with a new toy, throw math at them until they reveal their secrets, experiment wildly, and then make them chef's kiss perfect. Fast code is cool, but elegant, reliable, fast code that I built by breaking it 47 times first? Now we're talking. Need to ship something unreasonable? Hit the button and let's talk.
+              I make data pipelines go brrrr 🚂... but with structure, math, and a bit of controlled chaos. I don't “trust experience” — I trust models. I look at systems like living organisms: flows, impulses, equilibrium points, feedback loops. Most engineers poke things until they work. I poke them as a dynamic system — analyze stability, find weak modes, throw math at them until they behave, then make the whole thing chef’s-kiss reliable. Fast code is nice. Stable code with predictable dynamics? Even better. Need something unreasonable, but scientifically engineered not to explode?{" "}
+              <span className="text-emerald-300 font-semibold underline decoration-emerald-500/60 underline-offset-4">
+                Hit the button.
+              </span>
             </p>
-            <div className="flex items-center gap-3 text-xs font-mono">
-              <a
-                href="mailto:hi@zeelex.me?subject=Let's%20build%20something"
-                className="inline-flex items-center justify-center gap-2 px-2.5 py-1.5 bg-emerald-400/10 border border-emerald-400/30 rounded text-emerald-400 hover:bg-emerald-400/20 transition-colors w-full max-w-[180px]"
-              >
-                <Mail size={14} />
-                Write Me
-              </a>
-              <div className="text-center text-[10px] uppercase tracking-[0.4em] text-zinc-500">
-                or
-              </div>
-              <button
-                type="button"
-                title="Not now, it is not ready"
-                aria-disabled="true"
-                disabled
-                className="inline-flex items-center justify-center gap-2 px-2.5 py-1.5 bg-zinc-900 border border-zinc-700 rounded text-zinc-500 cursor-not-allowed w-full max-w-[180px]"
-              >
-                <Download size={14} />
-                Get My Resume
-              </button>
-            </div>
-          </section>
-
-          <Divider className="mb-8" />
-
-          {/* Skills Section */}
-          <section className="space-y-4 mb-8">
-            <h2 className="text-lg font-bold font-mono flex items-center">
-              <span className="text-emerald-400 mr-2">{">"}</span> Superpowers
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {skills.map((skill) => (
+            <div className="flex flex-wrap items-center gap-2 text-sm text-zinc-400">
+              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+                Skills:
+              </span>
+              {superpowerTeaser.map((item) => (
                 <Badge
-                  key={skill}
+                  key={item.label}
                   variant="outline"
-                  className="bg-zinc-900 text-emerald-400 border-emerald-400/30 text-xs md:text-sm"
+                  className={`${item.accent} text-[11px] md:text-xs border text-left`}
                 >
-                  {skill}
+                  {item.label}
                 </Badge>
               ))}
             </div>
+            <div className="flex justify-center text-xs font-mono">
+              <Link href="/how-to-work">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-2 px-3 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20"
+                >
+                  <ExternalLink size={12} />
+                  Learn more about me
+                </Button>
+              </Link>
+            </div>
           </section>
 
-          <Divider className="mb-8" />
+          <Divider className="mb-6" />
 
           {/* Connect Section */}
           <section className="space-y-4">
             <h2 className="text-lg font-bold font-mono flex items-center">
               <span className="text-emerald-400 mr-2">{">"}</span> Connect
             </h2>
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {socialLinks.map((link) => {
                 const Icon = link.icon
                 return (
@@ -155,7 +156,7 @@ export default function Home() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-zinc-300 hover:text-emerald-400 transition-colors group"
+                    className="flex items-center justify-center gap-2 px-3 py-2 bg-zinc-900/70 border border-zinc-800 rounded text-zinc-300 hover:text-emerald-400 hover:border-emerald-400/30 transition-colors group"
                   >
                     <Icon size={18} />
                     <span className="font-mono text-sm">{link.label}</span>
@@ -165,6 +166,8 @@ export default function Home() {
               })}
             </div>
           </section>
+
+          {/* <Divider className="mb-8" /> */}
 
           <div className="mt-auto pt-8 hidden lg:block">
             <footer className="text-zinc-500 text-xs">
@@ -292,16 +295,3 @@ export default function Home() {
     </main>
   )
 }
-  const skills = [
-    "Data Engineering",
-    "Pipeline Architecture",
-    "Cloud Infrastructure",
-    "Performance Optimization",
-    "Monitoring & Observability",
-    "Mathematical Modeling",
-    "DevOps & MLOps",
-    "Engineering",
-    "Systems Design",
-    "Product Strategy",
-    "3D Printing",
-  ]

@@ -4,18 +4,22 @@ import type { Metadata, Viewport } from "next"
 import { Inter, JetBrains_Mono } from "next/font/google"
 
 const siteUrl = "https://zeelex.me"
-const siteName = "Alexey Belochenko | Systems and Engineering"
+const siteName = "Alexey Belochenko | Data & Systems Engineer"
 const siteDescription =
-  "Personal website of Alexey Belochenko, exploring systems, engineering, and data-first problem solving."
+  "Personal website of Alexey Belochenko. Science-first data & systems engineer focused on dynamic systems thinking, high-load pipelines, observability, and reliability. Explore essays, projects, and how to work together."
 const siteKeywords = [
   "Alexey Belochenko",
   "Software Engineer",
   "Data Engineer",
   "Systems Engineering",
   "Systems Design",
+  "Dynamic Systems Thinking",
+  "Stability Analysis",
   "Reliability Engineering",
   "Distributed Systems",
   "Pipeline Architecture",
+  "High-Load Systems",
+  "Monitoring and Observability",
   "DevOps",
   "MLOps",
   "Mathematical Modeling",
@@ -23,8 +27,10 @@ const siteKeywords = [
   "Observability",
   "Performance Optimization",
   "3D Printing",
+  "Product Strategy",
   "Technical Writing",
   "Engineering Leadership",
+  "How to Work With Me",
   "Emerging Tech",
   "Personal Blog",
 ]
@@ -98,36 +104,49 @@ export const viewport: Viewport = {
   themeColor: "#050505",
 }
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Alexey Belochenko",
-  url: siteUrl,
-  image: `${siteUrl}/icon.jpg`,
-  description: siteDescription,
-  jobTitle: "Software & Data Engineer",
-  sameAs: [
-    "https://github.com/belochenko",
-    "https://www.linkedin.com/in/zeelexes/",
-    "mailto:hi@zeelex.me",
-  ],
-  knowsAbout: siteKeywords,
-  worksFor: {
-    "@type": "Organization",
-    name: "Independent Engineering & Research",
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Alexey Belochenko",
     url: siteUrl,
+    image: `${siteUrl}/icon.jpg`,
+    description: siteDescription,
+    jobTitle: "Software & Data Engineer",
+    sameAs: [
+      "https://github.com/belochenko",
+      "https://www.linkedin.com/in/zeelexes/",
+      "mailto:hi@zeelex.me",
+    ],
+    knowsAbout: siteKeywords,
+    worksFor: {
+      "@type": "Organization",
+      name: "Independent Engineering & Research",
+      url: siteUrl,
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      email: "hi@zeelex.me",
+      contactType: "business",
+    },
+    mainEntityOfPage: {
+      "@type": "WebSite",
+      "@id": siteUrl,
+      name: siteName,
+    },
   },
-  contactPoint: {
-    "@type": "ContactPoint",
-    email: "hi@zeelex.me",
-    contactType: "business",
-  },
-  mainEntityOfPage: {
+  {
+    "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": siteUrl,
+    url: siteUrl,
     name: siteName,
+    description: siteDescription,
+    publisher: {
+      "@type": "Person",
+      name: "Alexey Belochenko",
+    },
   },
-}
+]
 
 export default function RootLayout({
   children,
