@@ -3,6 +3,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { compile } from '@mdx-js/mdx'
 import { visit } from 'unist-util-visit'
+import remarkGfm from 'remark-gfm'
 
 export interface PostMetadata {
   title: string
@@ -118,7 +119,7 @@ async function compileMdx(content: string) {
   const compiled = await compile(withMath, {
     outputFormat: 'function-body',
     development: false,
-    remarkPlugins: [headingPlugin],
+    remarkPlugins: [headingPlugin, remarkGfm],
   })
 
   return {

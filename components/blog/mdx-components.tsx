@@ -125,6 +125,62 @@ const MathBlock = ({ latex }: MathProps) => (
   <span className="math-block block" suppressHydrationWarning>{`\\[${latex}\\]`}</span>
 )
 
+const Table = ({ children, className, ...props }: React.TableHTMLAttributes<HTMLTableElement>) => (
+  <div className="my-6 overflow-x-auto rounded-lg border border-zinc-800">
+    <table
+      {...props}
+      className={`w-full text-sm text-left text-zinc-200 ${className ?? ''}`}
+    >
+      {children}
+    </table>
+  </div>
+)
+
+const THead = ({ children, className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) => (
+  <thead
+    {...props}
+    className={`bg-zinc-900/80 text-xs uppercase tracking-[0.16em] text-zinc-400 font-mono ${className ?? ''}`}
+  >
+    {children}
+  </thead>
+)
+
+const TBody = ({ children, className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) => (
+  <tbody
+    {...props}
+    className={`divide-y divide-zinc-800 ${className ?? ''}`}
+  >
+    {children}
+  </tbody>
+)
+
+const TRow = ({ children, className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) => (
+  <tr
+    {...props}
+    className={`hover:bg-zinc-900/50 transition-colors ${className ?? ''}`}
+  >
+    {children}
+  </tr>
+)
+
+const THeaderCell = ({ children, className, ...props }: React.ThHTMLAttributes<HTMLTableHeaderCellElement>) => (
+  <th
+    {...props}
+    className={`px-4 py-3 font-semibold text-zinc-100 border-b border-zinc-800 ${className ?? ''}`}
+  >
+    {children}
+  </th>
+)
+
+const TCell = ({ children, className, ...props }: React.TdHTMLAttributes<HTMLTableDataCellElement>) => (
+  <td
+    {...props}
+    className={`px-4 py-3 text-zinc-300 align-top ${className ?? ''}`}
+  >
+    {children}
+  </td>
+)
+
 export const mdxComponents: MDXComponents = {
   h2: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h2
@@ -143,15 +199,19 @@ export const mdxComponents: MDXComponents = {
     </h3>
   ),
   p: Paragraph,
-  code: ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  code: ({ children, className, ...props }: React.HTMLAttributes<HTMLElement>) => {
     if (className?.includes('language-')) {
       return (
-        <code className="hljs inline bg-transparent text-emerald-400 text-sm font-mono">
+        <code {...props} className="hljs inline bg-transparent text-emerald-400 text-sm font-mono">
           {children}
         </code>
       )
     }
-    return <code className="bg-zinc-900 px-2 py-1 rounded text-emerald-400 font-mono">{children}</code>
+    return (
+      <code {...props} className="bg-zinc-900 px-2 py-1 rounded text-emerald-400 font-mono">
+        {children}
+      </code>
+    )
   },
   pre: ({ children, className, ...props }: React.HTMLAttributes<HTMLPreElement>) => {
     if (React.isValidElement(children) && children.props) {
@@ -193,6 +253,12 @@ export const mdxComponents: MDXComponents = {
       {children}
     </blockquote>
   ),
+  table: Table,
+  thead: THead,
+  tbody: TBody,
+  tr: TRow,
+  th: THeaderCell,
+  td: TCell,
   Badge,
   img: MdxImage,
   Image: MdxImage,

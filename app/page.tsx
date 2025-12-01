@@ -57,7 +57,16 @@ export default function Home() {
       summary: "A brief reflection on how the mentors who shaped my journey taught me what real guidance is — human, honest, and grounded in lived experience.",
       tags: ["Mentorship", "Personal Growth", "Career Path", "Learning Journey", "Mentors Matter", "Self-reflection", "Professional Development"],
       postSlug: "mentorship",
-      published: "2025-12-12",
+      published: "2025-09-01",
+      hasRead: true,
+      languages: ["EN", "RU"],
+    },
+    {
+      title: "dsadsa",
+      summary: "TODO",
+      tags: ["Mentorship", "Personal Growth", "Career Path", "Learning Journey", "Mentors Matter", "Self-reflection", "Professional Development"],
+      postSlug: "how-to-explain",
+      published: "2025-09-29",
       hasRead: true,
       languages: ["EN", "RU"],
     },
@@ -107,7 +116,7 @@ export default function Home() {
               <span className="text-emerald-400 mr-2">{">"}</span> What I Do
             </h2>
             <p className="text-zinc-300 text-sm leading-relaxed">
-              I make data pipelines go brrrr 🚂... but with structure, math, and a bit of controlled chaos. I don't “trust experience” — I trust models. I look at systems like living organisms: flows, impulses, equilibrium points, feedback loops. Most engineers poke things until they work. I poke them as a dynamic system — analyze stability, find weak modes, throw math at them until they behave, then make the whole thing chef’s-kiss reliable. Fast code is nice. Stable code with predictable dynamics? Even better. Need something unreasonable, but scientifically engineered not to explode?{" "}
+            I make data pipelines go brrrr 🚂 — but with structure, math, and controlled chaos. I don’t trust “experience” — I trust models. Systems behave like living organisms: flows, impulses, feedback loops. Most engineers poke until it works. I analyze stability, find weak modes, and make the whole thing chef’s-kiss reliable. Need something unreasonable, but scientifically engineered not to explode?{" "}
               <span className="text-emerald-300 font-semibold underline decoration-emerald-500/60 underline-offset-4">
                 Hit the button.
               </span>
