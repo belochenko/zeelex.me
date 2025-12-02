@@ -62,9 +62,9 @@ export default function Home() {
       languages: ["EN", "RU"],
     },
     {
-      title: "dsadsa",
-      summary: "TODO",
-      tags: ["Mentorship", "Personal Growth", "Career Path", "Learning Journey", "Mentors Matter", "Self-reflection", "Professional Development"],
+      title: "A Guide to Being Understood",
+      summary: "You think your fancy terminology makes you look smart? top throwing locked suitcases with words at people and learn how to actually speak human before you lose your audience entirely.",
+      tags: ["Communication", "Career Path", "Self-reflection", "Professional Development"],
       postSlug: "how-to-explain",
       published: "2025-09-29",
       hasRead: true,
@@ -122,10 +122,10 @@ export default function Home() {
               </span>
             </p>
             <div className="flex flex-wrap items-center gap-2 text-sm text-zinc-400">
-              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+              {/* <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-500">
                 Skills:
-              </span>
-              {superpowerTeaser.map((item) => (
+              </span> */}
+              {/* {superpowerTeaser.map((item) => (
                 <Badge
                   key={item.label}
                   variant="outline"
@@ -133,17 +133,17 @@ export default function Home() {
                 >
                   {item.label}
                 </Badge>
-              ))}
+              ))} */}
             </div>
             <div className="flex justify-center text-xs font-mono">
-              <Link href="/how-to-work">
+              <Link href="/profile">
                 <Button
                   size="sm"
                   variant="outline"
                   className="gap-2 px-3 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20"
                 >
                   <ExternalLink size={12} />
-                  Learn more about me
+                  Learn About Me
                 </Button>
               </Link>
             </div>

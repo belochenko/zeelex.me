@@ -4,6 +4,9 @@
     <loc>https://zeelex.me/</loc>
   </url>
   <url>
+    <loc>https://zeelex.me/profile</loc>
+  </url>
+  <url>
     <loc>https://3d.zeelex.me</loc>
   </url>
   <url>
@@ -12,6 +15,22 @@
   <url>
     <loc>https://zeelex.me/posts/hiring-is-broken</loc>
     <lastmod>2024-08-25T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://zeelex.me/posts/how-to-explain</loc>
+    <lastmod>2025-09-29T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://zeelex.me/posts/how-to-explain?lang=ru</loc>
+    <lastmod>2025-09-29T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://zeelex.me/posts/mentorship</loc>
+    <lastmod>2025-09-01T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://zeelex.me/posts/mentorship?lang=ru</loc>
+    <lastmod>2025-09-01T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://zeelex.me/posts/stat-systems</loc>

@@ -30,7 +30,7 @@ const siteKeywords = [
   "Product Strategy",
   "Technical Writing",
   "Engineering Leadership",
-  "How to Work With Me",
+  "How I work",
   "Emerging Tech",
   "Personal Blog",
 ]
