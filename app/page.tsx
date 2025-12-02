@@ -116,10 +116,7 @@ export default function Home() {
               <span className="text-emerald-400 mr-2">{">"}</span> What I Do
             </h2>
             <p className="text-zinc-300 text-sm leading-relaxed">
-            I make data pipelines go brrrr 🚂 — but with structure, math, and controlled chaos. I don’t trust “experience” — I trust models. Systems behave like living organisms: flows, impulses, feedback loops. Most engineers poke until it works. I analyze stability, find weak modes, and make the whole thing chef’s-kiss reliable. Need something unreasonable, but scientifically engineered not to explode?{" "}
-              <span className="text-emerald-300 font-semibold underline decoration-emerald-500/60 underline-offset-4">
-                Hit the button.
-              </span>
+              I make data pipelines go brrrr 🚂 — but with structure, math, and controlled chaos. I don’t trust “experience” — I trust models. Systems behave like living organisms: flows, impulses, feedback loops. Most engineers poke until it works. I analyze stability, find weak modes, and make the whole thing chef’s-kiss reliable. Need something unreasonable, but scientifically engineered not to explode? Hit the button.
             </p>
             <div className="flex flex-wrap items-center gap-2 text-sm text-zinc-400">
               {/* <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-500">
@@ -256,46 +253,46 @@ export default function Home() {
               </h2>
               <div className="grid grid-cols-1 gap-4">
                 {sortedArticles.map((article, index) => (
-                    <Card
-                      key={`article-${article.postSlug}-${index}`}
-                      className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors animate-fade-in-up"
-                      style={{ animationDelay: `${0.4 + (index + 1) * 0.1}s` }}
-                    >
-                      <CardContent className="p-4 space-y-3">
-                        <div className="flex items-center justify-between text-xs text-zinc-500 font-mono">
-                          <span>Langs: {article.languages?.join(" / ") || "EN"}</span>
-                          <time>{article.published}</time>
+                  <Card
+                    key={`article-${article.postSlug}-${index}`}
+                    className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors animate-fade-in-up"
+                    style={{ animationDelay: `${0.4 + (index + 1) * 0.1}s` }}
+                  >
+                    <CardContent className="p-4 space-y-3">
+                      <div className="flex items-center justify-between text-xs text-zinc-500 font-mono">
+                        <span>Langs: {article.languages?.join(" / ") || "EN"}</span>
+                        <time>{article.published}</time>
+                      </div>
+                      <h3 className="font-bold text-zinc-100 text-lg">{article.title}</h3>
+                      <p className="text-zinc-400 text-sm line-clamp-3">
+                        {article.summary}
+                      </p>
+                      {article.tags && (
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          {article.tags.map((tag, tagIndex) => (
+                            <Badge
+                              key={`article-tag-${tag || 'tag'}-${tagIndex}`}
+                              variant="outline"
+                              className="bg-zinc-900 text-emerald-400 border-emerald-400/30 text-xs"
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
                         </div>
-                        <h3 className="font-bold text-zinc-100 text-lg">{article.title}</h3>
-                        <p className="text-zinc-400 text-sm line-clamp-3">
-                          {article.summary}
-                        </p>
-                        {article.tags && (
-                          <div className="flex flex-wrap gap-2 pt-2">
-                            {article.tags.map((tag, tagIndex) => (
-                              <Badge
-                                key={`article-tag-${tag || 'tag'}-${tagIndex}`}
-                                variant="outline"
-                                className="bg-zinc-900 text-emerald-400 border-emerald-400/30 text-xs"
-                              >
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        )}
-                        <Link href={`/posts/${article.postSlug}`}>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full gap-1 mt-2 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 font-mono"
-                          >
-                            <ExternalLink size={14} />
-                            Read Article
-                          </Button>
-                        </Link>
-                      </CardContent>
-                    </Card>
-                  ))}
+                      )}
+                      <Link href={`/posts/${article.postSlug}`}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full gap-1 mt-2 bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/20 font-mono"
+                        >
+                          <ExternalLink size={14} />
+                          Read Article
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </div>
           </div>
