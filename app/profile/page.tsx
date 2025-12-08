@@ -8,99 +8,94 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 export default function Profile() {
   const engagementModes = [
     {
-      title: "Architecture & Leadership",
-      detail: "Strategic direction, system modeling, and roadmap honesty.",
+      title: "Strategic Architecture",
+      detail: "High-level system modeling, technical due diligence, and no-nonsense roadmaps.",
       icon: Compass,
     },
     {
-      title: "Hands-On Engineering",
-      detail: "Building pipelines, instrumentation, and incident drills.",
+      title: "High-Performance Engineering",
+      detail: "Production-grade pipelines, vectorization, and merciless incident drills.",
       icon: Hammer,
     },
     {
-      title: "R&D / Incubation",
-      detail: "Prototyping hard problems and de-risking with math.",
+      title: "Scientific R&D",
+      detail: "De-risking complex domains through mathematical modeling and rapid prototyping.",
       icon: FlaskConical,
     },
   ]
 
   const declarationOfStandards = [
     {
-      title: "Growth & Exploration",
-      desc: "I actively seek new technical challenges, exploring new domains through controlled experimentation to manage client risk and ensure accountability."
+      title: "Calculated Risk",
+      desc: "Innovation requires control. I explore new domains through rigorous experimentation, ensuring client stability while pushing technical boundaries."
     },
     {
-      title: "Scientific Rigor",
-      desc: "I leverage my applied mathematics background to validate every hypothesis using structured models and objective performance metrics, driving innovation."
+      title: "Data Over Intuition",
+      desc: "Every hypothesis is validated using applied mathematics and objective performance metrics. No guessing - only proofs."
     },
     {
-      title: "Hyper-Scale Architecture",
-      desc: "All solutions are fundamentally designed for long-term fault tolerance and scalability, ensuring today's work supports tomorrow's growth."
+      title: "Future-Proof Architecture",
+      desc: "Solutions are designed for hyper-scale from day one. I build systems that survive real-world load and support tomorrow's growth."
     },
     {
-      title: "Performance Multipliers",
-      desc: "I deliver measurable breakthroughs through optimization and custom libraries, achieving faster task execution."
+      title: "Performance by Design",
+      desc: "Speed is a feature. I deliver measurable breakthroughs through algorithmic optimization and custom vectorization libraries."
     },
     {
-      title: "Debt Elimination",
-      desc: "I systematically drive technical transformation to eliminate technical debt and simplify workflows, unlocking resources for rapid innovation."
+      title: "Technical Debt Elimination",
+      desc: "I systematically dismantle legacy inefficiencies. Clean code and simplified workflows unlock resources for rapid innovation."
     },
     {
-      title: "Mentorship and Knowledge Expansion",
-      desc: "My commitment extends beyond self-improvement; I actively guide others, having trained over 150 developers, to ensure collective growth and competence."
+      title: "Force Multiplication",
+      desc: "I don't just write code; I elevate teams. Having trained 150+ developers, I enforce standards that ensure collective competence."
     }
   ]
 
   const quickFacts = [
     { label: "Based in", value: "Barcelona, Spain", icon: MapPin },
-    { label: "Time zone", value: "CET, UTC+1 (US/EU overlap)", icon: Clock3 },
-    { label: "Formats", value: "Fractional, project, advisory", icon: Laptop },
+    { label: "Availability", value: "CET / UTC+1 (US/EU overlap)", icon: Clock3 },
+    { label: "Engagement", value: "Fractional Lead, R&D Consultant", icon: Laptop },
   ]
 
   const careerSnapshot = [
-    "7+ years building and running data platforms, observability, and reliability layers under constant change.",
-    "Orchestrated critical Python upgrades and built custom vectorization libraries, resulting in 30% performance gains and a 40% reduction in compute time across complex services.",
-    "Architected and implemented an Apache Airflow-based data pipeline, immediately reducing clinical trial data processing time by 67% (from 2 hours to 40 minutes).",
-    "Led comprehensive code refactoring and implemented robust data validation/error handling, leading to a 66% reduction in system errors and enabling early production deployment.",
-    "Partnered with founders and Developers to translate messy constraints into architectures that survive real-world load.",
-    "Actively committed to knowledge sharing, serving as a Technical Mentor and training 153 developers, thereby contributing to improved team productivity and sustained growth."
+    "7+ years engineering mission-critical systems, bridging the gap between Scientific Computing and Enterprise Infrastructure.",
+    "Founder experience leading R&D for autonomous aerial systems (Elliscope), integrating hardware sensors with Python telemetry.",
+    "Optimized wind energy simulation pipelines on GPU clusters (GE Vernova), achieving 5-10x acceleration in task execution.",
+    "Architected Airflow data pipelines for clinical trials (Trialing Health), slashing processing time by 67% and enabling real-time analytics.",
+    "Orchestrated cloud migrations and disaster recovery plans for Fintech clients, reducing operational costs by up to 25%.",
+    "Mentored 150+ engineers and introduced scientific rigor to development processes, transforming theoretical teams into production units."
   ]
 
   const coreStacks = [
     {
-      category: "Programming Languages",
-      tech: ["Python", "Rust", "C++", "Golang"],
-      detail: "Orchestration, API dev (FastAPI, Django), Low-level optimization"
+      category: "Languages & Core",
+      tech: ["Python (Scientific Stack)", "Rust", "C++", "SQL"],
+      detail: "High-performance computing, Vectorization, Low-level optimization"
     },
     {
-      category: "Cloud Computing (AWS Focus)",
-      tech: ["S3", "Lambda", "VPC", "EC2", "RDS", "ELB", "Glue"],
-      detail: "Infra migration, serverless systems, secure processing"
+      category: "Cloud & Infrastructure",
+      tech: ["AWS (S3, Lambda, EKS)", "Kubernetes", "Terraform", "Helm"],
+      detail: "Serverless architecture, IaC, Multi-region deployment"
     },
     {
-      category: "Data & Distributed Systems",
-      tech: ["Airflow", "Kafka", "Spark", "Databricks", "DBT", "Pandas", "Celery"],
-      detail: "Pipeline architecture, DAG refactoring, scalable data lakes"
+      category: "Data Engineering",
+      tech: ["Apache Airflow", "Kafka", "Celery", "Spark", "DBT"],
+      detail: "Distributed pipelines, DAG optimization, Real-time streaming"
     },
     {
-      category: "DevOps / MLOps & Containerization",
-      tech: ["Docker", "Kubernetes", "GitLab CI/CD", "Terraform", "MLFlow"],
-      detail: "K8s microservices, CI/CD pipelines, IaC"
+      category: "MLOps & AI",
+      tech: ["MLFlow", "PyTorch", "Docker", "GitLab CI/CD"],
+      detail: "Model serving, Automated training workflows, Containerization"
     },
     {
-      category: "Reliability / Observability",
-      tech: ["Grafana", "Loki", "Promtail", "Atlassian Suite"],
-      detail: "Full-stack monitoring, performance tracking, incident mgmt"
+      category: "Observability",
+      tech: ["Grafana", "Prometheus", "Loki", "Promtail"],
+      detail: "Full-stack monitoring, Anomaly detection, Incident management"
     },
     {
-      category: "Databases & Warehousing",
-      tech: ["PostgreSQL", "MongoDB", "MySQL", "Redis", "Apache Doris", "Apache Druid"],
-      detail: "Advanced data modeling, high-performance storage"
-    },
-    {
-      category: "Data Formats & Structures",
-      tech: ["Iceberg", "Parquet", "Delta", "Minio"],
-      detail: "Modern lakehouse formats, object storage"
+      category: "Data Storage",
+      tech: ["PostgreSQL", "ClickHouse", "Redis", "Data Lakes (Iceberg/Delta)"],
+      detail: "Advanced modeling, OLAP/OLTP optimization, High-throughput storage"
     }
   ]
 
@@ -148,8 +143,8 @@ export default function Profile() {
               </div>
 
               <p className="text-zinc-200 text-base md:text-lg leading-relaxed max-w-2xl">
-                I model dynamic systems, build reliable data platforms, and keep teams honest about failure modes.
-                My goal: stabilize what’s noisy, make it observable, and ship the smallest proven step forward.
+              I model dynamic systems, build resilient platforms, and keep teams honest about failure modes. I don’t build in a vacuum: I anchor scientific rigor in practical engineering to ensure theory withstands the friction of real-world production. 
+              My mandate: stabilize the noise, enforce observability, and ship the smallest proven step forward.
               </p>
 
               <div className="flex flex-wrap gap-3 pt-2">
