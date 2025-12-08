@@ -153,7 +153,7 @@ export default function Profile() {
                     Send me a brief
                   </Button>
                 </Link>
-                <Link href="/cv.pdf" target="_blank" className="inline-flex">
+                <Link href="/Alexey-Belochenko-CV-END-2025.pdf" target="_blank" className="inline-flex">
                   <Button variant="outline" className="gap-2 bg-zinc-900 border-zinc-700 text-zinc-100 hover:border-emerald-400/40 h-11">
                     <ExternalLink size={14} />
                     Download CV
