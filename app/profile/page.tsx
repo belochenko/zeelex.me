@@ -52,9 +52,9 @@ export default function Profile() {
   ]
 
   const quickFacts = [
-    { label: "Based in", value: "Barcelona, Spain", icon: MapPin },
-    { label: "Availability", value: "CET / UTC+1 (US/EU overlap)", icon: Clock3 },
-    { label: "Engagement", value: "Fractional Lead, R&D Consultant", icon: Laptop },
+    { label: "Based in", value: "Calgary, AB, Canada", icon: MapPin },
+    { label: "Availability", value: "MST / UTC-7", icon: Clock3 },
+    { label: "Engagement", value: "Fractional Lead, R&D Consultant, Technical Mentor", icon: Laptop },
   ]
 
   const careerSnapshot = [
@@ -130,7 +130,7 @@ export default function Profile() {
                 </div>
                 <div className="space-y-3">
                   <h1 className="text-4xl md:text-5xl font-bold font-mono leading-tight">Alexey Belochenko</h1>
-                  <p className="text-zinc-400 text-lg">Systems & Data Engineer</p>
+                  <p className="text-zinc-400 text-lg">Systems & Data Engineer | Software Engineer</p>
                   <div className="flex flex-wrap gap-2 text-sm text-zinc-500 font-mono">
                     {quickFacts.map(({ label, value, icon: Icon }) => (
                       <div key={label} className="flex items-center gap-1.5 bg-zinc-900/50 px-2 py-1 rounded border border-zinc-800">
@@ -153,7 +153,7 @@ export default function Profile() {
                     Send me a brief
                   </Button>
                 </Link>
-                <Link href="/Alexey-Belochenko-CV-END-2025.pdf" target="_blank" className="inline-flex">
+                <Link href="/Alexey-Belochenko-CV-START-2026.pdf" target="_blank" className="inline-flex">
                   <Button variant="outline" className="gap-2 bg-zinc-900 border-zinc-700 text-zinc-100 hover:border-emerald-400/40 h-11">
                     <ExternalLink size={14} />
                     Download CV
