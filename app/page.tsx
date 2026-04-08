@@ -61,6 +61,15 @@ const projects = [
     detail: "R&D project for a hybrid autonomous airship (High Altitude Platform System). Integrated hardware sensor arrays with Python-based telemetry and real-time flight control logic.",
     href: "https://elliscope.zeelex.me",
   },
+  {
+    title: "Interactive Math & Physics Lab",
+    oneLiner: "Native React-rendered simulation logic and mathematical exploration.",
+    tags: ["Physics", "MDX", "React", "Interactive"],
+    accentColor: "var(--accent-emerald)",
+    status: "live",
+    detail: "A technical playground demonstrating complex physical systems. Features raw SVG functional equations and pure React boundary logic to create real-time simulations directly inside articles.",
+    href: "/lab",
+  },
 ]
 
 const articles = [
