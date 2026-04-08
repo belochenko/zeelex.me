@@ -24,19 +24,25 @@ type MathProps = {
 type HeadingProps = React.HTMLAttributes<HTMLHeadingElement>
 
 const MdxImage = ({ caption, ...props }: ImageProps) => (
-  <figure className="my-6">
+  <figure className="my-8">
     <img
       {...props}
       loading="lazy"
-      className={`w-full rounded-lg border border-zinc-800 bg-zinc-900 object-cover ${props.className ?? ''}`}
+      className={`w-full rounded-[var(--r-tile)] border object-cover shadow-xl ${props.className ?? ''}`}
+      style={{ borderColor: "var(--bg-border)", background: "var(--bg-elevated)" }}
     />
-    {caption && <figcaption className="mt-2 text-center text-xs text-zinc-500">{caption}</figcaption>}
+    {caption && (
+      <figcaption className="mt-3 text-center text-sm" style={{ color: "var(--tx-muted)" }}>
+        {caption}
+      </figcaption>
+    )}
   </figure>
 )
 
 const Video = ({ className, ...props }: VideoProps) => (
   <video
-    className={`w-full rounded-lg border border-zinc-800 bg-black ${className ?? ''}`}
+    className={`w-full rounded-[var(--r-tile)] border shadow-xl ${className ?? ''}`}
+    style={{ borderColor: "var(--bg-border)", background: "var(--bg-base)" }}
     controls
     playsInline
     {...props}
@@ -44,7 +50,10 @@ const Video = ({ className, ...props }: VideoProps) => (
 )
 
 const YouTube = ({ id, title }: YouTubeProps) => (
-  <div className="relative my-6 aspect-video w-full overflow-hidden rounded-lg border border-zinc-800">
+  <div 
+    className="relative my-8 aspect-video w-full overflow-hidden rounded-[var(--r-tile)] border shadow-xl"
+    style={{ borderColor: "var(--bg-border)" }}
+  >
     <iframe
       className="absolute inset-0 h-full w-full"
       src={`https://www.youtube.com/embed/${id}`}
@@ -81,12 +90,21 @@ const CodeBlock = ({ children, className, metastring }: CodeBlockProps) => {
   const language = className?.replace('language-', '') || meta.lang || 'text'
 
   return (
-    <div className="mb-6 overflow-hidden rounded-lg border border-zinc-800">
-      <div className="flex items-center justify-between border-b border-zinc-800 bg-zinc-900/80 px-4 py-2 text-xs font-mono uppercase tracking-wider text-zinc-500">
+    <div 
+      className="mb-8 overflow-hidden rounded-[var(--r-tile)] border backdrop-blur-sm"
+      style={{ borderColor: "var(--bg-border-dim)", background: "var(--bg-surface)" }}
+    >
+      <div 
+        className="flex items-center justify-between border-b px-4 py-2.5 text-xs font-mono uppercase tracking-wider"
+        style={{ borderColor: "var(--bg-border-dim)", background: "var(--bg-elevated)", color: "var(--tx-muted)" }}
+      >
         <span>{meta.title ?? 'Code Snippet'}</span>
-        <span className="text-emerald-400">{language}</span>
+        <span style={{ color: "var(--tx-accent)" }}>{language}</span>
       </div>
-      <pre className="bg-zinc-950/80 px-4 py-4 text-sm font-mono overflow-auto">
+      <pre 
+        className="px-5 py-4 text-[13px] md:text-sm font-mono overflow-auto"
+        style={{ background: "transparent" }}
+      >
         <code className={`hljs language-${language}`}>{children}</code>
       </pre>
     </div>
@@ -108,7 +126,8 @@ const Paragraph = ({ children, className, ...props }: React.HTMLAttributes<HTMLP
   return (
     <p
       {...props}
-      className={`leading-relaxed text-zinc-300 font-mono mb-4 ${className ?? ''}`}
+      className={`mb-[1.25em] text-[16px] md:text-[17px] leading-[1.75] ${className ?? ''}`}
+      style={{ color: "#B0B4BE" }}
     >
       {children}
     </p>
@@ -126,10 +145,14 @@ const MathBlock = ({ latex }: MathProps) => (
 )
 
 const Table = ({ children, className, ...props }: React.TableHTMLAttributes<HTMLTableElement>) => (
-  <div className="my-6 overflow-x-auto rounded-lg border border-zinc-800">
+  <div 
+    className="my-8 overflow-x-auto rounded-[var(--r-tile)] border"
+    style={{ borderColor: "var(--bg-border)", background: "var(--bg-surface)" }}
+  >
     <table
       {...props}
-      className={`w-full text-sm text-left text-zinc-200 ${className ?? ''}`}
+      className={`w-full text-[13px] md:text-sm text-left ${className ?? ''}`}
+      style={{ color: "var(--tx-primary)" }}
     >
       {children}
     </table>
@@ -139,7 +162,8 @@ const Table = ({ children, className, ...props }: React.TableHTMLAttributes<HTML
 const THead = ({ children, className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) => (
   <thead
     {...props}
-    className={`bg-zinc-900/80 text-xs uppercase tracking-[0.16em] text-zinc-400 font-mono ${className ?? ''}`}
+    className={`text-xs uppercase tracking-widest font-mono ${className ?? ''}`}
+    style={{ background: "var(--bg-elevated)", color: "var(--tx-muted)" }}
   >
     {children}
   </thead>
@@ -148,7 +172,7 @@ const THead = ({ children, className, ...props }: React.HTMLAttributes<HTMLTable
 const TBody = ({ children, className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) => (
   <tbody
     {...props}
-    className={`divide-y divide-zinc-800 ${className ?? ''}`}
+    className={`divide-y ${className ?? ''}`}
   >
     {children}
   </tbody>
@@ -157,7 +181,7 @@ const TBody = ({ children, className, ...props }: React.HTMLAttributes<HTMLTable
 const TRow = ({ children, className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) => (
   <tr
     {...props}
-    className={`hover:bg-zinc-900/50 transition-colors ${className ?? ''}`}
+    className={`transition-colors hover:brightness-125 ${className ?? ''}`}
   >
     {children}
   </tr>
@@ -166,7 +190,8 @@ const TRow = ({ children, className, ...props }: React.HTMLAttributes<HTMLTableR
 const THeaderCell = ({ children, className, ...props }: React.ThHTMLAttributes<HTMLTableHeaderCellElement>) => (
   <th
     {...props}
-    className={`px-4 py-3 font-semibold text-zinc-100 border-b border-zinc-800 ${className ?? ''}`}
+    className={`px-5 py-3.5 font-semibold border-b ${className ?? ''}`}
+    style={{ color: "var(--tx-primary)", borderColor: "var(--bg-border)" }}
   >
     {children}
   </th>
@@ -175,7 +200,8 @@ const THeaderCell = ({ children, className, ...props }: React.ThHTMLAttributes<H
 const TCell = ({ children, className, ...props }: React.TdHTMLAttributes<HTMLTableDataCellElement>) => (
   <td
     {...props}
-    className={`px-4 py-3 text-zinc-300 align-top ${className ?? ''}`}
+    className={`px-5 py-3 align-top ${className ?? ''}`}
+    style={{ color: "var(--tx-secondary)" }}
   >
     {children}
   </td>
@@ -183,17 +209,27 @@ const TCell = ({ children, className, ...props }: React.TdHTMLAttributes<HTMLTab
 
 export const mdxComponents: MDXComponents = {
   h2: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h2
-      {...props}
-      className={`text-2xl font-bold text-zinc-100 mt-8 mb-4 font-mono ${className ?? ''}`}
-    >
-      {children}
-    </h2>
+    <div className={`mt-[56px] mb-[20px] scroll-mt-24 ${className ?? ''}`}>
+      <div 
+        className="text-xs font-mono tracking-widest uppercase mb-1.5" 
+        style={{ color: "var(--tx-accent)" }}
+      >
+        {`//`} {typeof children === 'string' ? children : 'Section'}
+      </div>
+      <h2
+        {...props}
+        className="text-2xl md:text-[28px] font-semibold tracking-tight leading-tight"
+        style={{ color: "var(--tx-primary)" }}
+      >
+        {children}
+      </h2>
+    </div>
   ),
   h3: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h3
       {...props}
-      className={`text-xl font-bold text-zinc-100 mt-6 mb-3 font-mono ${className ?? ''}`}
+      className={`text-xl md:text-2xl font-semibold tracking-tight mt-[40px] mb-[16px] scroll-mt-24 ${className ?? ''}`}
+      style={{ color: "var(--tx-primary)" }}
     >
       {children}
     </h3>
@@ -202,13 +238,17 @@ export const mdxComponents: MDXComponents = {
   code: ({ children, className, ...props }: React.HTMLAttributes<HTMLElement>) => {
     if (className?.includes('language-')) {
       return (
-        <code {...props} className="hljs inline bg-transparent text-emerald-400 text-sm font-mono">
+        <code {...props} className="hljs inline bg-transparent text-sm font-mono" style={{ color: "var(--tx-accent)" }}>
           {children}
         </code>
       )
     }
     return (
-      <code {...props} className="bg-zinc-900 px-2 py-1 rounded text-emerald-400 font-mono">
+      <code 
+        {...props} 
+        className="px-1.5 py-0.5 rounded-md text-[13px] md:text-sm font-mono tracking-tight"
+        style={{ background: "var(--bg-elevated)", border: "1px solid var(--bg-border-dim)", color: "var(--tx-accent)" }}
+      >
         {children}
       </code>
     )
@@ -220,7 +260,8 @@ export const mdxComponents: MDXComponents = {
     return (
       <pre
         {...props}
-        className={`bg-zinc-900 border border-zinc-800 rounded-lg p-4 overflow-x-auto mb-4 font-mono text-sm ${className ?? ''}`}
+        className={`rounded-[var(--r-tile)] border p-4 overflow-x-auto mb-6 font-mono text-[13px] md:text-sm ${className ?? ''}`}
+        style={{ background: "var(--bg-surface)", borderColor: "var(--bg-border)" }}
       >
         {children}
       </pre>
@@ -230,7 +271,8 @@ export const mdxComponents: MDXComponents = {
   ul: ({ children, className, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
     <ul
       {...props}
-      className={`list-disc list-inside space-y-2 text-zinc-300 font-mono mb-4 ${className ?? ''}`}
+      className={`list-disc list-outside ml-6 space-y-[0.75em] mb-[1.25em] text-[16px] md:text-[17px] leading-[1.75] ${className ?? ''}`}
+      style={{ color: "#B0B4BE" }}
     >
       {children}
     </ul>
@@ -238,18 +280,26 @@ export const mdxComponents: MDXComponents = {
   ol: ({ children, className, ...props }: React.HTMLAttributes<HTMLOListElement>) => (
     <ol
       {...props}
-      className={`list-decimal list-inside space-y-2 text-zinc-300 font-mono mb-4 ${className ?? ''}`}
+      className={`list-decimal list-outside ml-6 space-y-[0.75em] mb-[1.25em] text-[16px] md:text-[17px] leading-[1.75] ${className ?? ''}`}
+      style={{ color: "#B0B4BE" }}
     >
       {children}
     </ol>
   ),
   li: ({ children, className, ...props }: React.LiHTMLAttributes<HTMLLIElement>) => (
-    <li {...props} className={`font-mono ${className ?? ''}`}>
+    <li {...props} className={className ?? ''}>
       {children}
     </li>
   ),
   blockquote: ({ children }: BaseProps) => (
-    <blockquote className="border-l-4 border-emerald-400 pl-4 py-2 text-zinc-400 italic font-mono my-4">
+    <blockquote 
+      className="border-l-4 pl-5 py-1 italic my-8 bg-gradient-to-r rounded-r-xl"
+      style={{ 
+        borderColor: "var(--tx-accent)", 
+        color: "var(--tx-muted)", 
+        backgroundImage: "linear-gradient(to right, var(--bg-surface), transparent)"
+      }}
+    >
       {children}
     </blockquote>
   ),
@@ -271,7 +321,8 @@ export const mdxComponents: MDXComponents = {
     return (
       <a
         href={href}
-        className={`text-emerald-400 underline decoration-emerald-400/60 underline-offset-4 hover:text-emerald-300 hover:decoration-emerald-300 transition-colors ${className ?? ''}`}
+        className={`underline underline-offset-4 transition-colors hover:brightness-125 ${className ?? ''}`}
+        style={{ color: "var(--tx-accent)", textDecorationColor: "var(--tx-accent)66" }}
         target={isExternal ? '_blank' : undefined}
         rel={isExternal ? 'noreferrer' : undefined}
         {...props}

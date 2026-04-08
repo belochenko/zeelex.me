@@ -1,7 +1,8 @@
 import type React from "react"
 import "./globals.css"
 import type { Metadata, Viewport } from "next"
-import { Inter, JetBrains_Mono } from "next/font/google"
+import { DM_Sans, JetBrains_Mono } from "next/font/google"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const siteUrl = "https://zeelex.me"
 const siteName = "Alexey Belochenko | Data & Systems Engineer"
@@ -35,14 +36,15 @@ const siteKeywords = [
   "Personal Blog",
 ]
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-dm-sans",
+  weight: ["300", "400", "500", "600", "700"],
 })
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains-mono",
 })
 
 export const metadata: Metadata = {
@@ -177,7 +179,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans`}>{children}</body>
+      <body className={`${dmSans.variable} ${jetbrainsMono.variable} font-sans`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
