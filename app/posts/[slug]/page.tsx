@@ -10,6 +10,8 @@ import MathJaxWrapper from '@/components/blog/math-jax-wrapper'
 import { notFound } from 'next/navigation'
 import { getPost } from '@/lib/posts'
 import { mdxComponents } from '@/components/blog/mdx-components'
+import TableOfContents from '@/components/blog/table-of-contents'
+import DyslexiaToggle from '@/components/blog/dyslexia-toggle'
 import { run } from '@mdx-js/mdx'
 import * as runtime from 'react/jsx-runtime'
 
@@ -44,66 +46,47 @@ export default async function PostPage({ params, searchParams }: PageProps) {
   const { metadata, code, headings, translations } = post
   const hasHeadings = headings.length > 0
   const MDXContent = await getMDXComponent(code)
-  const translationLinks = translations.filter((lng) => lng !== metadata.lang)
+  const translationLinks = translations.filter((lng: string) => lng !== metadata.lang)
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
+    <main className="min-h-screen dot-grid" style={{ backgroundColor: "var(--bg-base)", color: "var(--tx-primary)" }}>
       <MathJaxLoader />
       <CodeHighlighter />
       <article className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
-        {/* Navigation */}
-        <Link href="/" className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 mb-8 text-sm font-mono">
-          <ArrowLeft size={16} />
-          Back to Home
-        </Link>
+        {/* Navigation & Controls */}
+        <div className="flex items-center justify-between mb-8">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm font-mono transition-colors hover:brightness-125" style={{ color: "var(--tx-accent)" }}>
+            <ArrowLeft size={16} />
+            Back to Home
+          </Link>
+          <DyslexiaToggle />
+        </div>
 
         <div className="flex flex-col gap-8 lg:flex-row-reverse lg:items-start">
-          {hasHeadings && (
-            <aside className="hidden lg:block lg:w-56 xl:w-64">
-              <div className="sticky top-24 border-l border-zinc-800 pl-4 lg:ml-6 xl:ml-10">
-                <p className="text-xs uppercase tracking-wider text-zinc-500 font-mono">
-                  Contents
-                </p>
-                <nav className="mt-4 flex flex-col gap-1">
-                  {headings.map((heading) => {
-                    const indent =
-                      heading.level === 1 ? '' : heading.level === 2 ? 'pl-2' : 'pl-4'
-                    return (
-                      <a
-                        key={heading.id}
-                        href={`#${heading.id}`}
-                        className={`block text-sm text-zinc-400 hover:text-emerald-400 transition-colors font-mono py-1 ${indent}`}
-                      >
-                        {heading.text}
-                      </a>
-                    )
-                  })}
-                </nav>
-              </div>
-            </aside>
-          )}
+          {hasHeadings && <TableOfContents headings={headings} />}
 
-          <div className="flex-1 max-w-3xl lg:max-w-4xl mx-auto w-full">
+          <div className="flex-1 max-w-[680px] mx-auto w-full">
             {/* Header */}
             <header className="space-y-4 mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold leading-tight text-zinc-100 font-mono">{metadata.title}</h1>
+              <h1 className="text-4xl md:text-5xl font-semibold leading-tight tracking-tight" style={{ color: "var(--tx-primary)" }}>{metadata.title}</h1>
               
               <div className="flex flex-col gap-4">
-                <time className="text-zinc-400 text-sm font-mono">
+                <time className="text-sm font-mono tracking-widest uppercase" style={{ color: "var(--tx-secondary)" }}>
                   {formatDate(metadata.date)}
                 </time>
-                <div className="flex items-center gap-3 text-xs font-mono text-zinc-500">
+                <div className="flex items-center gap-3 text-xs font-mono" style={{ color: "var(--tx-muted)" }}>
                   <span className="uppercase tracking-widest">Lang: {metadata.lang || 'en'}</span>
                   {translationLinks.length > 0 && (
                     <div className="flex items-center gap-2">
-                      <span className="text-zinc-600">/</span>
+                      <span>/</span>
                       <span>Translate:</span>
                       <div className="flex items-center gap-1">
-                        {translationLinks.map((lng) => (
+                        {translationLinks.map((lng: string) => (
                           <Link
                             key={lng}
                             href={`/posts/${post.slug}?lang=${lng}`}
-                            className="text-emerald-400 hover:text-emerald-300"
+                            className="transition-colors hover:brightness-125"
+                            style={{ color: "var(--tx-accent)" }}
                           >
                             {lng.toUpperCase()}
                           </Link>
@@ -115,9 +98,18 @@ export default async function PostPage({ params, searchParams }: PageProps) {
                 
                 {/* Tags */}
                 {metadata.tags && (
-                  <div className="flex flex-wrap gap-2">
-                    {metadata.tags.map((tag) => (
-                      <Badge key={tag} variant="outline" className="bg-zinc-900 text-emerald-400 border-emerald-400/30 text-xs md:text-sm font-mono">
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {metadata.tags.map((tag: string) => (
+                      <Badge 
+                        key={tag} 
+                        variant="outline" 
+                        className="text-xs font-mono tracking-wider uppercase rounded border font-normal"
+                        style={{ 
+                          background: "var(--bg-surface)", 
+                          color: "var(--tx-secondary)", 
+                          borderColor: "var(--bg-border-dim)" 
+                        }}
+                      >
                         {tag}
                       </Badge>
                     ))}
@@ -125,31 +117,35 @@ export default async function PostPage({ params, searchParams }: PageProps) {
                 )}
               </div>
 
-              <Separator className="bg-zinc-800" />
+              <Separator className="my-8" style={{ backgroundColor: "var(--bg-border)" }} />
             </header>
 
             {/* TL;DR Section */}
             {metadata.tldr && (
-              <section className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 mb-8">
-                <h2 className="font-bold text-emerald-400 mb-2 text-sm md:text-base font-mono">TL;DR</h2>
-                <p className="text-zinc-300 text-sm leading-relaxed font-mono">{metadata.tldr}</p>
+              <section 
+                className="p-5 mb-12 rounded-r-[14px]"
+                style={{ 
+                  background: "color-mix(in srgb, var(--tx-accent) 8%, transparent)", 
+                  borderLeft: "3px solid var(--tx-accent)" 
+                }}
+              >
+                <h2 className="font-semibold mb-2 text-sm md:text-[15px] font-mono uppercase tracking-widest" style={{ color: "var(--tx-accent)" }}>TL;DR</h2>
+                <p className="text-sm md:text-[15px] leading-relaxed" style={{ color: "var(--tx-primary)" }}>{metadata.tldr}</p>
               </section>
             )}
 
-            <Separator className="bg-zinc-800 mb-8" />
-
             {/* Main Content */}
-            <section className="space-y-6 font-mono text-zinc-300 post-content">
+            <section className="space-y-6 text-base md:text-[17px] leading-[1.8] post-content" style={{ color: "var(--tx-secondary)" }}>
               <MathJaxWrapper>
                 <MDXContent components={mdxComponents} />
               </MathJaxWrapper>
             </section>
 
-            <Separator className="bg-zinc-800 my-12" />
+            <Separator className="my-12" style={{ backgroundColor: "var(--bg-border-dim)" }} />
 
             {/* Footer */}
-            <footer className="pt-8">
-              <Link href="/" className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 text-sm font-mono">
+            <footer className="pt-2 pb-12">
+              <Link href="/" className="inline-flex items-center gap-2 text-sm font-mono transition-colors hover:brightness-125" style={{ color: "var(--tx-accent)" }}>
                 <ArrowLeft size={16} />
                 Back to Home
               </Link>

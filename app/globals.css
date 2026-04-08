@@ -3,6 +3,17 @@
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════
+   CUSTOM FONTS
+   ═══════════════════════════════════════════ */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('https://cdn.jsdelivr.net/gh/antijingoist/opendyslexic@master/compiled/OpenDyslexic-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ═══════════════════════════════════════════
    DESIGN TOKENS — Theme System
    ═══════════════════════════════════════════ */
 @layer base {
@@ -331,3 +342,29 @@
 .post-content h4 {
   scroll-margin-top: 6rem;
 }
+
+/* ═══════════════════════════════════════════
+   ACCESSIBILITY: DYSLEXIA MODE
+   ═══════════════════════════════════════════ */
+html.dyslexia-mode body,
+html.dyslexia-mode p,
+html.dyslexia-mode li,
+html.dyslexia-mode h1,
+html.dyslexia-mode h2,
+html.dyslexia-mode h3,
+html.dyslexia-mode h4,
+html.dyslexia-mode h5,
+html.dyslexia-mode a,
+html.dyslexia-mode span {
+  font-family: 'OpenDyslexic', sans-serif !important;
+  letter-spacing: normal; 
+}
+
+/* Explicitly exempt code/technical blocks to maintain formatting */
+html.dyslexia-mode pre,
+html.dyslexia-mode code,
+html.dyslexia-mode .font-mono {
+  font-family: var(--font-jetbrains-mono), monospace !important;
+  letter-spacing: normal;
+}
+
