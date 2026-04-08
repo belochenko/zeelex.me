@@ -368,3 +368,26 @@ html.dyslexia-mode .font-mono {
   letter-spacing: normal;
 }
 
+/* ═══════════════════════════════════════════
+   LAB / GRAPH PAPER THEME 
+   ═══════════════════════════════════════════ */
+.lab-paper-theme {
+  --bg-base:       #f2f1ef; /* warmer, bone/paper-like light tone */
+  --bg-surface:    #ffffff;
+  --bg-elevated:   #fdfdfc;
+  --bg-border:     #d1d0cb;
+  --bg-border-dim: #e5e4df;
+
+  --tx-primary:    #1c1c1f;
+  --tx-secondary:  #4b4b52;
+  --tx-muted:      #818188;
+  --tx-accent:     #d97706; /* Technical amber/orange for lab interaction */
+  
+  --dot-color:     rgba(0, 0, 0, 0.08); /* slight pencil-colored dots */
+  --dot-space:     20px;
+
+  background-color: var(--bg-base);
+  color: var(--tx-primary);
+  min-height: 100vh;
+}
+
