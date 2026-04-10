@@ -70,6 +70,15 @@ const projects = [
     detail: "A technical playground demonstrating complex physical systems. Features raw SVG functional equations and pure React boundary logic to create real-time simulations directly inside articles.",
     href: "/lab",
   },
+  {
+    title: "CivStack — A Map of Human Progress",
+    oneLiner: "Visualizing the global landscape of science, technology, and civilization.",
+    tags: ["CivTech", "Science", "Technology", "Visualization"],
+    accentColor: "var(--accent-blue)",
+    status: "live",
+    detail: "An interactive map charting the progress of human civilization across science, technology, and society. Explore the milestones, bottlenecks, and trajectories that define our species' journey.",
+    href: "/civstack",
+  },
 ]
 
 const articles = [
