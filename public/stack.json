@@ -1,0 +1,666 @@
+{
+  "meta": {
+    "version": "1.0",
+    "title": "Civilization Stack",
+    "author": "lex",
+    "updated": "2026-04-09",
+    "description": "What we need to survive and grow"
+  },
+
+  "nodes": [
+    {
+      "id": "pandemic_defense",
+      "type": "capability",
+      "name": "Pandemic Defense",
+      "sub": "Bio-surveillance + countermeasures",
+      "chapter": "survive",
+      "tags": ["bio", "governance", "health"],
+      "trl": 4,
+      "horizon": "near",
+      "bottleneck": true,
+      "gravity_manual": null,
+      "voice": {
+        "take": "COVID was a dress rehearsal. The real risk is engineered pathogens — synthesis tools are becoming cheaper faster than defenses. Metagenomic surveillance, mRNA platform speed, and governance all need to scale together. Right now governance is the worst bottleneck.",
+        "confidence": "high",
+        "concern": null,
+        "watch": "Pathogen early-warning network coverage",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Ginkgo Biosecurity", "role": "Air surveillance network", "type": "private" },
+        { "name": "Moderna", "role": "mRNA platform", "type": "public" },
+        { "name": "CEPI", "role": "Global vaccine coordination", "type": "gov" }
+      ],
+      "links": [],
+      "history": [
+        { "date": "2020-03", "trl_from": 2, "trl_to": 3, "note": "COVID exposed bio-surveillance gaps at global scale" },
+        { "date": "2022-10", "trl_from": 3, "trl_to": 4, "note": "Ginkgo Biosecurity air surveillance network operational" }
+      ],
+      "position": { "x": 180, "y": 220, "pinned": false }
+    },
+    {
+      "id": "climate_stabilization",
+      "type": "capability",
+      "name": "Climate Stabilization",
+      "sub": "Emissions + removal + adaptation",
+      "chapter": "survive",
+      "tags": ["climate", "energy"],
+      "trl": 5,
+      "horizon": "near",
+      "bottleneck": false,
+      "voice": {
+        "take": "Less likely to end us than bio or AI, but a massive drag on everything else — energy, food, migration, conflict. The technical path is clearer than it seems. The constraint is political economy, not physics.",
+        "confidence": "high",
+        "watch": "CDR cost curve + deployment velocity",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Climeworks", "role": "Direct air capture", "type": "public" },
+        { "name": "Heirloom", "role": "Mineral CDR", "type": "private" },
+        { "name": "Fervo Energy", "role": "Enhanced geothermal", "type": "private" }
+      ],
+      "links": [],
+      "history": [
+        { "date": "2021-06", "trl_from": 3, "trl_to": 4, "note": "IEA declared solar cheapest electricity in history" },
+        { "date": "2024-02", "trl_from": 4, "trl_to": 5, "note": "Climeworks Mammoth plant operational at scale" },
+        { "date": "2025-08", "trl_from": 5, "trl_to": 5, "note": "CDR cost still $400–600/ton, target $100" }
+      ],
+      "position": { "x": 180, "y": 420, "pinned": false }
+    },
+    {
+      "id": "ai_alignment",
+      "type": "capability",
+      "name": "AI Alignment",
+      "sub": "Value alignment + interpretability",
+      "chapter": "survive",
+      "tags": ["ai", "safety", "governance"],
+      "trl": 2,
+      "horizon": "near",
+      "bottleneck": true,
+      "voice": {
+        "take": "The most asymmetric risk on this map. We are building systems of rapidly increasing capability with no verified method for ensuring they pursue what we intend. Interpretability is years behind capabilities. 'We'll figure it out as we go' is not an acceptable answer.",
+        "confidence": "high",
+        "watch": "Mechanistic interpretability breakthroughs",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Anthropic", "role": "Alignment + interpretability", "type": "private" },
+        { "name": "ARC Evals", "role": "Capability evaluation", "type": "private" },
+        { "name": "DeepMind Safety", "role": "Specification research", "type": "public" },
+        { "name": "MIRI", "role": "Theoretical alignment", "type": "private" }
+      ],
+      "links": [],
+      "history": [
+        { "date": "2023-03", "trl_from": 1, "trl_to": 1, "note": "GPT-4 capabilities leap without alignment progress" },
+        { "date": "2024-07", "trl_from": 1, "trl_to": 2, "note": "Anthropic mechanistic interpretability results published" },
+        { "date": "2025-12", "trl_from": 2, "trl_to": 2, "note": "Still no verified alignment method for frontier models" }
+      ],
+      "position": { "x": 380, "y": 140, "pinned": false }
+    },
+    {
+      "id": "asteroid_defense",
+      "type": "capability",
+      "name": "Asteroid Defense",
+      "sub": "Detection + deflection",
+      "chapter": "survive",
+      "tags": ["space", "defense"],
+      "trl": 6,
+      "horizon": "near",
+      "bottleneck": false,
+      "voice": {
+        "take": "DART worked. Planetary defense is the rare existential risk where humanity has made concrete progress. The main gap is detection completeness — roughly 40% of city-killer objects catalogued. Funding is absurdly small relative to the stakes.",
+        "confidence": "high",
+        "watch": "NEO Surveyor telescope launch",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "NASA PDCO", "role": "Planetary defense office", "type": "gov" },
+        { "name": "B612 Foundation", "role": "Detection advocacy", "type": "private" }
+      ],
+      "links": [],
+      "history": [
+        { "date": "2022-09", "trl_from": 5, "trl_to": 6, "note": "DART mission successfully deflected Dimorphos" }
+      ],
+      "position": { "x": 380, "y": 380, "pinned": false }
+    },
+    {
+      "id": "clean_energy",
+      "type": "capability",
+      "name": "Abundant Clean Energy",
+      "sub": "Solar + storage + fusion",
+      "chapter": "expand",
+      "tags": ["energy", "infrastructure"],
+      "trl": 6,
+      "horizon": "near",
+      "bottleneck": false,
+      "voice": {
+        "take": "Solar is already the cheapest electricity in history. The unsolved part is grid-scale storage and industrial heat. Fusion would be transformative but is not required. The constraint is deployment speed, not technology.",
+        "confidence": "high",
+        "watch": "Iron-air battery cost curve + SPARC results",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Commonwealth Fusion", "role": "SPARC tokamak", "type": "private" },
+        { "name": "Form Energy", "role": "Iron-air 100h storage", "type": "private" },
+        { "name": "First Solar", "role": "Thin-film PV scale", "type": "public" },
+        { "name": "Helion", "role": "FRC fusion approach", "type": "private" }
+      ],
+      "links": [],
+      "history": [
+        { "date": "2020-01", "trl_from": 4, "trl_to": 5, "note": "Solar PV cost dropped below coal globally" },
+        { "date": "2023-11", "trl_from": 5, "trl_to": 6, "note": "Form Energy iron-air battery 100h prototype validated" },
+        { "date": "2025-06", "trl_from": 6, "trl_to": 6, "note": "SPARC construction progressing but fusion still TRL 3" }
+      ],
+      "position": { "x": 620, "y": 280, "pinned": false }
+    },
+    {
+      "id": "reusable_launch",
+      "type": "capability",
+      "name": "Reusable Launch",
+      "sub": "Cost-to-orbit reduction",
+      "chapter": "expand",
+      "tags": ["space", "infrastructure", "hardware"],
+      "trl": 9,
+      "horizon": "near",
+      "bottleneck": false,
+      "voice": {
+        "take": "Falcon 9 already changed the equation. Starship at full reusability reduces cost-to-orbit by another 10–50×. This unlocks everything else in space — not incrementally, but categorically.",
+        "confidence": "high",
+        "watch": "Starship full reusability demonstration",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "SpaceX", "role": "Falcon 9 + Starship", "type": "private" },
+        { "name": "RocketLab", "role": "Neutron medium class", "type": "public" },
+        { "name": "Blue Origin", "role": "New Glenn", "type": "private" }
+      ],
+      "links": [],
+      "history": [
+        { "date": "2026-01", "trl_from": 8, "trl_to": 9, "note": "Starship IFT full reuse demonstrated" }
+      ],
+      "position": { "x": 820, "y": 160, "pinned": false }
+    },
+    {
+      "id": "orbital_infra",
+      "type": "capability",
+      "name": "Orbital Infrastructure",
+      "sub": "Refueling + manufacturing + assembly",
+      "chapter": "expand",
+      "tags": ["space", "infrastructure"],
+      "trl": 3,
+      "horizon": "near",
+      "bottleneck": true,
+      "voice": {
+        "take": "The missing layer between launch and everything deeper in space. Propellant depots alone would change economics of every mission beyond LEO. Nobody has built this at meaningful scale. This is the thing I'd most want to see funded in the next five years.",
+        "confidence": "high",
+        "watch": "Orbit Fab refueling demo + Starship depot",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Orbit Fab", "role": "Propellant depots", "type": "private" },
+        { "name": "Varda Space", "role": "In-orbit manufacturing", "type": "private" },
+        { "name": "Nanoracks", "role": "Commercial modules", "type": "private" },
+        { "name": "NASA ISAM", "role": "Servicing program", "type": "gov" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 820, "y": 340, "pinned": false }
+    },
+    {
+      "id": "nuclear_surface_power",
+      "type": "capability",
+      "name": "Nuclear Surface Power",
+      "sub": "Compact fission reactors",
+      "chapter": "expand",
+      "tags": ["energy", "space"],
+      "trl": 5,
+      "horizon": "near",
+      "bottleneck": false,
+      "voice": {
+        "take": "For space and remote applications, solar is limited. A 10–40kW fission reactor runs continuously regardless of dust storms or orbital geometry. NASA's Kilopower proved the concept. TRL-5 to flight-ready is a solvable engineering problem.",
+        "confidence": "medium",
+        "watch": "DRACO nuclear thermal propulsion test",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "NASA Kilopower", "role": "KRUSTY fission reactor", "type": "gov" },
+        { "name": "Westinghouse", "role": "eVinci microreactor", "type": "public" },
+        { "name": "USNC-Tech", "role": "Core Power systems", "type": "private" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 820, "y": 520, "pinned": false }
+    },
+    {
+      "id": "lunar_base",
+      "type": "milestone",
+      "name": "Permanent Lunar Base",
+      "sub": "Crewed + ISRU + economy",
+      "chapter": "expand",
+      "tags": ["space"],
+      "confirmed": false,
+      "horizon": "far",
+      "bottleneck": false,
+      "voice": {
+        "take": "Not flags and footprints — a permanently crewed base extracting local resources. Water ice makes propellant, which creates a cislunar economy. The Moon is not the goal; it is the first rung of the ladder off Earth.",
+        "confidence": "medium",
+        "watch": "Artemis III landing + ISRU demonstration",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "NASA Artemis", "role": "Gateway + base program", "type": "gov" },
+        { "name": "ICON", "role": "3D-printed habitat", "type": "private" },
+        { "name": "Astrobotic", "role": "Lander + ISRU", "type": "private" },
+        { "name": "ESA Moon Village", "role": "Long-term base concept", "type": "gov" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 1060, "y": 340, "pinned": false }
+    },
+    {
+      "id": "compute_scale",
+      "type": "capability",
+      "name": "Compute at Scale",
+      "sub": "Training + inference infrastructure",
+      "chapter": "expand",
+      "tags": ["ai", "hardware"],
+      "trl": 7,
+      "horizon": "near",
+      "bottleneck": false,
+      "voice": {
+        "take": "Frontier AI training cost drops ~3× per year while capability increases. The constraint is energy and cooling — loops back to clean energy. Custom silicon is progressing fast. Compute ceases to be the bottleneck for AI within this decade.",
+        "confidence": "high",
+        "watch": "Blackwell cluster deployment + energy bottleneck",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "NVIDIA", "role": "H100/Blackwell clusters", "type": "public" },
+        { "name": "Cerebras", "role": "Wafer-scale AI chip", "type": "private" },
+        { "name": "Groq", "role": "LPU inference", "type": "private" }
+      ],
+      "links": [],
+      "history": [
+        { "date": "2023-01", "trl_from": 5, "trl_to": 6, "note": "100K+ GPU clusters operational at multiple labs" },
+        { "date": "2024-09", "trl_from": 6, "trl_to": 7, "note": "Blackwell architecture deployed, training cost drops 3×" }
+      ],
+      "position": { "x": 620, "y": 480, "pinned": false }
+    },
+    {
+      "id": "agi",
+      "type": "capability",
+      "name": "AGI",
+      "sub": "General machine intelligence",
+      "chapter": "expand",
+      "tags": ["ai"],
+      "trl": 2,
+      "horizon": "near",
+      "bottleneck": false,
+      "voice": {
+        "take": "Timeline: genuinely unknown, possibly 5 years, possibly 20. What I believe more confidently: the impact when it arrives will be larger than most expect. Alignment must be solved before or concurrently — not after. AGI without alignment doesn't live on the expand tree.",
+        "confidence": "low",
+        "watch": "Reasoning benchmarks + alignment progress ratio",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Anthropic", "role": "Alignment-first approach", "type": "private" },
+        { "name": "OpenAI", "role": "Stated mission", "type": "private" },
+        { "name": "DeepMind", "role": "Gemini Ultra roadmap", "type": "public" }
+      ],
+      "links": [],
+      "history": [
+        { "date": "2023-03", "trl_from": 1, "trl_to": 1, "note": "GPT-4 shows reasoning but no general agency" },
+        { "date": "2024-12", "trl_from": 1, "trl_to": 2, "note": "o3 reasoning models pass multiple professional benchmarks" },
+        { "date": "2025-09", "trl_from": 2, "trl_to": 2, "note": "Debate: is this AGI? Consensus: not yet" }
+      ],
+      "position": { "x": 620, "y": 100, "pinned": false }
+    },
+    {
+      "id": "green_hydrogen",
+      "type": "capability",
+      "name": "Green Hydrogen",
+      "sub": "Electrolysis + distribution",
+      "chapter": "expand",
+      "tags": ["energy", "infrastructure"],
+      "trl": 6,
+      "horizon": "near",
+      "bottleneck": false,
+      "voice": {
+        "take": "Needed for industrial decarbonization that electricity cannot reach: steel, cement, shipping, aviation. The bottleneck is distribution infrastructure and bringing cost below grey hydrogen. A 5–10 year problem if energy is cheap.",
+        "confidence": "medium",
+        "watch": "Green H2 cost parity with grey",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Nel Hydrogen", "role": "Electrolyzer manufacturer", "type": "public" },
+        { "name": "ITM Power", "role": "PEM electrolysis", "type": "public" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 620, "y": 660, "pinned": false }
+    },
+    {
+      "id": "longevity",
+      "type": "capability",
+      "name": "Longevity Medicine",
+      "sub": "Aging reversal + healthspan",
+      "chapter": "connect",
+      "tags": ["bio", "health"],
+      "trl": 3,
+      "horizon": "far",
+      "bottleneck": false,
+      "voice": {
+        "take": "Aging kills ~100,000 people per day. The biology is increasingly clear — it is a damage accumulation process, not a fixed program. The interventions exist at small scale. What is missing is capital, clinical pipelines, and regulatory frameworks.",
+        "confidence": "medium",
+        "watch": "Yamanaka factor clinical trials + epigenetic clock validation",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Altos Labs", "role": "Epigenetic reprogramming", "type": "private" },
+        { "name": "Unity Biotech", "role": "Senolytic therapies", "type": "public" },
+        { "name": "NewLimit", "role": "Epigenetic clock reversal", "type": "private" },
+        { "name": "Calico", "role": "Aging biology research", "type": "private" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 420, "y": 620, "pinned": false }
+    },
+    {
+      "id": "first_mars_landing",
+      "type": "milestone",
+      "name": "First Crewed Mars Landing",
+      "sub": "Surface landing + return",
+      "chapter": "expand",
+      "tags": ["space"],
+      "confirmed": false,
+      "horizon": "far",
+      "bottleneck": false,
+      "voice": {
+        "take": "The defining event of the decade, but mostly symbolic until an industrial base is planted.",
+        "confidence": "low",
+        "watch": "Starship lunar demo + orbital refueling maturity",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "SpaceX", "role": "Starship Mars architecture", "type": "private" },
+        { "name": "NASA", "role": "Mars mission planning", "type": "gov" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 1060, "y": 140, "pinned": false }
+    },
+    {
+      "id": "open_governance",
+      "type": "capability",
+      "name": "Open Governance Tools",
+      "sub": "Transparent institutions + digital democracy",
+      "chapter": "connect",
+      "tags": ["governance", "coordination"],
+      "trl": 3,
+      "horizon": "far",
+      "bottleneck": false,
+      "voice": {
+        "take": "Every other technology on this map is useless if coordination fails. We have 19th century institutions trying to govern 21st century systems. The tooling for transparent, adaptive governance exists — the adoption doesn't.",
+        "confidence": "medium",
+        "watch": "Taiwan digital democracy model adoption",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Polis", "role": "AI-mediated deliberation", "type": "private" },
+        { "name": "RadicalxChange", "role": "Mechanism design", "type": "private" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 180, "y": 600, "pinned": false }
+    },
+    {
+      "id": "space_mining",
+      "type": "capability",
+      "name": "Space Mining",
+      "sub": "Asteroid resource extraction",
+      "chapter": "expand",
+      "tags": ["space", "infrastructure", "hardware"],
+      "trl": 2,
+      "horizon": "far",
+      "bottleneck": false,
+      "voice": {
+        "take": "Trillions of dollars of platinum, water, and rare earths floating around. The economics become viable the moment launch cost drops below $100/kg.",
+        "confidence": "low",
+        "watch": "AstroForge first retrieval mission",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "AstroForge", "role": "Asteroid refinery", "type": "private" },
+        { "name": "TransAstra", "role": "Optical mining", "type": "private" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 1060, "y": 520, "pinned": false }
+    },
+    {
+      "id": "brain_computer",
+      "type": "capability",
+      "name": "Brain-Computer Interface",
+      "sub": "Non-invasive neural bandwidth",
+      "chapter": "connect",
+      "tags": ["bio", "ai", "health"],
+      "trl": 3,
+      "horizon": "far",
+      "bottleneck": false,
+      "voice": {
+        "take": "Neuralink proves invasive works. The real game changer is non-invasive at high bandwidth. Would transform education, communication, and human-AI collaboration.",
+        "confidence": "low",
+        "watch": "Neuralink N1 clinical trial results",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Neuralink", "role": "Invasive BCI", "type": "private" },
+        { "name": "Kernel", "role": "Non-invasive neuroimaging", "type": "private" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 420, "y": 760, "pinned": false }
+    },
+    {
+      "id": "food_security",
+      "type": "capability",
+      "name": "Global Food Security",
+      "sub": "Precision farming + alt protein",
+      "chapter": "survive",
+      "tags": ["bio", "climate", "infrastructure"],
+      "trl": 5,
+      "horizon": "near",
+      "bottleneck": false,
+      "voice": {
+        "take": "We produce enough food but distribute it terribly. Precision ag reduces waste. Alt protein reduces land use 10x. The bottleneck is adoption and trade policy.",
+        "confidence": "high",
+        "watch": "Cultured meat cost parity with conventional",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Upside Foods", "role": "Cultured meat", "type": "private" },
+        { "name": "Indigo Ag", "role": "Regenerative agriculture", "type": "private" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 180, "y": 320, "pinned": false }
+    },
+    {
+      "id": "quantum_computing",
+      "type": "capability",
+      "name": "Quantum Computing",
+      "sub": "Error-corrected logical qubits",
+      "chapter": "expand",
+      "tags": ["hardware", "ai"],
+      "trl": 3,
+      "horizon": "far",
+      "bottleneck": false,
+      "voice": {
+        "take": "Overhyped for near-term, underhyped for long-term. Error correction is the wall. When it falls, materials science, drug discovery, and cryptography change overnight.",
+        "confidence": "medium",
+        "watch": "Google Willow logical qubit count",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Google Quantum AI", "role": "Willow processor", "type": "public" },
+        { "name": "IBM Quantum", "role": "Heron architecture", "type": "public" },
+        { "name": "PsiQuantum", "role": "Photonic approach", "type": "private" }
+      ],
+      "links": [],
+      "history": [
+        { "date": "2024-12", "trl_from": 2, "trl_to": 3, "note": "Google Willow demonstrates sub-threshold error correction" }
+      ],
+      "position": { "x": 820, "y": 660, "pinned": false }
+    },
+    {
+      "id": "mars_colony",
+      "type": "milestone",
+      "name": "Self-Sustaining Mars Colony",
+      "sub": "1000+ residents + closed loop",
+      "chapter": "expand",
+      "tags": ["space"],
+      "confirmed": false,
+      "horizon": "open",
+      "bottleneck": false,
+      "voice": {
+        "take": "The ultimate insurance policy. Everything else on this map makes it possible. Without multiplanetary capability, we are one asteroid or one pandemic away from total loss.",
+        "confidence": "low",
+        "watch": "First crewed Mars landing + ISRU demonstration",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "SpaceX", "role": "Mars architecture", "type": "private" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 1200, "y": 260, "pinned": false }
+    },
+    {
+      "id": "universal_translation",
+      "type": "capability",
+      "name": "Universal Translation",
+      "sub": "Real-time any-to-any language",
+      "chapter": "connect",
+      "tags": ["ai", "coordination"],
+      "trl": 6,
+      "horizon": "near",
+      "bottleneck": false,
+      "voice": {
+        "take": "Already 90% there. The last 10% — nuance, humor, cultural context — is the hard part. When this works perfectly, the coordination cost of global governance drops dramatically.",
+        "confidence": "high",
+        "watch": "Real-time interpretation quality parity with human translators",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "Meta AI", "role": "SeamlessM4T", "type": "public" },
+        { "name": "DeepL", "role": "Document translation", "type": "private" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 180, "y": 760, "pinned": false }
+    },
+    {
+      "id": "cyber_defense",
+      "type": "capability",
+      "name": "Cyber Resilience",
+      "sub": "Infrastructure hardening + response",
+      "chapter": "survive",
+      "tags": ["governance", "infrastructure"],
+      "trl": 5,
+      "horizon": "near",
+      "bottleneck": true,
+      "voice": {
+        "take": "Every other system on this map runs on software. A coordinated cyberattack on energy grids + financial systems is a plausible catastrophic scenario that nobody talks about enough.",
+        "confidence": "high",
+        "watch": "Critical infrastructure attack frequency + response time",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "CrowdStrike", "role": "Endpoint detection", "type": "public" },
+        { "name": "Palo Alto Networks", "role": "Network security", "type": "public" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 380, "y": 520, "pinned": false }
+    },
+    {
+      "id": "ocean_cleanup",
+      "type": "capability",
+      "name": "Ocean Restoration",
+      "sub": "Plastic removal + reef regeneration",
+      "chapter": "survive",
+      "tags": ["climate", "bio"],
+      "trl": 4,
+      "horizon": "near",
+      "bottleneck": false,
+      "voice": {
+        "take": "The ocean absorbed 90% of our excess heat and a terrifying amount of our plastic. Restoration is both moral obligation and practical necessity — fisheries, carbon sink, biodiversity.",
+        "confidence": "medium",
+        "watch": "The Ocean Cleanup System 03 deployment scale",
+        "updated": "2026-04"
+      },
+      "companies": [
+        { "name": "The Ocean Cleanup", "role": "Plastic collection", "type": "private" },
+        { "name": "Coral Vita", "role": "Reef restoration", "type": "private" }
+      ],
+      "links": [],
+      "history": [],
+      "position": { "x": 380, "y": 280, "pinned": false }
+    }
+  ],
+
+  "edges": [
+    { "id": "e001", "from": "reusable_launch", "to": "orbital_infra", "type": "requires" },
+    { "id": "e002", "from": "reusable_launch", "to": "asteroid_defense", "type": "requires" },
+    { "id": "e003", "from": "reusable_launch", "to": "lunar_base", "type": "requires" },
+    { "id": "e004", "from": "orbital_infra", "to": "lunar_base", "type": "requires" },
+    { "id": "e005", "from": "nuclear_surface_power", "to": "lunar_base", "type": "requires" },
+    { "id": "e006", "from": "clean_energy", "to": "climate_stabilization", "type": "requires" },
+    { "id": "e007", "from": "clean_energy", "to": "green_hydrogen", "type": "requires" },
+    { "id": "e008", "from": "clean_energy", "to": "compute_scale", "type": "accelerates", "strength": "high" },
+    { "id": "e009", "from": "compute_scale", "to": "agi", "type": "accelerates", "strength": "high" },
+    { "id": "e010", "from": "ai_alignment", "to": "agi", "type": "requires" },
+    { "id": "e011", "from": "agi", "to": "ai_alignment", "type": "risks", "rationale": "Capability growth outpacing alignment creates uncontrolled deployment risk", "severity": "critical" },
+    { "id": "e012", "from": "reusable_launch", "to": "first_mars_landing", "type": "requires" },
+    { "id": "e013", "from": "orbital_infra", "to": "first_mars_landing", "type": "requires" },
+    { "id": "e014", "from": "agi", "to": "longevity", "type": "accelerates" },
+    { "id": "e015", "from": "pandemic_defense", "to": "longevity", "type": "accelerates" },
+    { "id": "e016", "from": "open_governance", "to": "pandemic_defense", "type": "accelerates" },
+    { "id": "e017", "from": "open_governance", "to": "climate_stabilization", "type": "accelerates" },
+    { "id": "e018", "from": "open_governance", "to": "ai_alignment", "type": "accelerates" },
+    { "id": "e019", "from": "agi", "to": "open_governance", "type": "risks", "rationale": "Power concentration without governance creates authoritarian lock-in risk", "severity": "high" },
+    { "id": "e020", "from": "nuclear_surface_power", "to": "first_mars_landing", "type": "accelerates" },
+    { "id": "e021", "from": "orbital_infra", "to": "space_mining", "type": "requires" },
+    { "id": "e022", "from": "reusable_launch", "to": "space_mining", "type": "requires" },
+    { "id": "e023", "from": "agi", "to": "brain_computer", "type": "accelerates" },
+    { "id": "e024", "from": "brain_computer", "to": "universal_translation", "type": "accelerates" },
+    { "id": "e025", "from": "climate_stabilization", "to": "food_security", "type": "requires" },
+    { "id": "e026", "from": "clean_energy", "to": "food_security", "type": "accelerates" },
+    { "id": "e027", "from": "compute_scale", "to": "quantum_computing", "type": "accelerates" },
+    { "id": "e028", "from": "quantum_computing", "to": "longevity", "type": "accelerates" },
+    { "id": "e029", "from": "first_mars_landing", "to": "mars_colony", "type": "requires" },
+    { "id": "e030", "from": "lunar_base", "to": "mars_colony", "type": "accelerates" },
+    { "id": "e031", "from": "agi", "to": "universal_translation", "type": "accelerates" },
+    { "id": "e032", "from": "open_governance", "to": "cyber_defense", "type": "accelerates" },
+    { "id": "e033", "from": "cyber_defense", "to": "pandemic_defense", "type": "accelerates" },
+    { "id": "e034", "from": "climate_stabilization", "to": "ocean_cleanup", "type": "requires" },
+    { "id": "e035", "from": "space_mining", "to": "mars_colony", "type": "accelerates" }
+  ],
+
+  "clusters": [
+    { "id": "survive", "label": "Survive", "color": "#d4724a", "description": "Existential risk mitigation" },
+    { "id": "expand", "label": "Expand", "color": "#4a8cd4", "description": "Next order of magnitude" },
+    { "id": "connect", "label": "Connect", "color": "#6ab07a", "description": "Coordination, governance, institutions" }
+  ],
+
+  "horizons": [
+    { "id": "near", "label": "Near", "description": "≤15 years at current pace", "x_zone": [0, 0.33] },
+    { "id": "far", "label": "Far", "description": "Requires breakthrough or acceleration", "x_zone": [0.33, 0.66] },
+    { "id": "open", "label": "Open", "description": "Horizon unknown", "x_zone": [0.66, 1.0] }
+  ],
+
+  "changelog": [
+    { "date": "2026-04-09", "type": "node_added", "node": "open_governance", "note": "Added governance as connect chapter backbone" },
+    { "date": "2026-04-09", "type": "node_added", "node": "first_mars_landing", "note": "Added as far-horizon milestone" },
+    { "date": "2026-01-15", "type": "trl_update", "node": "reusable_launch", "trl_from": 8, "trl_to": 9, "note": "Starship IFT-6 full reuse" }
+  ]
+}

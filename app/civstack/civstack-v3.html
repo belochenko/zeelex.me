@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIVILIZATION STACK</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root {
+  --bg: #080808;
+  --surface: #0e0e0e;
+  --surface2: #131313;
+  --rule: #161614;
+  --rule-mid: #222220;
+  --rule-hi: #2e2c28;
+  --ink: #c8c4bc;
+  --ink-dim: #48443e;
+  --ink-mid: #7a7268;
+  --ink-bright: #ece8e0;
+
+  --survive: #d4724a;
+  --expand: #4a8cd4;
+
+  /* TRL colors — cold→warm gradient */
+  --trl1: #3a3a5a;
+  --trl2: #3a4a6a;
+  --trl3: #3a5a7a;
+  --trl4: #3a7a7a;
+  --trl5: #4a8a5a;
+  --trl6: #7a8a3a;
+  --trl7: #9a7a2a;
+  --trl8: #b4642a;
+  --trl9: #8ab46a;
+
+  --panel: 380px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+/* scanlines */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 9000;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
+  pointer-events: none;
+}
+
+/* ══ TOPBAR ══ */
+#topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 42px;
+  display: flex; align-items: stretch;
+  border-bottom: 1px solid var(--rule-mid);
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(16px);
+}
+
+#tb-logo {
+  padding: 0 20px;
+  display: flex; align-items: center; gap: 10px;
+  border-right: 1px solid var(--rule-mid);
+  white-space: nowrap;
+}
+.tb-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--ink-bright);
+}
+.tb-slash { color: var(--ink-dim); }
+.tb-sub { font-size: 9px; color: var(--ink-dim); letter-spacing: 0.1em; }
+
+#tb-domains {
+  display: flex; align-items: stretch;
+  padding: 0 4px;
+  gap: 2px;
+}
+.dom-pill {
+  display: flex; align-items: center; gap: 5px;
+  padding: 0 10px;
+  font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  background: none; border: none; cursor: pointer;
+  color: var(--ink-dim);
+  border-radius: 0;
+  position: relative;
+  transition: color 0.15s;
+}
+.dom-pill::after {
+  content: '';
+  position: absolute; bottom: 0; left: 6px; right: 6px; height: 1px;
+  background: var(--dc);
+  transform: scaleX(0); transition: transform 0.2s;
+}
+.dom-pill.active { color: var(--dc); }
+.dom-pill.active::after { transform: scaleX(1); }
+.dom-pill:hover:not(.active) { color: var(--ink-mid); }
+.dom-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--dc); opacity: 0.6; }
+.dom-pill.active .dom-dot { opacity: 1; }
+
+#tb-right {
+  margin-left: auto;
+  display: flex; align-items: stretch;
+  border-left: 1px solid var(--rule-mid);
+}
+
+.tb-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 16px;
+  background: none; border: none; border-left: 1px solid var(--rule-mid);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-dim); cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.tb-btn:first-child { border-left: none; }
+.tb-btn:hover { color: var(--ink); background: rgba(255,255,255,0.02); }
+.tb-btn.active { color: var(--ink-bright); background: rgba(255,255,255,0.03); }
+
+/* ══ GRAPH LAYER ══ */
+#graph-layer {
+  position: fixed; inset: 42px 0 0 0;
+  transition: bottom 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+#graph-layer.narrative-open {
+  bottom: 48vh;
+}
+
+#graph-wrap {
+  position: absolute; inset: 0;
+  overflow: hidden;
+}
+
+/* dot grid */
+#dot-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* subtle radial glow at center */
+#center-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(74,140,212,0.03) 0%, transparent 70%);
+}
+
+svg#gsvg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  cursor: grab; overflow: visible;
+}
+svg#gsvg:active { cursor: grabbing; }
+
+/* ══ PANEL ══ */
+#panel {
+  position: fixed;
+  top: 42px; right: 0; bottom: 0;
+  width: var(--panel);
+  background: var(--surface);
+  border-left: 1px solid var(--rule-mid);
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+  z-index: 200;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+#panel.open { transform: translateX(0); }
+#panel-scroll { flex: 1; overflow-y: auto; }
+#panel-scroll::-webkit-scrollbar { width: 3px; }
+#panel-scroll::-webkit-scrollbar-thumb { background: var(--rule-hi); }
+
+.p-header {
+  padding: 22px 22px 16px;
+  border-bottom: 1px solid var(--rule);
+  position: sticky; top: 0; background: var(--surface); z-index: 2;
+}
+.p-chapter {
+  font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 8px; display: flex; align-items: center; gap: 7px;
+}
+.p-chapter-dot { width: 6px; height: 6px; border-radius: 50%; }
+.p-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 21px; font-weight: 400; color: var(--ink-bright);
+  line-height: 1.15; margin-bottom: 3px;
+}
+.p-sub { font-size: 9px; color: var(--ink-dim); letter-spacing: 0.06em; }
+
+.p-close {
+  position: absolute; top: 16px; right: 16px;
+  background: none; border: none; color: var(--ink-dim);
+  font-size: 18px; cursor: pointer; line-height: 1;
+  transition: color 0.15s;
+}
+.p-close:hover { color: var(--ink-bright); }
+
+.p-sec {
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--rule);
+}
+.p-sec-title {
+  font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-dim); margin-bottom: 11px;
+}
+
+/* TRL bar */
+.trl-track {
+  display: flex; gap: 2px; margin-bottom: 6px;
+}
+.trl-seg {
+  flex: 1; height: 5px;
+  background: var(--rule-mid);
+  transition: background 0.4s;
+  position: relative;
+}
+.trl-seg.filled { background: var(--tc); }
+.trl-labels {
+  display: flex; justify-content: space-between;
+  font-size: 7px; color: var(--ink-dim); letter-spacing: 0.04em;
+  margin-top: 5px;
+}
+
+.p-take {
+  font-size: 11px; line-height: 1.78; color: var(--ink);
+  font-style: italic;
+  border-left: 2px solid var(--rule-hi);
+  padding-left: 12px;
+}
+
+.badge-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.badge {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 2px 7px; border: 1px solid;
+}
+.badge-bn { border-color: var(--survive); color: var(--survive); background: rgba(212,114,74,0.06); }
+
+.co-list { display: flex; flex-direction: column; gap: 3px; }
+.co-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 9px; border: 1px solid var(--rule);
+  transition: border-color 0.15s;
+}
+.co-item:hover { border-color: var(--rule-hi); }
+.co-name { font-size: 10px; color: var(--ink-bright); font-weight: 600; }
+.co-role { font-size: 8px; color: var(--ink-dim); margin-top: 1px; }
+.co-tag {
+  font-size: 7px; letter-spacing: 0.08em; font-weight: 700; text-transform: uppercase;
+  padding: 1px 5px; border: 1px solid;
+}
+.co-tag.private { border-color: #c8a84a; color: #c8a84a; }
+.co-tag.public  { border-color: #6ab07a; color: #6ab07a; }
+.co-tag.gov     { border-color: #4a8cd4; color: #4a8cd4; }
+
+.link-list { display: flex; flex-direction: column; gap: 2px; }
+.link-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 8px; cursor: pointer;
+  border-left: 2px solid var(--rule-hi);
+  font-size: 10px; color: var(--ink-dim);
+  transition: all 0.15s;
+}
+.link-item:hover { color: var(--ink-bright); }
+.link-arr { font-size: 9px; }
+
+.p-nar-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: calc(100% - 44px); margin: 16px 22px;
+  padding: 10px;
+  background: none; border: 1px solid var(--rule-hi);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-dim); cursor: pointer;
+  transition: all 0.15s;
+}
+.p-nar-btn:hover { color: var(--ink-bright); border-color: var(--ink-mid); }
+
+/* ══ NARRATIVE DRAWER ══ */
+#nar-drawer {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 48vh;
+  background: var(--surface);
+  border-top: 1px solid var(--rule-mid);
+  z-index: 300;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  display: flex; flex-direction: column;
+}
+#nar-drawer.open { transform: translateY(0); }
+
+#nar-handle {
+  height: 36px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer; background: var(--surface2);
+}
+.nar-handle-label {
+  font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-dim); display: flex; align-items: center; gap: 10px;
+}
+.nar-handle-label span { color: var(--ink-bright); }
+.nar-handle-close {
+  background: none; border: none; color: var(--ink-dim);
+  font-size: 16px; cursor: pointer; line-height: 1;
+  transition: color 0.15s;
+}
+.nar-handle-close:hover { color: var(--ink-bright); }
+
+#nar-body {
+  flex: 1; overflow-y: auto;
+  padding: 28px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 48px;
+  max-width: 1100px;
+}
+#nar-body::-webkit-scrollbar { width: 3px; }
+#nar-body::-webkit-scrollbar-thumb { background: var(--rule-hi); }
+
+#nar-body.single-col { grid-template-columns: 1fr; }
+
+.nar-intro {
+  grid-column: 1 / -1;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 4px;
+}
+.nar-intro-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 26px; font-weight: 400; color: var(--ink-bright);
+  line-height: 1.15; margin-bottom: 12px;
+}
+.nar-intro-title em { font-style: italic; color: var(--ink-mid); }
+.nar-intro-text {
+  font-size: 11px; line-height: 1.8; color: var(--ink-mid);
+  max-width: 620px;
+  border-left: 2px solid var(--rule-hi);
+  padding-left: 14px;
+}
+
+.nar-section {}
+.nar-section-label {
+  font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.nar-section-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+.nar-card {
+  padding: 12px 14px;
+  border: 1px solid var(--rule);
+  margin-bottom: 6px; cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.nar-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  transform: scaleY(0); transition: transform 0.2s;
+  transform-origin: bottom;
+}
+.nar-card:hover { border-color: var(--rule-hi); }
+.nar-card:hover::before, .nar-card.active::before { transform: scaleY(1); }
+.nar-card.active { border-color: var(--rule-hi); background: rgba(255,255,255,0.02); }
+.survive-card::before { background: var(--survive); }
+.expand-card::before  { background: var(--expand); }
+
+.nar-card-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.nar-card-name { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-bright); }
+.nar-card-badges { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+.nar-card-sub { font-size: 9px; color: var(--ink-dim); margin-top: 2px; letter-spacing: 0.04em; }
+.nar-take {
+  font-size: 10px; line-height: 1.75; color: var(--ink);
+  font-style: italic; margin-top: 10px;
+  padding-top: 10px; border-top: 1px solid var(--rule);
+  display: none;
+}
+.nar-card.active .nar-take { display: block; }
+
+/* ══ OVERLAY: Graph controls ══ */
+#graph-controls {
+  position: fixed; bottom: 20px; left: 20px; z-index: 150;
+  display: flex; flex-direction: column; gap: 2px;
+  transition: bottom 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+#graph-controls.raised { bottom: calc(48vh + 12px); }
+
+.gc-btn {
+  width: 30px; height: 30px;
+  background: rgba(14,14,14,0.92);
+  border: 1px solid var(--rule-hi);
+  color: var(--ink-mid); font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  font-family: 'JetBrains Mono', monospace;
+}
+.gc-btn:hover { color: var(--ink-bright); border-color: var(--ink-mid); }
+
+/* ══ LEGEND ══ */
+#legend {
+  position: fixed; bottom: 20px; right: 20px; z-index: 150;
+  background: rgba(14,14,14,0.92);
+  border: 1px solid var(--rule-hi);
+  padding: 12px 14px;
+  transition: bottom 0.4s, right 0.4s;
+}
+#legend.panel-open { right: calc(var(--panel) + 12px); }
+#legend.raised { bottom: calc(48vh + 12px); }
+
+.leg-title { font-size: 7px; letter-spacing: 0.18em; color: var(--ink-dim); text-transform: uppercase; margin-bottom: 10px; }
+.leg-row { display: flex; gap: 20px; }
+.leg-col { display: flex; flex-direction: column; gap: 5px; }
+.leg-item { display: flex; align-items: center; gap: 7px; font-size: 8px; color: var(--ink-dim); white-space: nowrap; }
+.leg-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.leg-line { width: 22px; height: 2px; flex-shrink: 0; }
+
+/* ══ OPEN NARRATIVE BTN ══ */
+#open-nar-btn {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  z-index: 150;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 18px;
+  background: rgba(14,14,14,0.92);
+  border: 1px solid var(--rule-hi);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-dim); cursor: pointer;
+  transition: all 0.3s;
+}
+#open-nar-btn:hover { color: var(--ink-bright); border-color: var(--ink-mid); }
+#open-nar-btn.hidden { opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(8px); }
+
+/* ══ TOOLTIP ══ */
+#tip {
+  position: fixed; z-index: 600;
+  background: rgba(14,14,14,0.96);
+  border: 1px solid var(--rule-hi);
+  padding: 6px 10px;
+  font-size: 10px; color: var(--ink-bright); letter-spacing: 0.04em;
+  pointer-events: none; opacity: 0; transition: opacity 0.1s;
+  white-space: nowrap;
+}
+
+/* SVG styles */
+.g-edge {
+  fill: none;
+  stroke-linecap: round;
+  transition: opacity 0.2s;
+}
+.g-edge.dimmed { opacity: 0.08; }
+.g-edge.hi { opacity: 1 !important; }
+
+.g-node { cursor: pointer; }
+.g-node circle.main {
+  transition: filter 0.2s;
+}
+.g-node:hover circle.main,
+.g-node.selected circle.main {
+  filter: drop-shadow(0 0 12px var(--nc));
+}
+.g-node.dimmed { opacity: 0.25; }
+
+.g-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+  fill: var(--ink-bright); text-anchor: middle;
+  pointer-events: none;
+}
+.g-sub-label {
+  font-family: 'JetBrains Mono', monospace;
+  fill: var(--ink-dim); text-anchor: middle;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div id="tb-logo">
+    <span class="tb-title">Civilization Stack</span>
+    <span class="tb-slash">/</span>
+    <span class="tb-sub">by Lex · ongoing</span>
+  </div>
+  <div id="tb-domains">
+    <button class="dom-pill active" data-domain="all" style="--dc:#7a7268">
+      <span class="dom-dot"></span>All
+    </button>
+    <button class="dom-pill" data-domain="survive" style="--dc:#d4724a">
+      <span class="dom-dot"></span>Survive
+    </button>
+    <button class="dom-pill" data-domain="expand" style="--dc:#4a8cd4">
+      <span class="dom-dot"></span>Expand
+    </button>
+  </div>
+  <div id="tb-right">
+    <button class="tb-btn" id="btn-labels">LABELS</button>
+    <button class="tb-btn active" id="btn-deps">DEPS</button>
+  </div>
+</div>
+
+<!-- GRAPH LAYER -->
+<div id="graph-layer">
+  <div id="graph-wrap">
+    <div id="dot-grid"></div>
+    <div id="center-glow"></div>
+    <svg id="gsvg">
+      <defs>
+        <marker id="arr0" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="4" markerHeight="4" orient="auto">
+          <path d="M0,1 L7,4 L0,7Z" fill="#222220"/>
+        </marker>
+        <marker id="arr1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="4" markerHeight="4" orient="auto">
+          <path d="M0,1 L7,4 L0,7Z" fill="#3a4a6a"/>
+        </marker>
+        <marker id="arr5" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="4" markerHeight="4" orient="auto">
+          <path d="M0,1 L7,4 L0,7Z" fill="#7a8a3a"/>
+        </marker>
+        <marker id="arr9" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="4" markerHeight="4" orient="auto">
+          <path d="M0,1 L7,4 L0,7Z" fill="#8ab46a"/>
+        </marker>
+        <marker id="arr-hi" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M0,1 L7,4 L0,7Z" fill="rgba(200,196,188,0.7)"/>
+        </marker>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <g id="gscene">
+        <g id="gedges"></g>
+        <g id="gnodes"></g>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- PANEL -->
+<div id="panel">
+  <button class="p-close" id="panel-close">×</button>
+  <div id="panel-scroll">
+    <div class="p-header">
+      <div class="p-chapter" id="p-chapter">—</div>
+      <div class="p-title" id="p-title">—</div>
+      <div class="p-sub" id="p-sub">—</div>
+    </div>
+    <div class="p-sec">
+      <div class="p-sec-title">TRL — Technology Readiness</div>
+      <div class="trl-track" id="trl-track"></div>
+      <div class="trl-labels">
+        <span>1 Concept</span>
+        <span>5 Demo</span>
+        <span>9 Proven</span>
+      </div>
+    </div>
+    <div class="p-sec">
+      <div class="p-sec-title">Status</div>
+      <div class="badge-row" id="p-badges"></div>
+    </div>
+    <div class="p-sec">
+      <div class="p-sec-title">My take</div>
+      <div class="p-take" id="p-take">—</div>
+    </div>
+    <div class="p-sec" id="p-cos">
+      <div class="p-sec-title">Key players</div>
+      <div class="co-list" id="p-co-list"></div>
+    </div>
+    <div class="p-sec" id="p-req">
+      <div class="p-sec-title">Requires →</div>
+      <div class="link-list" id="p-req-list"></div>
+    </div>
+    <div class="p-sec" id="p-enb">
+      <div class="p-sec-title">Enables →</div>
+      <div class="link-list" id="p-enb-list"></div>
+    </div>
+    <button class="p-nar-btn" id="p-nar-btn">☰ Read in narrative</button>
+  </div>
+</div>
+
+<!-- NARRATIVE DRAWER -->
+<div id="nar-drawer">
+  <div id="nar-handle">
+    <div class="nar-handle-label">
+      ☰ Narrative — <span id="nar-handle-title">What we need to survive and grow</span>
+    </div>
+    <button class="nar-handle-close" id="nar-close">×</button>
+  </div>
+  <div id="nar-body">
+    <div class="nar-intro">
+      <div class="nar-intro-title">What we need<br><em>to survive and grow</em></div>
+      <p class="nar-intro-text">
+        This is not a roadmap — roadmaps have dates, and dates lie. This is an argument about
+        dependencies: what must exist before other things can exist, what is already here,
+        what is missing. Two questions: what could end us, and what opens the next order of magnitude.
+        TRL 1–9 replaces timelines. Node size reflects how much depends on it.
+      </p>
+    </div>
+    <div class="nar-section" id="nar-survive">
+      <div class="nar-section-label" style="color: var(--survive)">
+        <div class="nar-section-dot" style="background: var(--survive)"></div>
+        Survive — existential triage
+      </div>
+      <div id="nar-survive-cards"></div>
+    </div>
+    <div class="nar-section" id="nar-expand">
+      <div class="nar-section-label" style="color: var(--expand)">
+        <div class="nar-section-dot" style="background: var(--expand)"></div>
+        Expand — next order of magnitude
+      </div>
+      <div id="nar-expand-cards"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM CONTROLS -->
+<div id="graph-controls">
+  <button class="gc-btn" id="gz-in">+</button>
+  <button class="gc-btn" id="gz-fit">⊡</button>
+  <button class="gc-btn" id="gz-out">−</button>
+</div>
+
+<div id="legend">
+  <div class="leg-title">Legend</div>
+  <div class="leg-row">
+    <div class="leg-col">
+      <div class="leg-item"><div class="leg-dot" style="background:#3a5a7a"></div>TRL 1–3 · Concept</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#7a8a3a"></div>TRL 4–6 · Demo</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#8ab46a"></div>TRL 7–9 · Proven</div>
+    </div>
+    <div class="leg-col">
+      <div class="leg-item"><div class="leg-line" style="background:#222; border: 1px dashed #444; height:0; border-width: 1px 0"></div>Weak link</div>
+      <div class="leg-item"><div class="leg-line" style="background:#7a8a3a"></div>Maturing link</div>
+      <div class="leg-item"><div class="leg-line" style="background:#8ab46a; height:3px"></div>Strong link</div>
+    </div>
+  </div>
+</div>
+
+<button id="open-nar-btn">☰ Read narrative</button>
+
+<div id="tip"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════
+
+// TRL colors
+const TRL_COLOR = {
+  1:'#3a3a5a',2:'#3a4a6a',3:'#3a5a7a',
+  4:'#3a7a7a',5:'#4a8a5a',6:'#7a8a3a',
+  7:'#9a7a2a',8:'#b4642a',9:'#8ab46a'
+};
+
+// Gravity = how many things depend on this (computed)
+const CAP = [
+  // ── SURVIVE ──
+  {
+    id:'pandemic_defense', chapter:'survive',
+    name:'Pandemic Defense', sub:'Bio-surveillance + countermeasures',
+    trl:4, bottleneck:true,
+    take:'COVID was a dress rehearsal. The real risk is engineered pathogens — synthesis tools are becoming cheaper faster than defenses. Metagenomic surveillance, mRNA platform speed, and governance all need to scale together. Right now governance is the worst bottleneck.',
+    companies:[
+      {name:'Ginkgo Biosecurity',role:'Air surveillance network',tag:'private'},
+      {name:'Moderna',role:'mRNA platform',tag:'public'},
+      {name:'CEPI',role:'Global vaccine coordination',tag:'gov'},
+    ],
+    requires:[],
+    enables:['ai_alignment'],
+    gx:180, gy:220,
+  },
+  {
+    id:'climate_stabilization', chapter:'survive',
+    name:'Climate Stabilization', sub:'Emissions + removal + adaptation',
+    trl:5, bottleneck:false,
+    take:'Less likely to end us than bio or AI, but a massive drag on everything else — energy, food, migration, conflict. The technical path is clearer than it seems. The constraint is political economy, not physics.',
+    companies:[
+      {name:'Climeworks',role:'Direct air capture',tag:'public'},
+      {name:'Heirloom',role:'Mineral CDR',tag:'private'},
+      {name:'Fervo Energy',role:'Enhanced geothermal',tag:'private'},
+    ],
+    requires:['clean_energy'],
+    enables:[],
+    gx:180, gy:420,
+  },
+  {
+    id:'ai_alignment', chapter:'survive',
+    name:'AI Alignment', sub:'Value alignment + interpretability',
+    trl:2, bottleneck:true,
+    take:'The most asymmetric risk on this map. We are building systems of rapidly increasing capability with no verified method for ensuring they pursue what we intend. Interpretability is years behind capabilities. "We\'ll figure it out as we go" is not an acceptable answer.',
+    companies:[
+      {name:'Anthropic',role:'Alignment + interpretability',tag:'private'},
+      {name:'ARC Evals',role:'Capability evaluation',tag:'private'},
+      {name:'DeepMind Safety',role:'Specification research',tag:'public'},
+      {name:'MIRI',role:'Theoretical alignment',tag:'private'},
+    ],
+    requires:[],
+    enables:['agi'],
+    gx:380, gy:140,
+  },
+  {
+    id:'asteroid_defense', chapter:'survive',
+    name:'Asteroid Defense', sub:'Detection + deflection',
+    trl:6, bottleneck:false,
+    take:'DART worked. Planetary defense is the rare existential risk where humanity has made concrete progress. The main gap is detection completeness — roughly 40% of city-killer objects catalogued. Funding is absurdly small relative to the stakes.',
+    companies:[
+      {name:'NASA PDCO',role:'Planetary defense office',tag:'gov'},
+      {name:'B612 Foundation',role:'Detection advocacy',tag:'private'},
+    ],
+    requires:['reusable_launch'],
+    enables:[],
+    gx:380, gy:380,
+  },
+
+  // ── EXPAND ──
+  {
+    id:'clean_energy', chapter:'expand',
+    name:'Abundant Clean Energy', sub:'Solar + storage + fusion',
+    trl:6, bottleneck:false,
+    take:'Solar is already the cheapest electricity in history. The unsolved part is grid-scale storage and industrial heat. Fusion would be transformative but is not required. The constraint is deployment speed, not technology.',
+    companies:[
+      {name:'Commonwealth Fusion',role:'SPARC tokamak',tag:'private'},
+      {name:'Form Energy',role:'Iron-air 100h storage',tag:'private'},
+      {name:'First Solar',role:'Thin-film PV scale',tag:'public'},
+      {name:'Helion',role:'FRC fusion approach',tag:'private'},
+    ],
+    requires:[],
+    enables:['climate_stabilization','green_hydrogen','compute_scale'],
+    gx:620, gy:280,
+  },
+  {
+    id:'reusable_launch', chapter:'expand',
+    name:'Reusable Launch', sub:'Cost-to-orbit reduction',
+    trl:9, bottleneck:false,
+    take:'Falcon 9 already changed the equation. Starship at full reusability reduces cost-to-orbit by another 10–50×. This unlocks everything else in space — not incrementally, but categorically.',
+    companies:[
+      {name:'SpaceX',role:'Falcon 9 + Starship',tag:'private'},
+      {name:'RocketLab',role:'Neutron medium class',tag:'public'},
+      {name:'Blue Origin',role:'New Glenn',tag:'private'},
+    ],
+    requires:[],
+    enables:['asteroid_defense','orbital_infra','lunar_base'],
+    gx:820, gy:160,
+  },
+  {
+    id:'orbital_infra', chapter:'expand',
+    name:'Orbital Infrastructure', sub:'Refueling + manufacturing + assembly',
+    trl:3, bottleneck:true,
+    take:'The missing layer between launch and everything deeper in space. Propellant depots alone would change economics of every mission beyond LEO. Nobody has built this at meaningful scale. This is the thing I\'d most want to see funded in the next five years.',
+    companies:[
+      {name:'Orbit Fab',role:'Propellant depots',tag:'private'},
+      {name:'Varda Space',role:'In-orbit manufacturing',tag:'private'},
+      {name:'Nanoracks',role:'Commercial modules',tag:'private'},
+      {name:'NASA ISAM',role:'Servicing program',tag:'gov'},
+    ],
+    requires:['reusable_launch'],
+    enables:['lunar_base'],
+    gx:820, gy:340,
+  },
+  {
+    id:'nuclear_surface_power', chapter:'expand',
+    name:'Nuclear Surface Power', sub:'Compact fission reactors',
+    trl:5, bottleneck:false,
+    take:'For space and remote applications, solar is limited. A 10–40kW fission reactor runs continuously regardless of dust storms or orbital geometry. NASA\'s Kilopower proved the concept. TRL-5 to flight-ready is a solvable engineering problem.',
+    companies:[
+      {name:'NASA Kilopower',role:'KRUSTY fission reactor',tag:'gov'},
+      {name:'Westinghouse',role:'eVinci microreactor',tag:'public'},
+      {name:'USNC-Tech',role:'Core Power systems',tag:'private'},
+    ],
+    requires:[],
+    enables:['lunar_base'],
+    gx:820, gy:520,
+  },
+  {
+    id:'lunar_base', chapter:'expand',
+    name:'Permanent Lunar Base', sub:'Crewed + ISRU + economy',
+    trl:2, bottleneck:false,
+    take:'Not flags and footprints — a permanently crewed base extracting local resources. Water ice makes propellant, which creates a cislunar economy. The Moon is not the goal; it is the first rung of the ladder off Earth.',
+    companies:[
+      {name:'NASA Artemis',role:'Gateway + base program',tag:'gov'},
+      {name:'ICON',role:'3D-printed habitat',tag:'private'},
+      {name:'Astrobotic',role:'Lander + ISRU',tag:'private'},
+      {name:'ESA Moon Village',role:'Long-term base concept',tag:'gov'},
+    ],
+    requires:['reusable_launch','orbital_infra','nuclear_surface_power'],
+    enables:[],
+    gx:1060, gy:340,
+  },
+  {
+    id:'compute_scale', chapter:'expand',
+    name:'Compute at Scale', sub:'Training + inference infrastructure',
+    trl:7, bottleneck:false,
+    take:'Frontier AI training cost drops ~3× per year while capability increases. The constraint is energy and cooling — loops back to clean energy. Custom silicon is progressing fast. Compute ceases to be the bottleneck for AI within this decade.',
+    companies:[
+      {name:'NVIDIA',role:'H100/Blackwell clusters',tag:'public'},
+      {name:'Cerebras',role:'Wafer-scale AI chip',tag:'private'},
+      {name:'Groq',role:'LPU inference',tag:'private'},
+    ],
+    requires:['clean_energy'],
+    enables:['agi'],
+    gx:620, gy:480,
+  },
+  {
+    id:'agi', chapter:'expand',
+    name:'AGI', sub:'General machine intelligence',
+    trl:2, bottleneck:false,
+    take:'Timeline: genuinely unknown, possibly 5 years, possibly 20. What I believe more confidently: the impact when it arrives will be larger than most expect. Alignment must be solved before or concurrently — not after. AGI without alignment doesn\'t live on the expand tree.',
+    companies:[
+      {name:'Anthropic',role:'Alignment-first approach',tag:'private'},
+      {name:'OpenAI',role:'Stated mission',tag:'private'},
+      {name:'DeepMind',role:'Gemini Ultra roadmap',tag:'public'},
+    ],
+    requires:['ai_alignment','compute_scale'],
+    enables:[],
+    gx:620, gy:100,
+  },
+  {
+    id:'green_hydrogen', chapter:'expand',
+    name:'Green Hydrogen', sub:'Electrolysis + distribution',
+    trl:6, bottleneck:false,
+    take:'Needed for industrial decarbonization that electricity cannot reach: steel, cement, shipping, aviation. The bottleneck is distribution infrastructure and bringing cost below grey hydrogen. A 5–10 year problem if energy is cheap.',
+    companies:[
+      {name:'Nel Hydrogen',role:'Electrolyzer manufacturer',tag:'public'},
+      {name:'ITM Power',role:'PEM electrolysis',tag:'public'},
+    ],
+    requires:['clean_energy'],
+    enables:[],
+    gx:620, gy:660,
+  },
+  {
+    id:'longevity', chapter:'expand',
+    name:'Longevity Medicine', sub:'Aging reversal + healthspan',
+    trl:3, bottleneck:false,
+    take:'Aging kills ~100,000 people per day. The biology is increasingly clear — it is a damage accumulation process, not a fixed program. The interventions exist at small scale. What is missing is capital, clinical pipelines, and regulatory frameworks.',
+    companies:[
+      {name:'Altos Labs',role:'Epigenetic reprogramming',tag:'private'},
+      {name:'Unity Biotech',role:'Senolytic therapies',tag:'public'},
+      {name:'NewLimit',role:'Epigenetic clock reversal',tag:'private'},
+      {name:'Calico',role:'Aging biology research',tag:'private'},
+    ],
+    requires:[],
+    enables:[],
+    gx:420, gy:620,
+  },
+];
+
+const capMap = {};
+CAP.forEach(c => capMap[c.id] = c);
+
+// Compute gravity = count how many nodes list this as requires
+CAP.forEach(c => { c.gravity = 0; });
+CAP.forEach(c => {
+  (c.requires||[]).forEach(rid => {
+    if (capMap[rid]) capMap[rid].gravity += 1;
+  });
+});
+// Base size from gravity
+CAP.forEach(c => {
+  c.nodeR = 22 + c.gravity * 6;
+});
+
+// Build edges
+const EDGES = [];
+CAP.forEach(c => {
+  (c.enables||[]).forEach(tid => {
+    if (capMap[tid]) EDGES.push({ from: c.id, to: tid });
+  });
+});
+
+// Edge strength = min TRL of the two connected nodes
+function edgeTRL(e) {
+  const f = capMap[e.from], t = capMap[e.to];
+  return Math.min(f?.trl||1, t?.trl||1);
+}
+
+function edgeStyle(trl) {
+  if (trl >= 7) return { color: '#6a8a4a', width: 2.5, dash: null, marker: 'arr9' };
+  if (trl >= 4) return { color: '#5a6a3a', width: 1.8, dash: null, marker: 'arr5' };
+  return { color: '#2a3a4a', width: 1.2, dash: '4,4', marker: 'arr1' };
+}
+
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+let activeId = null;
+let showLabels = true;
+let domainFilter = 'all';
+let narOpen = false;
+let panelOpen = false;
+let gTx = { x: 0, y: 0, s: 1 };
+let gDrag = false, gDs = null, gT0 = null;
+
+// ══════════════════════════════════════════════════
+// SVG GRAPH
+// ══════════════════════════════════════════════════
+const gsvg = document.getElementById('gsvg');
+const gscene = document.getElementById('gscene');
+const gedges = document.getElementById('gedges');
+const gnodes = document.getElementById('gnodes');
+
+function visibleCaps() {
+  if (domainFilter === 'all') return CAP;
+  return CAP.filter(c => c.chapter === domainFilter);
+}
+
+function renderGraph() {
+  gedges.innerHTML = '';
+  gnodes.innerHTML = '';
+
+  const vis = new Set(visibleCaps().map(c => c.id));
+
+  // ── edges
+  EDGES.forEach(e => {
+    if (!vis.has(e.from) || !vis.has(e.to)) return;
+    const from = capMap[e.from], to = capMap[e.to];
+    const trl = edgeTRL(e);
+    const st = edgeStyle(trl);
+
+    const dx = to.gx - from.gx, dy = to.gy - from.gy;
+    const d = Math.sqrt(dx*dx + dy*dy);
+    const nx = dx/d, ny = dy/d;
+    const fr = from.nodeR, tr = to.nodeR;
+    const cx = (from.gx+to.gx)/2 - ny*50, cy = (from.gy+to.gy)/2 + nx*50;
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', `M ${from.gx+nx*fr} ${from.gy+ny*fr} Q ${cx} ${cy} ${to.gx-nx*tr} ${to.gy-ny*tr}`);
+    path.setAttribute('class', 'g-edge');
+    path.setAttribute('id', `ge-${e.from}-${e.to}`);
+    path.setAttribute('stroke', st.color);
+    path.setAttribute('stroke-width', st.width);
+    if (st.dash) path.setAttribute('stroke-dasharray', st.dash);
+    path.setAttribute('marker-end', `url(#${st.marker})`);
+    gedges.appendChild(path);
+  });
+
+  // ── nodes
+  visibleCaps().forEach(c => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class', 'g-node');
+    g.setAttribute('id', `gn-${c.id}`);
+    g.setAttribute('transform', `translate(${c.gx},${c.gy})`);
+    const nc = TRL_COLOR[c.trl] || '#3a4a6a';
+    g.style.setProperty('--nc', nc);
+
+    const r = c.nodeR;
+
+    // Atmosphere ring (chapter color, faint)
+    const atm = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    atm.setAttribute('r', r + 10);
+    atm.setAttribute('fill', 'none');
+    atm.setAttribute('stroke', c.chapter === 'survive' ? '#d4724a' : '#4a8cd4');
+    atm.setAttribute('stroke-width', '0.5');
+    atm.setAttribute('opacity', '0.1');
+    g.appendChild(atm);
+
+    // TRL ring
+    const trlRing = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    trlRing.setAttribute('r', r + 4);
+    trlRing.setAttribute('fill', 'none');
+    trlRing.setAttribute('stroke', nc);
+    trlRing.setAttribute('stroke-width', '0.5');
+    trlRing.setAttribute('opacity', '0.25');
+    g.appendChild(trlRing);
+
+    // Main circle
+    const circ = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circ.setAttribute('class', 'main');
+    circ.setAttribute('r', r);
+    circ.setAttribute('fill', '#0c0c0c');
+    circ.setAttribute('stroke', nc);
+    circ.setAttribute('stroke-width', '1.5');
+    g.appendChild(circ);
+
+    // TRL arc fill (partial circle showing TRL/9)
+    const pct = c.trl / 9;
+    const circ2 = 2 * Math.PI * (r + 4);
+    const arcEl = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    arcEl.setAttribute('r', r + 4);
+    arcEl.setAttribute('fill', 'none');
+    arcEl.setAttribute('stroke', nc);
+    arcEl.setAttribute('stroke-width', '2');
+    arcEl.setAttribute('stroke-dasharray', `${circ2 * pct} ${circ2}`);
+    arcEl.setAttribute('stroke-dashoffset', circ2 * 0.25);
+    arcEl.setAttribute('opacity', '0.7');
+    g.appendChild(arcEl);
+
+    // Bottleneck marker
+    if (c.bottleneck) {
+      const bcirc = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      bcirc.setAttribute('cx', r - 4); bcirc.setAttribute('cy', -(r - 4));
+      bcirc.setAttribute('r', '6');
+      bcirc.setAttribute('fill', '#d4724a');
+      g.appendChild(bcirc);
+      const btxt = document.createElementNS('http://www.w3.org/2000/svg','text');
+      btxt.setAttribute('x', r-4); btxt.setAttribute('y', -(r-9));
+      btxt.setAttribute('text-anchor','middle');
+      btxt.setAttribute('font-family','JetBrains Mono, monospace');
+      btxt.setAttribute('font-size','7'); btxt.setAttribute('font-weight','700');
+      btxt.setAttribute('fill','#ece8e0');
+      btxt.textContent = '!';
+      g.appendChild(btxt);
+    }
+
+    // Labels
+    if (showLabels) {
+      const words = c.name.split(' ');
+      const mid = Math.ceil(words.length / 2);
+      const l1 = words.slice(0, mid).join(' ');
+      const l2 = words.slice(mid).join(' ');
+      const fs = r >= 28 ? 9 : 8;
+
+      if (l2) {
+        ['', l1, l2].forEach((txt, i) => {
+          if (i === 0) return;
+          const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+          t.setAttribute('class','g-label');
+          t.setAttribute('y', i === 1 ? -4 : 7);
+          t.setAttribute('font-size', fs);
+          t.textContent = txt;
+          g.appendChild(t);
+        });
+      } else {
+        const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+        t.setAttribute('class','g-label');
+        t.setAttribute('y', 3);
+        t.setAttribute('font-size', fs);
+        t.textContent = l1;
+        g.appendChild(t);
+      }
+
+      // TRL number
+      const trlTxt = document.createElementNS('http://www.w3.org/2000/svg','text');
+      trlTxt.setAttribute('class','g-sub-label');
+      trlTxt.setAttribute('y', r + 16);
+      trlTxt.setAttribute('font-size', 7);
+      trlTxt.textContent = `TRL ${c.trl}`;
+      g.appendChild(trlTxt);
+    }
+
+    // Events
+    g.addEventListener('click', () => {
+      const same = activeId === c.id;
+      setActive(same ? null : c.id);
+    });
+
+    const tip = document.getElementById('tip');
+    g.addEventListener('mouseenter', e => {
+      tip.textContent = `${c.name} — TRL ${c.trl}/9`;
+      tip.style.opacity = '1';
+    });
+    g.addEventListener('mouseleave', () => { tip.style.opacity = '0'; });
+
+    gnodes.appendChild(g);
+  });
+
+  applyHighlight();
+}
+
+function applyHighlight() {
+  const id = activeId;
+  const relNodes = new Set();
+  const relEdges = new Set();
+
+  if (id) {
+    relNodes.add(id);
+    const c = capMap[id];
+    (c?.requires||[]).forEach(r => relNodes.add(r));
+    (c?.enables||[]).forEach(e => relNodes.add(e));
+    EDGES.forEach(e => {
+      if (e.from === id || e.to === id) relEdges.add(`${e.from}-${e.to}`);
+    });
+  }
+
+  document.querySelectorAll('.g-node').forEach(n => {
+    const nid = n.id.replace('gn-','');
+    if (!id) { n.classList.remove('selected','dimmed'); return; }
+    n.classList.toggle('selected', nid === id);
+    n.classList.toggle('dimmed', !relNodes.has(nid));
+  });
+
+  document.querySelectorAll('.g-edge').forEach(el => {
+    const eid = el.id.replace('ge-','');
+    if (!id) { el.classList.remove('hi','dimmed'); return; }
+    const isHi = relEdges.has(eid);
+    el.classList.toggle('hi', isHi);
+    el.classList.toggle('dimmed', !isHi);
+    if (isHi) {
+      el.setAttribute('stroke', 'rgba(200,196,188,0.5)');
+      el.setAttribute('stroke-width', '2');
+      el.setAttribute('marker-end', 'url(#arr-hi)');
+    } else {
+      // restore original
+      const parts = eid.split('-');
+      const fromId = parts.slice(0,-1).join('-'), toId = parts[parts.length-1];
+      // find edge
+      const edge = EDGES.find(e => e.from === fromId && e.to === toId) ||
+                   EDGES.find(e => `${e.from}-${e.to}` === eid);
+      if (edge) {
+        const st = edgeStyle(edgeTRL(edge));
+        el.setAttribute('stroke', st.color);
+        el.setAttribute('stroke-width', st.width);
+        el.setAttribute('marker-end', `url(#${st.marker})`);
+      }
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════
+// PANEL
+// ══════════════════════════════════════════════════
+function openPanel(c) {
+  panelOpen = true;
+  document.getElementById('panel').classList.add('open');
+  document.getElementById('legend').classList.add('panel-open');
+
+  const chColor = c.chapter === 'survive' ? 'var(--survive)' : 'var(--expand)';
+  const chLabel = c.chapter === 'survive' ? '⚠ SURVIVE' : '↗ EXPAND';
+  const nc = TRL_COLOR[c.trl];
+
+  const chEl = document.getElementById('p-chapter');
+  chEl.innerHTML = `<div class="p-chapter-dot" style="background:${chColor.replace('var(--survive)','#d4724a').replace('var(--expand)','#4a8cd4')}"></div>${chLabel}`;
+  chEl.style.color = chColor;
+
+  document.getElementById('p-title').textContent = c.name;
+  document.getElementById('p-sub').textContent = c.sub;
+  document.getElementById('p-take').textContent = c.take;
+
+  // TRL bar
+  const track = document.getElementById('trl-track');
+  track.innerHTML = '';
+  for (let i=1; i<=9; i++) {
+    const seg = document.createElement('div');
+    seg.className = 'trl-seg' + (i <= c.trl ? ' filled' : '');
+    seg.style.setProperty('--tc', TRL_COLOR[i]);
+    if (i <= c.trl) seg.style.background = TRL_COLOR[i];
+    track.appendChild(seg);
+  }
+
+  // Badges
+  const badges = document.getElementById('p-badges');
+  badges.innerHTML = `<span class="badge" style="border-color:${nc};color:${nc}">TRL ${c.trl}/9</span>`;
+  if (c.bottleneck) badges.innerHTML += `<span class="badge badge-bn">BOTTLENECK</span>`;
+
+  // Companies
+  const coList = document.getElementById('p-co-list');
+  coList.innerHTML = '';
+  (c.companies||[]).forEach(co => {
+    coList.innerHTML += `
+      <div class="co-item">
+        <div><div class="co-name">${co.name}</div><div class="co-role">${co.role}</div></div>
+        <div class="co-tag ${co.tag}">${co.tag.toUpperCase()}</div>
+      </div>`;
+  });
+
+  // Requires
+  const reqList = document.getElementById('p-req-list');
+  reqList.innerHTML = '';
+  (c.requires||[]).forEach(rid => {
+    const r = capMap[rid]; if (!r) return;
+    const item = document.createElement('div');
+    item.className = 'link-item';
+    item.style.borderLeftColor = TRL_COLOR[r.trl];
+    item.innerHTML = `<span class="link-arr">←</span>${r.name} <span style="color:var(--ink-dim);font-size:9px;margin-left:auto">TRL ${r.trl}</span>`;
+    item.addEventListener('click', () => setActive(rid));
+    reqList.appendChild(item);
+  });
+  document.getElementById('p-req').style.display = c.requires.length ? '' : 'none';
+
+  // Enables
+  const enbList = document.getElementById('p-enb-list');
+  enbList.innerHTML = '';
+  (c.enables||[]).forEach(eid => {
+    const e2 = capMap[eid]; if (!e2) return;
+    const item = document.createElement('div');
+    item.className = 'link-item';
+    item.style.borderLeftColor = TRL_COLOR[e2.trl];
+    item.innerHTML = `<span class="link-arr">→</span>${e2.name} <span style="color:var(--ink-dim);font-size:9px;margin-left:auto">TRL ${e2.trl}</span>`;
+    item.addEventListener('click', () => setActive(eid));
+    enbList.appendChild(item);
+  });
+  document.getElementById('p-enb').style.display = c.enables.length ? '' : 'none';
+}
+
+function closePanel() {
+  panelOpen = false;
+  document.getElementById('panel').classList.remove('open');
+  document.getElementById('legend').classList.remove('panel-open');
+}
+
+// ══════════════════════════════════════════════════
+// NARRATIVE
+// ══════════════════════════════════════════════════
+function renderNarrative() {
+  ['survive','expand'].forEach(ch => {
+    const container = document.getElementById(`nar-${ch}-cards`);
+    container.innerHTML = '';
+    CAP.filter(c => c.chapter === ch).forEach(c => {
+      const nc = TRL_COLOR[c.trl];
+      const card = document.createElement('div');
+      card.className = `nar-card ${ch}-card` + (activeId === c.id ? ' active' : '');
+      card.id = `nc-${c.id}`;
+      card.innerHTML = `
+        <div class="nar-card-row">
+          <div>
+            <div class="nar-card-name">${c.name}</div>
+            <div class="nar-card-sub">${c.sub}</div>
+          </div>
+          <div class="nar-card-badges">
+            <span class="badge" style="border-color:${nc};color:${nc}">TRL ${c.trl}</span>
+            ${c.bottleneck ? `<span class="badge badge-bn">BN</span>` : ''}
+          </div>
+        </div>
+        <div class="nar-take">${c.take}</div>
+      `;
+      card.addEventListener('click', () => {
+        const same = activeId === c.id;
+        setActive(same ? null : c.id, true);
+      });
+      container.appendChild(card);
+    });
+  });
+}
+
+// ══════════════════════════════════════════════════
+// ACTIVE STATE
+// ══════════════════════════════════════════════════
+function setActive(id, fromNar = false) {
+  activeId = id;
+  applyHighlight();
+
+  // Narrative cards
+  document.querySelectorAll('.nar-card').forEach(el => {
+    el.classList.toggle('active', el.id === `nc-${id}`);
+  });
+
+  if (id) {
+    openPanel(capMap[id]);
+    if (!fromNar && narOpen) {
+      const el = document.getElementById(`nc-${id}`);
+      if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+  } else {
+    closePanel();
+  }
+}
+
+// ══════════════════════════════════════════════════
+// NARRATIVE DRAWER
+// ══════════════════════════════════════════════════
+function openNarrative() {
+  narOpen = true;
+  document.getElementById('nar-drawer').classList.add('open');
+  document.getElementById('graph-layer').classList.add('narrative-open');
+  document.getElementById('graph-controls').classList.add('raised');
+  document.getElementById('legend').classList.add('raised');
+  document.getElementById('open-nar-btn').classList.add('hidden');
+  renderNarrative();
+}
+
+function closeNarrative() {
+  narOpen = false;
+  document.getElementById('nar-drawer').classList.remove('open');
+  document.getElementById('graph-layer').classList.remove('narrative-open');
+  document.getElementById('graph-controls').classList.remove('raised');
+  document.getElementById('legend').classList.remove('raised');
+  document.getElementById('open-nar-btn').classList.remove('hidden');
+}
+
+document.getElementById('open-nar-btn').addEventListener('click', openNarrative);
+document.getElementById('nar-close').addEventListener('click', closeNarrative);
+document.getElementById('nar-handle').addEventListener('click', e => {
+  if (e.target === document.getElementById('nar-close')) return;
+});
+document.getElementById('p-nar-btn').addEventListener('click', () => {
+  openNarrative();
+  if (activeId) setTimeout(() => {
+    const el = document.getElementById(`nc-${activeId}`);
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+  }, 450);
+});
+
+// ══════════════════════════════════════════════════
+// TOPBAR CONTROLS
+// ══════════════════════════════════════════════════
+document.getElementById('panel-close').addEventListener('click', () => {
+  setActive(null);
+});
+
+document.getElementById('btn-labels').addEventListener('click', function() {
+  showLabels = !showLabels;
+  this.classList.toggle('active', showLabels);
+  renderGraph();
+});
+
+document.getElementById('btn-deps').addEventListener('click', function() {
+  this.classList.toggle('active');
+  const show = this.classList.contains('active');
+  document.getElementById('gedges').style.opacity = show ? '1' : '0';
+});
+
+document.querySelectorAll('.dom-pill').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.dom-pill').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    domainFilter = this.dataset.domain;
+    setActive(null);
+    renderGraph();
+    setTimeout(fitGraph, 50);
+  });
+});
+
+// ══════════════════════════════════════════════════
+// PAN / ZOOM
+// ══════════════════════════════════════════════════
+function applyGT() {
+  gscene.setAttribute('transform', `translate(${gTx.x},${gTx.y}) scale(${gTx.s})`);
+}
+
+function fitGraph() {
+  const caps = visibleCaps();
+  if (!caps.length) return;
+  const xs = caps.map(c => c.gx), ys = caps.map(c => c.gy);
+  const pad = 80;
+  const minX = Math.min(...xs)-pad, maxX = Math.max(...xs)+pad;
+  const minY = Math.min(...ys)-pad, maxY = Math.max(...ys)+pad;
+  const wrap = document.getElementById('graph-wrap');
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  const s = Math.min(W/(maxX-minX), H/(maxY-minY), 1.5) * 0.9;
+  gTx.s = s;
+  gTx.x = W/2 - s*(minX+maxX)/2;
+  gTx.y = H/2 - s*(minY+maxY)/2;
+  applyGT();
+}
+
+gsvg.addEventListener('mousedown', e => {
+  if (e.target.closest('.g-node')) return;
+  gDrag = true;
+  gDs = { x: e.clientX, y: e.clientY };
+  gT0 = { ...gTx };
+});
+window.addEventListener('mousemove', e => {
+  if (gDrag) {
+    gTx.x = gT0.x + e.clientX - gDs.x;
+    gTx.y = gT0.y + e.clientY - gDs.y;
+    applyGT();
+  }
+  const tip = document.getElementById('tip');
+  if (tip.style.opacity === '1') {
+    tip.style.left = (e.clientX+14)+'px';
+    tip.style.top  = (e.clientY-30)+'px';
+  }
+});
+window.addEventListener('mouseup', () => gDrag = false);
+gsvg.addEventListener('wheel', e => {
+  e.preventDefault();
+  const f = e.deltaY < 0 ? 1.12 : 0.89;
+  const rect = gsvg.getBoundingClientRect();
+  const mx = e.clientX-rect.left, my = e.clientY-rect.top;
+  gTx.x = mx - f*(mx-gTx.x);
+  gTx.y = my - f*(my-gTx.y);
+  gTx.s *= f;
+  applyGT();
+}, { passive:false });
+
+document.getElementById('gz-in').addEventListener('click', () => { gTx.s *= 1.2; applyGT(); });
+document.getElementById('gz-out').addEventListener('click', () => { gTx.s *= 0.8; applyGT(); });
+document.getElementById('gz-fit').addEventListener('click', fitGraph);
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+renderGraph();
+setTimeout(fitGraph, 60);
+</script>
+</body>
+</html>
