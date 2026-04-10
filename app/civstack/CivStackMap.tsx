@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import * as d3Force from 'd3-force';
 import stackData from '../../public/stack.json';
 
@@ -432,7 +432,7 @@ export default function CivStackClient() {
   }, [activeId, domainFilter, tagFilter]);
 
   // ── FILTERED DATA (chapter + tag + horizon + TRL range) ──
-  const visibleNodes = nodes.filter(n => {
+  const visibleNodes = useMemo(() => nodes.filter(n => {
     if (domainFilter !== 'all' && n.chapter !== domainFilter) return false;
     if (tagFilter && !(n.tags ?? []).includes(tagFilter)) return false;
     if (horizonFilter && n.horizon !== horizonFilter) return false;
@@ -442,7 +442,7 @@ export default function CivStackClient() {
       if (trl < trlRange[0] || trl > trlRange[1]) return false;
     }
     return true;
-  });
+  }), [nodes, domainFilter, tagFilter, horizonFilter, trlRange]);
   const visibleIds = new Set(visibleNodes.map(n => n.id));
   const visibleEdges = edges.filter(e => visibleIds.has(e.from) && visibleIds.has(e.to));
 
@@ -618,8 +618,14 @@ export default function CivStackClient() {
       <div className="cs-topbar">
         <div className="cs-tb-logo">
           <span className="cs-tb-title">{meta.title}</span>
-          <span className="cs-tb-slash">/</span>
-          <span className="cs-tb-sub">by {meta.author} · ongoing</span>
+          <span className="cs-tb-slash" style={{ margin: '0 4px', opacity: 0.5 }}>|</span>
+          <a
+            href="https://zeelex.me"
+            className="cs-tb-sub cs-tb-sub-link"
+          >
+            zeelex.me
+            <span className="cs-tb-popup">Subsidiary project of zeelex.me</span>
+          </a>
         </div>
         <div className="cs-tb-domains">
           {[
@@ -874,11 +880,7 @@ export default function CivStackClient() {
                   const isDimmed = activeId ? !relNodes.has(c.id) : false;
                   const chColor = CHAPTER_COLOR[c.chapter] || '#7a7268';
 
-                  // TRL arc (only for non-milestones)
-                  const pct = isMilestone ? 0 : (c.trl ?? 0) / 9;
-                  const circ = 2 * Math.PI * (r + 4);
-
-                  // Split label into two lines
+                  // Setup labels
                   const words = c.name.split(' ');
                   const mid = Math.ceil(words.length / 2);
                   const l1 = words.slice(0, mid).join(' ');
@@ -888,10 +890,11 @@ export default function CivStackClient() {
                   // Node shape
                   let shapeEl: React.ReactNode;
                   if (c.type === 'milestone') {
-                    // hexagon
+                    // hexagon: equalize area to circle (R * 1.1)
+                    const rh = r * 1.1;
                     const pts = Array.from({ length: 6 }, (_, i) => {
                       const angle = (Math.PI / 3) * i - Math.PI / 6;
-                      return `${r * Math.cos(angle)},${r * Math.sin(angle)}`;
+                      return `${rh * Math.cos(angle)},${rh * Math.sin(angle)}`;
                     }).join(' ');
                     shapeEl = (
                       <polygon
@@ -903,10 +906,12 @@ export default function CivStackClient() {
                       />
                     );
                   } else if (c.type === 'actor') {
+                    // square: equalize area to circle (half-side = r * 0.886)
+                    const hs = r * 0.886;
                     shapeEl = (
                       <rect
                         className="main"
-                        x={-r} y={-r} width={r * 2} height={r * 2}
+                        x={-hs} y={-hs} width={hs * 2} height={hs * 2}
                         fill="#0c0c0c"
                         stroke={nc}
                         strokeWidth="1.5"
@@ -949,29 +954,8 @@ export default function CivStackClient() {
                       }}
                       onMouseLeave={() => setTip(t => ({ ...t, visible: false }))}
                     >
-                      {/* TRL/status measurement track — dashed reference ring */}
-                      <circle
-                        r={r + 4}
-                        fill="none"
-                        stroke={nc}
-                        strokeWidth="0.5"
-                        strokeDasharray="2,3"
-                        opacity="0.3"
-                      />
                       {/* Main shape */}
                       {shapeEl}
-                      {/* TRL arc progress (only for non-milestones) */}
-                      {!isMilestone && (
-                        <circle
-                          r={r + 4}
-                          fill="none"
-                          stroke={nc}
-                          strokeWidth="2"
-                          strokeDasharray={`${circ * pct} ${circ}`}
-                          strokeDashoffset={circ * 0.25}
-                          opacity="0.7"
-                        />
-                      )}
                       {/* Milestone confirmed ring */}
                       {isMilestone && c.confirmed && (
                         <circle

@@ -115,6 +115,40 @@
 }
 .cs-dom-pill.active .cs-dom-dot { opacity: 1; }
 
+.cs-tb-sub-link {
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--ink-dim);
+  transition: color 0.15s;
+}
+.cs-tb-sub-link:hover { color: var(--ink); }
+
+.cs-tb-popup {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: var(--surface-2);
+  border: 1px solid var(--rule-hi);
+  padding: 4px 8px;
+  font-size: 8px;
+  color: var(--ink);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, top 0.2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  font-family: 'JetBrains Mono', monospace;
+  z-index: 1000;
+}
+.cs-tb-sub-link:hover .cs-tb-popup {
+  opacity: 1;
+  top: calc(100% + 8px);
+}
+
 .cs-tb-right {
   margin-left: auto;
   display: flex; align-items: stretch;
