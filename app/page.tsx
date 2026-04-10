@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Github, Linkedin, Mail, ExternalLink, ArrowUpRight } from "lucide-react"
+import { Github, Linkedin, Mail, ArrowUpRight, MoveHorizontal } from "lucide-react"
 import { Mascot } from "@/components/mascot"
 import { BentoTile } from "@/components/bento-tile"
 
@@ -74,7 +74,7 @@ const projects = [
     title: "CivStack — A Map of Human Progress",
     oneLiner: "Visualizing the global landscape of science, technology, and civilization.",
     tags: ["CivTech", "Science", "Technology", "Visualization"],
-    accentColor: "var(--accent-blue)",
+    accentColor: "var(--accent-amber-800)",
     status: "live",
     detail: "An interactive map charting the progress of human civilization across science, technology, and society. Explore the milestones, bottlenecks, and trajectories that define our species' journey.",
     href: "/civstack",
@@ -294,15 +294,26 @@ export default function Home() {
             >
               // Projects &amp; Artifacts
             </h2>
-            <span
-              className="text-[10px]"
-              style={{
-                fontFamily: "var(--font-jetbrains-mono), monospace",
-                color: "var(--tx-muted)",
-              }}
-            >
-              permanent_section
-            </span>
+            <div className="flex items-center gap-4">
+              <span
+                className="hidden sm:flex items-center gap-1.5 text-[10px] opacity-60 animate-pulse"
+                style={{
+                  fontFamily: "var(--font-jetbrains-mono), monospace",
+                  color: "var(--tx-muted)",
+                }}
+              >
+                <MoveHorizontal size={12} /> scroll
+              </span>
+              <span
+                className="text-[10px]"
+                style={{
+                  fontFamily: "var(--font-jetbrains-mono), monospace",
+                  color: "var(--tx-muted)",
+                }}
+              >
+                permanent_section
+              </span>
+            </div>
           </div>
 
           <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-6 pt-2 w-[calc(100%+2.5rem)] -ml-5 px-5 sm:w-full sm:ml-0 sm:px-0 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
