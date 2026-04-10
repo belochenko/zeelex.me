@@ -308,6 +308,14 @@ export default function CivStackClient() {
       }
     });
 
+    // Cache node degrees to normalize link strength and bias gravity
+    const degreeCache: Record<string, number> = {};
+    nodes.forEach(n => degreeCache[n.id] = 0);
+    simLinks.forEach(l => {
+      degreeCache[typeof l.source === 'string' ? l.source : (l.source as NodeData).id] = (degreeCache[typeof l.source === 'string' ? l.source : (l.source as NodeData).id] || 0) + 1;
+      degreeCache[typeof l.target === 'string' ? l.target : (l.target as NodeData).id] = (degreeCache[typeof l.target === 'string' ? l.target : (l.target as NodeData).id] || 0) + 1;
+    });
+
     const sim = d3Force.forceSimulation<NodeData>(nodes)
       // 1. Repulsion ∝ radius²
       .force('charge', d3Force.forceManyBody<NodeData>()
@@ -317,7 +325,13 @@ export default function CivStackClient() {
       .force('link', d3Force.forceLink<NodeData, SimLink>(simLinks)
         .id(d => d.id)
         .distance(d => d.edgeType === 'requires' ? 200 : 320)
-        .strength(d => d.edgeType === 'requires' ? 0.35 : 0.06)
+        .strength(d => {
+          const srcDeg = degreeCache[typeof d.source === 'string' ? d.source : d.source.id] || 1;
+          const tgtDeg = degreeCache[typeof d.target === 'string' ? d.target : d.target.id] || 1;
+          const degFactor = 1 / Math.min(srcDeg, tgtDeg);
+          const raw = d.edgeType === 'requires' ? 0.35 : 0.06;
+          return raw * degFactor;
+        })
       )
       // 3. Collision based on node radius
       .force('collide', d3Force.forceCollide<NodeData>()
@@ -330,7 +344,10 @@ export default function CivStackClient() {
           const hz = HORIZON_CENTER[d.horizon ?? 'near'] ?? 0.2;
           return W * hz;
         })
-        .strength(0.15)
+        .strength(d => {
+          const deg = degreeCache[d.id] || 0;
+          return Math.max(0.04, 0.2 - deg * 0.015);
+        })
       )
       // 5. Chapter-based Y separation — survive top, expand mid, connect bottom
       .force('chapterY', d3Force.forceY<NodeData>()
@@ -338,11 +355,14 @@ export default function CivStackClient() {
           const cy = CHAPTER_Y_CENTER[d.chapter] ?? 0.5;
           return H * cy;
         })
-        .strength(0.12)
+        .strength(d => {
+          const deg = degreeCache[d.id] || 0;
+          return Math.max(0.04, 0.16 - deg * 0.015);
+        })
       )
       .alpha(1)
       .alphaDecay(0.02)
-      .velocityDecay(0.3)
+      .velocityDecay(0.45)
       .on('tick', () => {
         // Sync simulation x/y → gx/gy for rendering
         nodes.forEach(n => {
