@@ -1,7 +1,7 @@
 import type React from "react"
 import "./globals.css"
 import type { Metadata, Viewport } from "next"
-import { DM_Sans, JetBrains_Mono } from "next/font/google"
+import { DM_Sans, JetBrains_Mono, Instrument_Serif } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 
 const siteUrl = "https://zeelex.me"
@@ -45,6 +45,13 @@ const dmSans = DM_Sans({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
+})
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  variable: "--font-instrument-serif",
+  weight: ["400"],
+  style: ["normal", "italic"],
 })
 
 export const metadata: Metadata = {
@@ -179,7 +186,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${dmSans.variable} ${jetbrainsMono.variable} font-sans`}>
+      <body className={`${dmSans.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} font-sans`}>
         <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
           {children}
         </ThemeProvider>
