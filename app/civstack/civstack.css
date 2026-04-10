@@ -189,6 +189,22 @@
   background-size: 60px 60px;
 }
 
+/* ══ CROSSHAIRS ══ */
+.cs-crosshair-x, .cs-crosshair-y {
+  position: fixed;
+  background: var(--rule-mid);
+  pointer-events: none;
+  z-index: 100;
+  transition: opacity 0.2s;
+  opacity: 0.8;
+}
+.cs-crosshair-x {
+  left: 0; right: 0; height: 1px;
+}
+.cs-crosshair-y {
+  top: 0; bottom: 0; width: 1px;
+}
+
 .cs-svg {
   position: absolute; inset: 0; width: 100%; height: 100%;
   cursor: grab; overflow: visible;
@@ -220,16 +236,30 @@
 }
 .g-node.dimmed { opacity: 0.2; }
 
+@keyframes select-pulse {
+  0% { r: 100%; opacity: 0.8; stroke-width: 2; }
+  100% { r: 140%; opacity: 0; stroke-width: 0.5; }
+}
+.g-node.selected .active-glow {
+  transform-origin: center;
+  animation: select-pulse 2s infinite cubic-bezier(0.1,0.7,0.1,1);
+}
+
 .g-label {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
   fill: var(--ink-bright); text-anchor: middle;
   pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 .g-sub-label {
   font-family: 'JetBrains Mono', monospace;
   fill: var(--ink-dim); text-anchor: middle;
   pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.lod-hide {
+  opacity: 0 !important;
 }
 
 /* ══ PANEL ══ */

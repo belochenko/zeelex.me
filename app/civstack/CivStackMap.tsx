@@ -250,6 +250,15 @@ export default function CivStackClient() {
   // Tooltip
   const [tip, setTip] = useState({ text: '', x: 0, y: 0, visible: false });
 
+  // Crosshairs & Mouse tracking
+  const [mousePos, setMousePos] = useState<{x: number; y: number} | null>(null);
+
+  useEffect(() => {
+    const updateMouse = (e: MouseEvent) => setMousePos({ x: e.clientX, y: e.clientY });
+    window.addEventListener('mousemove', updateMouse);
+    return () => window.removeEventListener('mousemove', updateMouse);
+  }, []);
+
   // Pan/Zoom state
   const [gTx, setGTx] = useState({ x: 0, y: 0, s: 1 });
   const gDragRef = useRef(false);
@@ -353,8 +362,10 @@ export default function CivStackClient() {
   }, []);
 
   // ── NODE DRAG HANDLERS (drag → pin) ──
+  const distDraggedRef = useRef(0);
   const handleNodeMouseDown = useCallback((e: React.MouseEvent, node: NodeData) => {
     e.stopPropagation(); // don't trigger pan
+    distDraggedRef.current = 0;
     nodeDragRef.current = {
       node,
       startX: e.clientX,
@@ -372,10 +383,14 @@ export default function CivStackClient() {
     const handleNodeDragMove = (e: MouseEvent) => {
       const drag = nodeDragRef.current;
       if (!drag) return;
-      const dx = (e.clientX - drag.startX) / gTx.s;
-      const dy = (e.clientY - drag.startY) / gTx.s;
-      const newX = drag.origGx + dx;
-      const newY = drag.origGy + dy;
+      const dx = (e.clientX - drag.startX);
+      const dy = (e.clientY - drag.startY);
+      distDraggedRef.current += Math.abs(dx) + Math.abs(dy);
+
+      const dxS = dx / gTx.s;
+      const dyS = dy / gTx.s;
+      const newX = drag.origGx + dxS;
+      const newY = drag.origGy + dyS;
       drag.node.fx = newX;
       drag.node.fy = newY;
       drag.node.gx = newX;
@@ -614,6 +629,14 @@ export default function CivStackClient() {
 
   return (
     <>
+      {/* ══ CROSSHAIRS ══ */}
+      {mousePos && (
+        <>
+          <div className="cs-crosshair-x" style={{ top: mousePos.y }} />
+          <div className="cs-crosshair-y" style={{ left: mousePos.x }} />
+        </>
+      )}
+
       {/* ══ TOPBAR ══ */}
       <div className="cs-topbar">
         <div className="cs-tb-logo">
@@ -929,6 +952,9 @@ export default function CivStackClient() {
                     );
                   }
 
+                  // LOD fade label (threshold 0.55 zooming)
+                  const isLodLevel = gTx.s < 0.55;
+
                   return (
                     <g
                       key={c.id}
@@ -936,7 +962,11 @@ export default function CivStackClient() {
                       transform={`translate(${c.gx},${c.gy})`}
                       style={{ '--nc': nc } as React.CSSProperties}
                       onMouseDown={(e) => handleNodeMouseDown(e, c)}
-                      onClick={() => setActive(isSelected ? null : c.id)}
+                      onClick={() => {
+                        // Drag vs Click resolution — ignore if dragged
+                        if (distDraggedRef.current > 5) return;
+                        setActive(isSelected ? null : c.id);
+                      }}
                       onMouseEnter={(e) => {
                         const chName = (clusters.find(cl => cl.id === c.chapter)?.label ?? c.chapter).toUpperCase();
                         const hzName = (c.horizon ?? 'near').toUpperCase();
@@ -952,8 +982,22 @@ export default function CivStackClient() {
                         if (c.bottleneck) html += `<span class="tt-warn">⚠ BOTTLENECK — BLOCKS PROGRESS</span>`;
                         setTip({ text: html, x: e.clientX + 14, y: e.clientY - 30, visible: true });
                       }}
+                      onMouseMove={(e) => {
+                        setTip(t => t.visible ? { ...t, x: e.clientX + 14, y: e.clientY - 30 } : t);
+                      }}
                       onMouseLeave={() => setTip(t => ({ ...t, visible: false }))}
                     >
+                      {/* Active Node Glow */}
+                      {isSelected && (
+                        <circle
+                          className="active-glow"
+                          r={r}
+                          fill="none"
+                          stroke={nc}
+                          pointerEvents="none"
+                        />
+                      )}
+                      
                       {/* Main shape */}
                       {shapeEl}
                       {/* Milestone confirmed ring */}
@@ -987,13 +1031,13 @@ export default function CivStackClient() {
                         <>
                           {l2 ? (
                             <>
-                              <text className="g-label" y={-4} fontSize={fs}>{l1}</text>
-                              <text className="g-label" y={7} fontSize={fs}>{l2}</text>
+                              <text className={`g-label ${isLodLevel ? 'lod-hide' : ''}`} y={-4} fontSize={fs}>{l1}</text>
+                              <text className={`g-label ${isLodLevel ? 'lod-hide' : ''}`} y={7} fontSize={fs}>{l2}</text>
                             </>
                           ) : (
-                            <text className="g-label" y={3} fontSize={fs}>{l1}</text>
+                            <text className={`g-label ${isLodLevel ? 'lod-hide' : ''}`} y={3} fontSize={fs}>{l1}</text>
                           )}
-                          <text className="g-sub-label" y={r + 20} fontSize={8}>
+                          <text className={`g-sub-label ${isLodLevel ? 'lod-hide' : ''}`} y={r + 20} fontSize={8}>
                             {isMilestone
                               ? (c.confirmed ? '✓ CONFIRMED' : '○ HYPOTHETICAL')
                               : `TRL ${c.trl ?? '?'} · ${(TRL_LABELS[c.trl ?? 0] ?? '').toUpperCase()}`
