@@ -364,6 +364,21 @@ export default function CivStackClient() {
       .alphaDecay(0.02)
       .velocityDecay(0.45)
       .on('tick', () => {
+        // Enforce physical walls for Horizon sectors
+        nodes.forEach(n => {
+          if (n.x != null) {
+            const hz = n.horizon ?? 'near';
+            let minX = 0, maxX = W;
+            if (hz === 'near') { minX = 0; maxX = W * 0.33; }
+            else if (hz === 'far') { minX = W * 0.33; maxX = W * 0.66; }
+            else if (hz === 'open') { minX = W * 0.66; maxX = W * 1.0; }
+            
+            const pad = n.nodeR + 10; // keep padding off the border
+            if (n.x < minX + pad) { n.x = minX + pad; n.vx = (n.vx || 0) * -0.2; }
+            if (n.x > maxX - pad) { n.x = maxX - pad; n.vx = (n.vx || 0) * -0.2; }
+          }
+        });
+
         // Sync simulation x/y → gx/gy for rendering
         nodes.forEach(n => {
           n.gx = n.x ?? n.gx;
