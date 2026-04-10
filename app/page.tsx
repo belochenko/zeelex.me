@@ -42,26 +42,6 @@ const socialLinks = [
 
 const projects = [
   {
-    title: "Home 3D Printing Lab",
-    oneLiner: "Exploring additive manufacturing at home — hardware, materials, and process design.",
-    tags: ["3D Printing", "Hardware", "Design"],
-    accentColor: "var(--accent-orange)",
-    status: "live",
-    imagePath: "/projects/3d_printer.png",
-    detail: "A personal laboratory for additive manufacturing experiments — from FDM mechanics to material science and tolerancing. Hosted at 3d.zeelex.me with build logs and process notes.",
-    href: "https://3d.zeelex.me",
-  },
-  {
-    title: "[Archive] Elliscope",
-    oneLiner: "Autonomous hybrid airship HAPS — sensor fusion, telemetry, control systems.",
-    tags: ["HAPS", "Autonomous Systems", "Python", "Hardware"],
-    accentColor: "var(--accent-indigo)",
-    status: "archived",
-    imagePath: "/projects/airship.png",
-    detail: "R&D project for a hybrid autonomous airship (High Altitude Platform System). Integrated hardware sensor arrays with Python-based telemetry and real-time flight control logic.",
-    href: "https://elliscope.zeelex.me",
-  },
-  {
     title: "Interactive Math & Physics Lab",
     oneLiner: "Native React-rendered simulation logic and mathematical exploration.",
     tags: ["Physics", "MDX", "React", "Interactive"],
@@ -78,6 +58,16 @@ const projects = [
     status: "live",
     detail: "An interactive map charting the progress of human civilization across science, technology, and society. Explore the milestones, bottlenecks, and trajectories that define our species' journey.",
     href: "/civstack",
+  },
+  {
+    title: "[Archive] Elliscope",
+    oneLiner: "Autonomous hybrid airship HAPS — sensor fusion, telemetry, control systems.",
+    tags: ["HAPS", "Autonomous Systems", "Python", "Hardware"],
+    accentColor: "var(--accent-indigo)",
+    status: "archived",
+    imagePath: "/projects/airship.png",
+    detail: "R&D project for a hybrid autonomous airship (High Altitude Platform System). Integrated hardware sensor arrays with Python-based telemetry and real-time flight control logic.",
+    href: "https://elliscope.zeelex.me",
   },
 ]
 
