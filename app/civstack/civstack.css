@@ -190,19 +190,22 @@
 }
 
 /* ══ CROSSHAIRS ══ */
-.cs-crosshair-x, .cs-crosshair-y {
-  position: fixed;
-  background: var(--rule-mid);
-  pointer-events: none;
-  z-index: 100;
-  transition: opacity 0.2s;
+.cs-crosshair-layer {
+  position: fixed; inset: 0; pointer-events: none; z-index: 100;
   opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.cs-crosshair-x, .cs-crosshair-y {
+  position: absolute;
+  transition: top 0.15s cubic-bezier(0.4,0,0.2,1), left 0.15s cubic-bezier(0.4,0,0.2,1);
 }
 .cs-crosshair-x {
   left: 0; right: 0; height: 1px;
+  background: repeating-linear-gradient(90deg, var(--rule-hi), var(--rule-hi) 3px, transparent 3px, transparent 6px);
 }
 .cs-crosshair-y {
   top: 0; bottom: 0; width: 1px;
+  background: repeating-linear-gradient(0deg, var(--rule-hi), var(--rule-hi) 3px, transparent 3px, transparent 6px);
 }
 
 .cs-svg {
@@ -237,11 +240,10 @@
 .g-node.dimmed { opacity: 0.2; }
 
 @keyframes select-pulse {
-  0% { r: 100%; opacity: 0.8; stroke-width: 2; }
-  100% { r: 140%; opacity: 0; stroke-width: 0.5; }
+  0% { transform: scale(1); opacity: 0.8; stroke-width: 2px; }
+  100% { transform: scale(1.5); opacity: 0; stroke-width: 0.5px; }
 }
 .g-node.selected .active-glow {
-  transform-origin: center;
   animation: select-pulse 2s infinite cubic-bezier(0.1,0.7,0.1,1);
 }
 

@@ -248,7 +248,7 @@ export default function CivStackClient() {
   const [changelogOpen, setChangelogOpen] = useState(false);
 
   // Tooltip
-  const [tip, setTip] = useState({ text: '', x: 0, y: 0, visible: false });
+  const [tip, setTip] = useState({ text: '', x: 0, y: 0, visible: false, nodeId: null as string | null });
 
   // Crosshairs & Mouse tracking
   const [mousePos, setMousePos] = useState<{x: number; y: number} | null>(null);
@@ -630,12 +630,37 @@ export default function CivStackClient() {
   return (
     <>
       {/* ══ CROSSHAIRS ══ */}
-      {mousePos && (
-        <>
-          <div className="cs-crosshair-x" style={{ top: mousePos.y }} />
-          <div className="cs-crosshair-y" style={{ left: mousePos.x }} />
-        </>
-      )}
+      {mousePos && (() => {
+        let cx = mousePos.x;
+        let cy = mousePos.y;
+        let isLocked = false;
+        let rMask = 0;
+
+        if (tip.visible && tip.nodeId && capMap[tip.nodeId]) {
+          const node = capMap[tip.nodeId];
+          let offX = 0, offY = 42; // default topbar
+          if (wrapRef.current) {
+            const rect = wrapRef.current.getBoundingClientRect();
+            offX = rect.left;
+            offY = rect.top;
+          }
+          cx = node.gx * gTx.s + gTx.x + offX;
+          cy = node.gy * gTx.s + gTx.y + offY;
+          rMask = (node.nodeR + 12) * gTx.s;
+          isLocked = true;
+        }
+
+        const maskStyle = isLocked
+          ? { WebkitMaskImage: `radial-gradient(circle at ${cx}px ${cy}px, transparent ${rMask}px, black ${rMask}px)` }
+          : {};
+
+        return (
+          <div className="cs-crosshair-layer" style={maskStyle}>
+            <div className="cs-crosshair-x" style={{ top: cy }} />
+            <div className="cs-crosshair-y" style={{ left: cx }} />
+          </div>
+        );
+      })()}
 
       {/* ══ TOPBAR ══ */}
       <div className="cs-topbar">
@@ -980,7 +1005,7 @@ export default function CivStackClient() {
                         html += `<span class="tt-row">CHAPTER <span class="tt-val">${chName}</span></span>`;
                         html += `<span class="tt-row">HORIZON <span class="tt-val">${hzName}</span></span>`;
                         if (c.bottleneck) html += `<span class="tt-warn">⚠ BOTTLENECK — BLOCKS PROGRESS</span>`;
-                        setTip({ text: html, x: e.clientX + 14, y: e.clientY - 30, visible: true });
+                        setTip({ text: html, x: e.clientX + 14, y: e.clientY - 30, visible: true, nodeId: c.id });
                       }}
                       onMouseMove={(e) => {
                         setTip(t => t.visible ? { ...t, x: e.clientX + 14, y: e.clientY - 30 } : t);
