@@ -226,34 +226,36 @@ export function BentoTile({
             {imagePath && (
               <div
                 className="absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out 
-                           grayscale brightness-[0.35] group-hover:grayscale-[50%] group-hover:brightness-75 group-hover:scale-105"
+                           grayscale brightness-[0.4] group-hover:grayscale-[20%] group-hover:brightness-90 group-hover:scale-105"
                 style={{ backgroundImage: `url(${imagePath})` }}
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-base)] via-[var(--bg-base)]/50 to-transparent opacity-80 pointer-events-none" />
+            {/* Always use a distinct dark gradient at the bottom for image readability */}
+            <div className="absolute inset-x-0 bottom-0 h-[85%] bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/70 to-transparent pointer-events-none" />
 
-            <div className="relative h-full flex flex-col justify-end p-6 z-10 transition-transform duration-500 ease-out sm:group-hover:-translate-y-2">
+            <div className="relative h-full flex flex-col justify-end p-5 md:p-6 z-10 transition-transform duration-500 ease-out sm:group-hover:-translate-y-2">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <span className="status-dot shadow-none" style={{ background: accentColor }} />
-                  <span className="text-[10px] uppercase tracking-widest font-mono" style={{ color: accentColor }}>{status}</span>
+                  <span className="text-[10px] uppercase tracking-widest font-mono drop-shadow-md" style={{ color: accentColor }}>{status}</span>
                 </div>
               </div>
               
-              <span className="block font-semibold text-lg leading-snug mb-1 drop-shadow-md" style={{ color: "var(--tx-primary)" }}>
+              <span className="block font-semibold text-lg md:text-xl leading-snug mb-1 drop-shadow-lg text-white">
                 {title}
               </span>
               
-              <p className="text-sm leading-relaxed mb-4 drop-shadow-md line-clamp-2" style={{ color: "var(--tx-secondary)" }}>
+              <p className="text-xs md:text-sm leading-relaxed mb-4 drop-shadow-md line-clamp-3 text-zinc-300">
                 {oneLiner}
               </p>
               
-              <div className="flex flex-wrap gap-1.5 sm:opacity-0 sm:translate-y-4 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 transition-all duration-500 delay-75">
+              <div className="flex flex-wrap gap-1.5 opacity-100 sm:opacity-0 sm:translate-y-4 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 transition-all duration-500 delay-75">
                 {tags.slice(0, 3).map(tag => (
                   <span key={tag} className="tag-pill backdrop-blur-md" style={{
-                    background: "rgba(0,0,0,0.5)",
-                    borderColor: `${accentColor}33`,
-                    color: accentColor
+                    background: "rgba(0,0,0,0.6)",
+                    borderColor: `${accentColor}55`,
+                    color: accentColor,
+                    textShadow: "0 1px 2px rgba(0,0,0,0.5)"
                   }}>
                     {tag}
                   </span>
