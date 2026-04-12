@@ -1,0 +1,47 @@
+<svg width="100%" viewBox="0 0 680 580" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Пружина с грузом в раме</title>
+  <desc style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Рамка массой M, внутри пружина k и груз m</desc>
+
+  <defs>
+    <pattern id="hatch" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="10" stroke="var(--color-text-primary)" stroke-width="2.5"/>
+    </pattern>
+    <!-- Clip для хатчинга только внутри стенок -->
+    <clipPath id="clip-top">   <rect x="210" y="96" width="260" height="28"/></clipPath>
+    <clipPath id="clip-left">  <rect x="210" y="96" width="28" height="408"/></clipPath>
+    <clipPath id="clip-right"> <rect x="442" y="96" width="28" height="408"/></clipPath>
+    <clipPath id="clip-bottom"><rect x="210" y="476" width="260" height="28"/></clipPath>
+  </defs>
+
+  <!-- ══ ЗЕМЛЯ ══ -->
+  <line x1="195" y1="518" x2="485" y2="518" stroke="var(--color-text-primary)" stroke-width="2" fill="none" style="fill:none;stroke:rgb(0, 0, 0);color:rgb(0, 0, 0);stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="195" y="518" width="290" height="14" fill="url(#hatch)" opacity="0.4" style="stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- ══ РАМА: хатчинг стенок (рисуется ДО линий, чтобы линии были поверх) ══ -->
+  <rect x="210" y="96" width="260" height="28" fill="url(#hatch)" opacity="0.45" clip-path="url(#clip-top)" style="stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.45;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="210" y="96" width="28" height="408" fill="url(#hatch)" opacity="0.45" clip-path="url(#clip-left)" style="stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.45;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="442" y="96" width="28" height="408" fill="url(#hatch)" opacity="0.45" clip-path="url(#clip-right)" style="stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.45;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="210" y="476" width="260" height="28" fill="url(#hatch)" opacity="0.45" clip-path="url(#clip-bottom)" style="stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.45;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- ══ РАМА: одна чистая граница ══ -->
+  <!-- Внешний периметр всей рамы -->
+  <rect x="210" y="96" width="260" height="408" rx="0" fill="none" stroke="var(--color-text-primary)" stroke-width="2" style="fill:none;stroke:rgb(0, 0, 0);color:rgb(0, 0, 0);stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Внутренний периметр (граница внутреннего пространства) -->
+  <rect x="238" y="124" width="204" height="352" rx="0" fill="none" stroke="var(--color-text-primary)" stroke-width="2" style="fill:none;stroke:rgb(0, 0, 0);color:rgb(0, 0, 0);stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- ══ ПРУЖИНА (зигзаг-катушка) ══ -->
+  <polyline fill="none" stroke="var(--color-text-primary)" stroke-width="1.8" stroke-linejoin="round" points="&#10;      340,124&#10;      340,150&#10;      312,160&#10;      368,174&#10;      312,188&#10;      368,202&#10;      312,216&#10;      368,230&#10;      312,244&#10;      368,258&#10;      312,272&#10;      368,286&#10;      312,300&#10;      368,314&#10;      340,324&#10;      340,350&#10;    " style="fill:none;stroke:rgb(0, 0, 0);color:rgb(0, 0, 0);stroke-width:1.8px;stroke-linecap:butt;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- ══ ГРУЗ ══ -->
+  <rect x="300" y="350" width="80" height="60" rx="2" fill="var(--color-background-primary)" stroke="var(--color-text-primary)" stroke-width="1.8" style="fill:rgb(255, 255, 255);stroke:rgb(0, 0, 0);color:rgb(0, 0, 0);stroke-width:1.8px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- ══ МЕТКИ ══ -->
+  <!-- M — снаружи сверху справа -->
+  <text x="482" y="116" font-size="20" fill="var(--color-text-primary)" text-anchor="start" style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:start;dominant-baseline:auto">M</text>
+
+  <!-- k — справа от пружины -->
+  <text x="376" y="236" font-size="20" fill="var(--color-text-primary)" text-anchor="start" style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:start;dominant-baseline:auto">k</text>
+
+  <!-- m — внутри груза -->
+  <text x="340" y="387" font-size="20" fill="var(--color-text-primary)" text-anchor="middle" style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:auto">m</text>
+</svg>

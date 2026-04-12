@@ -1,0 +1,149 @@
+---
+title: "Box Lift-off via Internal Oscillation"
+date: "2026-04-10"
+topic: "Classical Mechanics"
+difficulty: "Begginer"
+tags: ["kinematics", "physics", "vibrations", "statics", "dynamics"]
+summary: "How to lift a box with an internal oscillator."
+---
+
+# Problem Statement
+
+A box of mass $M$ rests on a horizontal table. Inside the box, a body of mass $m$ is suspended from a spring of stiffness $k$. 
+At what amplitude of oscillation will the box lift off the table?
+
+# Facts
+Before going into the solution, let's analyze the problem and identify the key facts from problem statement.
+
+1. There is a box of mass $M$ resting on a horizontal table (or any horizontal surface).
+2. A spring is attached to the ceiling of the box, with a body of mass m suspended from its lower end.
+3. A body of mass $m$ is suspended from a spring of stiffness $k$.
+
+Overall there are 3 bodies in the system: box, spring and mass $m$. In this problem we assume that the box is rigid and the spring is ideal. 
+Also we assume that the table is rigid and system is in vacuum (no air resistance).
+
+Now let's draw an image of system:
+<Image src="/lab/kvant_1980_1/kvant-physics-1980-1-613-spring_mass_frame.svg" alt="Box with spring and mass on the table (schematic)" caption="Box with spring and mass on the table (schematic)" />
+
+Initially, the system is in static equilibrium: the gravitational force is balanced by the normal reaction of the table.
+
+# Reasoning
+For the box to lift off the table, it is necessary to reduce $N$ to $0$. It means that the box cannot touch the table surface.
+Therefore, the spring with mass on it must be pulled down and realeased. At that very moment, the spring exerts a compressive force on the ceiling of the box which we denote $T$,
+since the spring strives to return to its equilibrium position. 
+
+# Mathematical Solution
+Equilibrium:
+$$ (M + m) \cdot g = N $$
+$$ \vec{F}_{box} + \vec{F}_{spring} + \vec{N} = 0 $$
+
+Next, works with the mass on the spring. When the mass suspended from the spring is pulled down by $\Delta x_0$.
+
+According to Hooke's law, the force exerted by the spring on the mass is:
+$$ F_{spring} = k \Delta x \implies k \cdot \Delta x_0 = m \cdot g $$ 
+$$ \implies \Delta x_0 = \frac{m \cdot g}{k} $$
+
+Here $\Delta x_0$ is the **static deflection** — the equilibrium stretch of the spring 
+due to the weight of the suspended mass.
+
+# Equation of Motion
+
+Let $x$ denote the displacement of the mass from its equilibrium position, 
+positive downward. The equation of motion is:
+
+$$ m\ddot{x} = -kx $$
+
+This is simple harmonic motion with angular frequency:
+
+$$ \omega = \sqrt{\frac{k}{m}} $$
+
+and general solution:
+
+$$ x(t) = A \sin(\omega t) $$
+
+where $A$ is the oscillation amplitude.
+
+# Lift-off Condition
+
+At the top of the oscillation ($x = -A$), the spring is compressed 
+by $(\Delta x_0 - A)$.
+
+The forces acting on the box in the vertical direction are:
+
+$$ N + k(A - \Delta x_0) - Mg = 0 $$
+
+The box lifts off when $N = 0$:
+
+$$ k(A - \Delta x_0) = Mg $$
+
+Substituting $\Delta x_0 = \frac{mg}{k}$:
+
+$$ kA - mg = Mg $$
+
+$$ kA = (M + m)g $$
+
+$$\boxed{ A = \frac{(M + m)g}{k} }$$
+
+# Interpretation
+
+The result has a clear physical meaning: the required amplitude is proportional 
+to the total weight of the system $(M + m)g$ and inversely proportional to 
+the stiffness $k$. A stiffer spring requires a larger displacement to generate 
+the same force — so a softer spring lifts the box at a smaller amplitude.
+
+**Limiting cases:**
+- If $M \to 0$: $A \to \frac{mg}{k} = \Delta x_0$ — the box lifts off as soon 
+  as the spring returns to its natural length.
+- If $k \to \infty$: $A \to 0$ — an infinitely stiff spring transmits force 
+  instantly; any oscillation lifts the box.
+
+# Visualization
+<OscillatorMassOnSpring />
+
+# Applications
+
+The result $A = \frac{(M+m)g}{k}$ is not merely academic — it describes a 
+lift-off threshold that appears across many engineering domains.
+
+# Packaging and Transport
+
+A fragile instrument inside a shipping box is precisely this system. 
+During transport, road vibrations excite the internal mass. If the oscillation 
+amplitude exceeds the threshold, the box lifts off the surface — or equivalently, 
+the instrument becomes momentarily weightless inside the packaging. 
+
+This is why sensitive equipment (medical devices, optical instruments, 
+military hardware) is shipped with high-stiffness $k$ foam inserts: 
+a larger $k$ raises the lift-off threshold.
+
+# Vibration Isolation
+
+The same physics appears in reverse: engineers designing vibration isolators 
+for industrial machinery (compressors, pumps, CNC machines) must ensure 
+that $N > 0$ at all times. If the machine's internal oscillating components 
+reach the critical amplitude, the machine begins to "walk" or jump — 
+a failure mode known as **dynamic uplift**.
+
+# Seismic Engineering
+
+A building on a foundation is structurally analogous. During an earthquake, 
+internal floors and mechanical systems oscillate. The lift-off condition 
+determines whether the structure separates from its foundation — 
+a catastrophic failure mode in seismic design.
+
+# Railway Dynamics
+
+A freight wagon on suspension springs carries an oscillating load. 
+The condition $N = 0$ corresponds to **wheel lift-off** — the wheel 
+loses contact with the rail. This is a critical safety threshold 
+in railway engineering, directly governed by the same inequality:
+
+$$ A < \frac{(M+m)g}{k} $$
+
+# Jumping Robots
+
+Some biomimetic robots exploit this effect deliberately. An internal 
+mass-spring system is driven to the critical amplitude, causing the 
+robot body to lift off without any external leg mechanism. 
+The lift-off amplitude formula directly determines the required 
+spring stiffness and stroke for a given robot mass.

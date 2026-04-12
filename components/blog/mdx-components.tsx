@@ -1,6 +1,8 @@
 import React from "react"
 import type { MDXComponents } from "mdx/types"
 import { Badge } from "@/components/ui/badge"
+import { InteractiveOscillator } from "@/components/lab/InteractiveOscillator"
+import OscillatorMassOnSpring from "@/components/lab/OscillatorMassOnSpring"
 
 type ImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
   caption?: React.ReactNode
@@ -316,6 +318,8 @@ export const mdxComponents: MDXComponents = {
   YouTube,
   MathInline,
   MathBlock,
+  InteractiveOscillator,
+  OscillatorMassOnSpring,
   a: ({ href, children, className, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
     const isExternal = href?.startsWith('http')
     return (
